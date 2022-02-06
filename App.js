@@ -4,22 +4,27 @@ import { StyleSheet, Text, View } from 'react-native';
 import Home from './components/Home';
 import Navigator from './components/Navigator';
 import Profile from './components/Profile';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
+const Stack = createNativeStackNavigator();
 
 export default function App() {
     const [selected, setSelected] = React.useState(0);
 
     return (
-        <View style={styles.container}>
-            {
-                selected === 0 && <Home />
-            }
-            {
-                selected == 3 && <Profile />
-            }
-            <Navigator changeView={setSelected}/>
-        </View>
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="Home" options={{ headerShown: false }}>
+                    {props => <Home {...props}  />}
+                </Stack.Screen>
+                <Stack.Screen name="Profile" options={{ headerShown: false }}>
+                    {props => <Profile {...props}  />}
+                </Stack.Screen>
+            </Stack.Navigator>
+            <StatusBar />
+        </NavigationContainer>
   );
 }
 

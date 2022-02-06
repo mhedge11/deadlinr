@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import React, { Component } from 'react';
 import { Avatar } from "react-native-elements";
+import Navigator from '../Navigator';
 
 const mockCourses = [
     {
@@ -54,6 +55,7 @@ function renderCourseCard(course) {
                 shadowOpacity: 0.2,
                 shadowRadius: 3,
             }}
+            key={course.id}
         >
             <Text
                 style={{
@@ -128,7 +130,7 @@ export default class Home extends Component {
                         placeholderStyle={{}}
                         rounded
                         size="large"
-                        source={{ uri: "" }}
+                        source={{ uri: "https://cdn.vox-cdn.com/thumbor/LJsKwxxJ8VYHNXpWCIlYljhIIps=/0x104:438x396/1820x1213/filters:focal(0x104:438x396):format(webp)/cdn.vox-cdn.com/imported_assets/846325/steve-jobs-1.jpg" }}
                         title="P"
                         titleStyle={{}}
                     />
@@ -160,12 +162,14 @@ export default class Home extends Component {
                         }
                     </ScrollView>
                 </View>
+                <Navigator navigation={this.props.navigation}/>
             </View>)
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         width: '100%',
         backgroundColor: 'white',
         alignItems: 'center',

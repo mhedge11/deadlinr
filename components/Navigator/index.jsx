@@ -12,22 +12,19 @@ export default class Navigator extends React.Component {
 
 
     render() {
-        const changeView = this.props.changeView;
+        const navigation = this.props.navigation;
         return (
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => changeView(0)}>
-                    <Icon name='home' type='font-awesome' color='white'/>
-                    <Text style={styles.text}>Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => changeView(1)}>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Tasks')}>
                     <Icon name='calendar' type='font-awesome' color='white'/>
                     <Text style={styles.text}>Tasks</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => changeView(2)}>
+                <TouchableOpacity onPress={() => navigation.navigate('Threads')}>
                     <Icon name='commenting' type='font-awesome' color='white'/>
                     <Text style={styles.text}>Threads</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => changeView(3)}>
+                <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
                     <Icon name='user' type='font-awesome' color='white'/>
                     <Text style={styles.text}>Profile</Text>
                 </TouchableOpacity>
@@ -40,7 +37,7 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
         bottom: '10%',
-        width: '90%',
+        width: '100%',
         backgroundColor: 'black',
         flexDirection: 'row',
         justifyContent: 'space-around',
