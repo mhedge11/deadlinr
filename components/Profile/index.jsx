@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -32,27 +33,67 @@ export default class Profile extends React.Component {
 
 
     render() {
+        const navigation = this.props.navigation;
         return (
             <View style={styles.container}>
                 <Text style={{
                     fontSize: '30rem',
                     fontWeight: '700'
                 }}>
-                    Hey Tim!
+                    <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => navigation.navigate('Home')}>
+                        <Icon name='chevron-left' type='font-awesome' color='black'/>
+                    </TouchableOpacity>
+                    {'    '}Hey Tim!
                 </Text>
-                <TouchableOpacity
-                    onPress={() => this.showConfirmDialog()}
+
+                <View
+                    style={{
+                        marginTop: '30%',
+                        flex: 1,
+                        justifyContent: 'space-around'
+                    }}
                 >
-                    <Text
+                    <View
                         style={{
-                            fontSize: '20rem',
-                            color: '#f55a42',
-                            fontWeight: '600'
                         }}
                     >
-                        Delete Account
-                    </Text>
-                </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={{
+                                fontSize: '20rem',
+                                color: 'black',
+                                fontWeight: '600',
+                                padding: '5%'
+                            }}>
+                                Log Out
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={{
+                                fontSize: '20rem',
+                                color: 'black',
+                                fontWeight: '600',
+                                padding: '5%'
+                            }}>
+                                Change Password
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => this.showConfirmDialog()}
+                    >
+                        <Text
+                            style={{
+                                fontSize: '20rem',
+                                color: '#f55a42',
+                                fontWeight: '600',
+                                padding: '5%'
+                            }}
+                        >
+                            Delete Account
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
             </View>
         )
     }
@@ -66,6 +107,6 @@ const styles = StyleSheet.create({
         paddingLeft: '5%',
         paddingRight: '5%',
         paddingBottom: '30%',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
     }
 });
