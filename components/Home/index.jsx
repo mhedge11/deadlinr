@@ -36,6 +36,10 @@ const mockCourses = [
     },
 ]
 
+function renderScheduleBlock() {
+
+}
+
 function renderCourseCard(course) {
 
     return (
@@ -43,8 +47,8 @@ function renderCourseCard(course) {
             style={{
                 backgroundColor: course.bgColor,
                 borderRadius: '30%',
-                width: '50%',
-                marginRight: '5%',
+                width: '10%',
+                marginRight: '1%',
                 justifyContent: 'center',
                 alignItems: 'center',
                 // maxWidth: '50%',
@@ -52,7 +56,7 @@ function renderCourseCard(course) {
                 // paddingBottom: '15%',
                 shadowColor: '#171717',
                 shadowOffset: {width: -2, height: 4},
-                shadowOpacity: 0.2,
+                shadowOpacity: 0.3,
                 shadowRadius: 3,
             }}
             key={course.id}
@@ -96,7 +100,7 @@ export default class Home extends Component {
                         <Text
                             style={{
                                 fontSize: '15rem',
-                                color: '#b7bdb9'
+                                color: '#a2a3a6'
                             }}
                         >
                             Hello Tim
@@ -122,7 +126,11 @@ export default class Home extends Component {
                         avatarStyle={{}}
                         containerStyle={{ 
                             backgroundColor: "#BDBDBD",
-                            marginRight: 0
+                            marginRight: 0,
+                            shadowColor: '#171717',
+                            shadowOffset: {width: -1, height: 4},
+                            shadowOpacity: 0.5,
+                            shadowRadius: 4,
                         }}
                         onLongPress={() => alert("onLongPress")}
                         onPress={() => alert("onPress")}
@@ -146,20 +154,59 @@ export default class Home extends Component {
                     </Text>
                     <ScrollView
                         horizontal
+                        nestedScrollEnabled
                         style={{
                             height: '25%',
                             paddingTop: '5%',
                             paddingBottom: '5%',
                             width: '100%',
-                            overflow: 'scroll'
+                            overflow: 'scroll',
                         }}
                         contentContainerStyle={{
-                            width: '100%',
+                            flexGrow: 1,
+                            width: '500%',
+                            overflow: 'hidden'
                         }}
                     > 
                         {
                             this.renderCourses(mockCourses)
                         }
+                    </ScrollView>
+                </View>
+                <View style={styles.courses}>
+                    <Text
+                        style={{
+                            fontSize: '30rem',
+                            fontWeight: '700'
+                        }}
+                    >
+                        Your Schedule
+                    </Text>
+                    <Text
+                        style={{
+                            color: '#a2a3a6',
+                        }}
+                    >
+                        Upcoming Tasks
+                    </Text>
+                    <ScrollView
+                        horizontal
+                        nestedScrollEnabled
+                        style={{
+                            height: '50%',
+                            paddingTop: '5%',
+                            paddingBottom: '5%',
+                            width: '100%',
+                            overflow: 'scroll',
+                        }}
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            width: '500%',
+                            overflow: 'hidden',
+                            height: '100%'
+                        }}
+                    > 
+
                     </ScrollView>
                 </View>
                 <Navigator navigation={this.props.navigation}/>
@@ -185,6 +232,6 @@ const styles = StyleSheet.create({
     },
     courses: {
         width: '100%',
-        marginTop: '10%'
+        marginTop: '10%',
     }
 })

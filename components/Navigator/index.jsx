@@ -16,9 +16,9 @@ export default class Navigator extends React.Component {
         return (
             <View style={styles.container}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Tasks')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
                     <Icon name='calendar' type='font-awesome' color='white'/>
-                    <Text style={styles.text}>Tasks</Text>
+                    <Text style={styles.text}>Calendar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Threads')}>
                     <Icon name='commenting' type='font-awesome' color='white'/>
