@@ -2,8 +2,8 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Home from './components/Home';
-import Navigator from './components/Navigator';
 import Profile from './components/Profile';
+import Calendar from './components/Calendar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -21,6 +21,9 @@ export default function App() {
                 </Stack.Screen>
                 <Stack.Screen name="Profile" options={{ headerShown: false }}>
                     {props => <Profile {...props}  />}
+                </Stack.Screen>
+                <Stack.Screen name="Calendar" options={{ headerShown: false }}>
+                    {props => <Calendar {...props}  />}
                 </Stack.Screen>
             </Stack.Navigator>
             <StatusBar />

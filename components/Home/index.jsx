@@ -65,7 +65,7 @@ function renderCourseCard(course) {
                 style={{
                     color: 'white',
                     fontWeight: 'bold',
-                    fontSize: '20rem',
+                    size: '20rem',
                 }}
             >
                 {course.title}
@@ -151,6 +151,13 @@ export default class Home extends Component {
                         }}
                     >
                         Courses
+                    </Text>
+                    <Text
+                        style={{
+                            color: '#a2a3a6',
+                        }}
+                    >
+                        Your running courses
                     </Text>
                     <ScrollView
                         horizontal

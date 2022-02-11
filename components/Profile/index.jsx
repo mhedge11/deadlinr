@@ -9,7 +9,7 @@ export default class Profile extends React.Component {
 
         }
     }
-    showConfirmDialog = () => {
+    showDeleteAccountDialog = () => {
         return Alert.alert(
             "Are your sure?",
             "Are you sure you want to delete your account?",
@@ -30,6 +30,26 @@ export default class Profile extends React.Component {
             ]
         );
     };
+
+    showLogoutConfirmation = () => {
+        return Alert.alert(
+            "Are your sure?",
+            "Are you sure you want to logout?",
+            [
+                // The "Yes" button
+                {
+                    text: "Yes",
+                },
+                ,
+                // The "No" button
+                // Does nothing but dismiss the dialog when tapped
+                {
+                    text: "No",
+                },
+            ]
+        );
+    };
+
 
 
     render() {
@@ -57,7 +77,7 @@ export default class Profile extends React.Component {
                         style={{
                         }}
                     >
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.showLogoutConfirmation()}>
                             <Text style={{
                                 fontSize: '20rem',
                                 color: 'black',
@@ -79,7 +99,7 @@ export default class Profile extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity
-                        onPress={() => this.showConfirmDialog()}
+                        onPress={() => this.showDeleteAccountDialog()}
                     >
                         <Text
                             style={{
