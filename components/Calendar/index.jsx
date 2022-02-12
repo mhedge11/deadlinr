@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
-
+import { CalendarStripProps,  } from 'react-native-calendar-strip';
+import CalendarStrip from 'react-native-calendar-strip';
 
 export default class Calendar extends React.Component {
 
@@ -79,7 +80,32 @@ export default class Calendar extends React.Component {
                     </View>
                 </View>
                 <View style={styles.datePicker}>
-                    {this.renderDays()}
+                    <CalendarStrip
+                        style={{
+                            width: 350,
+                            height: 200,
+                            fontSize: 50
+                        }}
+                        scrollable
+                        headerText=''
+                        calendarHeaderStyle={{
+                            color: 'black',
+                            fontSize: '20rem',
+                        }}
+                        dayContainerStyle={{
+                            marginTop: 0
+                        }}
+                        dateNumberStyle={{
+                            color: 'black',
+                            fontSize: '20rem'
+                        }}
+                        dateNameStyle={{
+                            color: 'black',
+                            fontSize: '12rem'
+                        
+                        }}
+                    />
+
                 </View>
             </View>
         )
