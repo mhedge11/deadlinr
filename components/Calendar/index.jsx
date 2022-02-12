@@ -44,7 +44,7 @@ export default class Calendar extends React.Component {
                         flexDirection: 'row',
                         flex: 1,
                     }}>
-                        <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => navigation.navigate('Home')}>
+                        <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => navigation.goBack()}>
                             <Icon name='chevron-left' type='font-awesome' color='black'/>
                         </TouchableOpacity>
                         <View
@@ -73,7 +73,7 @@ export default class Calendar extends React.Component {
                         </View>
                     </View>
                     <View>
-                        <Button title='Create Calendar'>
+                        <Button title='Choose Calendar' onPress={() => navigation.navigate('Choose Calendar')}>
                         
                         </Button>
                     </View>
