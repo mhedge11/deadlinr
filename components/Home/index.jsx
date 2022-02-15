@@ -3,38 +3,6 @@ import React, { Component } from 'react';
 import { Avatar } from "react-native-elements";
 import Navigator from '../Navigator';
 
-const mockCourses = [
-    {
-        id: 0,
-        title: 'EAPS 106',
-        bgColor: '#08c43d',
-        data: []
-    },
-    {
-        id: 1,
-        title: 'CS 180',
-        bgColor: '#414241',
-        data: []
-    },
-    {
-        id: 2,
-        title: 'MA 165',
-        bgColor: '#f22c3f',
-        data: []
-    },
-    {
-        id: 3,
-        title: 'ENGL 106',
-        bgColor: '#d66718',
-        data: []
-    },
-    {
-        id: 4,
-        title: 'CS 193',
-        bgColor: '#2180cf',
-        data: []
-    },
-]
 
 function renderScheduleBlock() {
 
@@ -65,7 +33,7 @@ function renderCourseCard(course) {
                 style={{
                     color: 'white',
                     fontWeight: 'bold',
-                    size: '20rem',
+                    fontSize: '20rem',
                 }}
             >
                 {course.title}
@@ -78,11 +46,12 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            courses: props.courses
         }
     }
 
     renderCourses(courses) {
+        console.log(courses);
         let elements = []
         courses.forEach(course => {
             elements.push(renderCourseCard(course))
@@ -176,7 +145,7 @@ export default class Home extends Component {
                         }}
                     > 
                         {
-                            this.renderCourses(mockCourses)
+                            this.renderCourses(this.state.courses)
                         }
                     </ScrollView>
                 </View>

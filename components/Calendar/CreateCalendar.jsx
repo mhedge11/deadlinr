@@ -1,21 +1,33 @@
 import React from 'react';
-import { View, SafeAreaView, Text, StyleSheet, TextInput, Switch, Button } from 'react-native';
+import { View, SafeAreaView, Text, StyleSheet, TextInput, Switch, Button, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 const CreateCalendar = (props) => {
 
     const [privateCalendar, setPrivate] = React.useState(false);
+    const [calendarName, setCalendarName] = React.useState('');
+
+    const createCalendar = () => {
+        
+    }
 
     return (
         <SafeAreaView>
             <View
                 style={{
-                    padding: '5%'
+                    padding: '5%',
+                    flexDirection: 'row',
+                
                 }}
             >
+                 <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => props.navigation.goBack()}>
+                    <Icon name='chevron-left' type='font-awesome' color='black'/>
+                 </TouchableOpacity>
                 <Text
                     style={{
                         fontSize: '32rem',
-                        fontWeight: '600'
+                        fontWeight: '600',
+                        marginLeft: '5%'
                     }}
                 >
                     Create Calendar
@@ -33,6 +45,8 @@ const CreateCalendar = (props) => {
                 <TextInput
                     style={styles.input}
                     placeholder='Calendar Name'
+                    value={calendarName}
+                    onChangeText={v => setCalendarName(v)}
                 />
             </View>
 
@@ -55,7 +69,7 @@ const CreateCalendar = (props) => {
             </View>
 
             <View>
-                <Button title='Create' />
+                <Button title='Create' onPress={() => createCalender()}/>
             </View>
         </SafeAreaView>
     )
