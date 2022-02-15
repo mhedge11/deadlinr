@@ -1,19 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import moment from 'moment';
 import CalendarStrip from 'react-native-calendar-strip';
-
-
-const mockTasks = [
-    {
-        title: 'EAPS 106',
-        taskTitle: 'Movie Worksheet 4',
-        dueDate: moment()
-    }
-]
-
-
 
 
 export default class Calendar extends React.Component {
@@ -28,16 +17,18 @@ export default class Calendar extends React.Component {
     }
 
     renderTask = (task) => {
+        let randomColor = Math.floor(Math.random()*16777215).toString(16);
         return (
             <View
                 style={{
-                    backgroundColor: '#5ac72c',
+                    backgroundColor: '#' + randomColor,
                     padding: '4%',
                     borderRadius: 20,
                     shadowColor: '#171717',
                     shadowOffset: {width: -2, height: 4},
                     shadowOpacity: 0.2,
-                    shadowRadius: 3
+                    shadowRadius: 3,
+                    marginTop: '5%'
                 }}
             >
                 <Text
@@ -83,7 +74,14 @@ export default class Calendar extends React.Component {
                 ...task
             }));
         })
-        
+
+        this.props.calendars.forEach(c => {
+            c.tasks.forEach(task => tasks.push({
+                title: c.title,
+                ...task
+            }));
+        });
+ 
         let res = tasks.filter(task => task.dueDate.date() === this.state.selectedDate.date() && task.dueDate.month() == this.state.selectedDate.month())
        
         if (res.length == 0) {
@@ -160,6 +158,13 @@ export default class Calendar extends React.Component {
                         >
                             {dd} {' ' + this.intToMonth(mm)}
                         </Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.setState({
+                                    selectedDate: moment()
+                                })
+                            }}
+                        >
                         <Text
                             style={{
                                 color: 'black',
@@ -167,8 +172,9 @@ export default class Calendar extends React.Component {
                                 fontSize: '40rem'
                             }}
                         >
-                            {this.state.today.date() === this.state.selectedDate.date() && this.state.today.month() === this.state.selectedDate.month() ? 'Today' : ''}
+                            Today
                         </Text>
+                        </TouchableOpacity>
                         </View>
                     </View>
                     <View>
@@ -211,9 +217,16 @@ export default class Calendar extends React.Component {
                         }}
                     />
                 </View>
-                <View>
+                <ScrollView
+                    style={{
+                        marginTop: '-10%',
+                        paddingLeft: '2%',
+                        paddingRight: '2%',
+                        paddingBottom: '2%'
+                    }}
+                >
                     {this.renderTasks()}
-                </View>
+                </ScrollView>
             </View>
         )
     }

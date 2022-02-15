@@ -60,23 +60,46 @@ export default function App() {
         },
     ]);
 
+    const [calendars, setCalendars] = React.useState([
+        {
+            id: 0,
+            title: 'Personal Calendar',
+            private: true,
+            note: 'My personal calendar',
+            tasks: [
+                {
+                    id: 0,
+                    taskTitle: 'Sample title 1',
+                    note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fringilla velit nec dolor ultrices pulvinar. Nunc scelerisque ipsum tellus, ut dapibus dolor rhoncus nec. Nunc eget magna orci.',
+                    dueDate: moment()
+                },
+                {
+                    id: 1,
+                    taskTitle: 'Sample title 2',
+                    note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fringilla velit nec dolor ultrices pulvinar. Nunc scelerisque ipsum tellus, ut dapibus dolor rhoncus nec. Nunc eget magna orci.',
+                    dueDate: moment()
+                }
+            ]
+        }
+    ])
+
     return (
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="Home" options={{ headerShown: false }}>
-                    {props => <Home {...props} courses={courses} />}
+                    {props => <Home {...props} courses={courses} calendars={calendars}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Profile" options={{ headerShown: false }}>
-                    {props => <Profile {...props}  />}
+                    {props => <Profile {...props} calendars={calendars}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Calendar" options={{ headerShown: false }}>
-                    {props => <Calendar {...props}  courses={courses}/>}
+                    {props => <Calendar {...props}  courses={courses} calendars={calendars}/>}
                 </Stack.Screen>
                 <Stack.Screen name='Choose Calendar' options={{ headerShown: false}}>
-                    {props => <ChooseCalendar {...props} courses={courses}/>}
+                    {props => <ChooseCalendar {...props} courses={courses} calendars={calendars}/>}
                 </Stack.Screen>
                 <Stack.Screen name='Create Calendar' options={{ headerShown: false}}>
-                    {props => <CreateCalendar {...props} />}
+                    {props => <CreateCalendar {...props} calendars={calendars}/>}
                 </Stack.Screen>
             </Stack.Navigator>
             <StatusBar />

@@ -69,7 +69,7 @@ const CreateCalendar = (props) => {
             </View>
 
             <View>
-                <Button title='Create' onPress={() => createCalender()}/>
+                <Button title='Create' onPress={() => createCalendar()}/>
             </View>
         </SafeAreaView>
     )

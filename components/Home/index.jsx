@@ -51,7 +51,6 @@ export default class Home extends Component {
     }
 
     renderCourses(courses) {
-        console.log(courses);
         let elements = []
         courses.forEach(course => {
             elements.push(renderCourseCard(course))
