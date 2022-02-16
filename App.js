@@ -6,6 +6,7 @@ import Profile from './components/Profile';
 import Calendar from './components/Calendar';
 import ChooseCalendar from './components/Calendar/ChooseCalendar';
 import CreateCalendar from './components/Calendar/CreateCalendar';
+import Login from "./components/Login/Login";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import moment from 'moment';
@@ -86,6 +87,9 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
+              {/* Change loginScreen pointer to the registration page pointer
+              once registration page has been made */}
+                <Stack.Screen name="LoginScreen" component={Login} />
                 <Stack.Screen name="Home" options={{ headerShown: false }}>
                     {props => <Home {...props} courses={courses} calendars={calendars}/>}
                 </Stack.Screen>
@@ -110,8 +114,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
 });
