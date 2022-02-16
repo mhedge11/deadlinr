@@ -1,23 +1,120 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { CalendarStripProps,  } from 'react-native-calendar-strip';
+import moment from 'moment';
 import CalendarStrip from 'react-native-calendar-strip';
+
 
 export default class Calendar extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            date: new Date()
+            selectedDate: moment(),
+            today: moment(),
+            tasks: []
         }
     }
+
+    renderTask = (task) => {
+        let randomColor = Math.floor(Math.random()*16777215).toString(16);
+        return (
+            <View
+                style={{
+                    backgroundColor: '#' + randomColor,
+                    padding: '4%',
+                    borderRadius: 20,
+                    shadowColor: '#171717',
+                    shadowOffset: {width: -2, height: 4},
+                    shadowOpacity: 0.2,
+                    shadowRadius: 3,
+                    marginTop: '5%'
+                }}
+            >
+                <Text
+                    style={{
+                        color: "white",
+                        fontSize: '30rem',
+                        fontWeight: '500'
+                    }}
+                >
+                    {task.title}
+                </Text>
+                <Text
+                    style={{
+                        marginTop: '5%',
+                        color: 'white',
+                        fontSize: '20rem'
+                    }}
+                >
+                    {task.taskTitle}
+                </Text>
+                <Text
+                    style={{
+                        color: 'white',
+                        marginTop: '5%',
+                        fontSize: '15rem'
+                    }}
+                >
+                    Due at {task.dueDate.date() + ' ' + this.intToMonth(task.dueDate.month()) + ' ' + task.dueDate.hour() + ':' + task.dueDate.minute()}
+                </Text>
+            </View>
+        )
+    }
+
+
+
+    renderTasks = () => {
+        let elems = [];
+        let tasks = [];
+
+        this.props.courses.forEach(course => {
+            course.tasks.forEach(task => tasks.push({
+                title: course.title,
+                ...task
+            }));
+        })
+
+        this.props.calendars.forEach(c => {
+            c.tasks.forEach(task => tasks.push({
+                title: c.title,
+                ...task
+            }));
+        });
+ 
+        let res = tasks.filter(task => task.dueDate.date() === this.state.selectedDate.date() && task.dueDate.month() == this.state.selectedDate.month())
+       
+        if (res.length == 0) {
+            return (
+                <View
+                    style={{
+                    }}
+                >
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            fontSize: '20rem',
+                            fontWeight: '500',
+
+                        }}
+                    >
+                        No Tasks scheduled for this day :)
+                        
+                    </Text>
+                </View>
+            )
+        }
+
+        res.forEach(task => elems.push(this.renderTask(task)));
+
+        return elems;
+    }
+
 
     intToMonth = (idx) => {
         const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
-        console.log(idx);
         return monthNames[idx];
     }
 
@@ -35,9 +132,8 @@ export default class Calendar extends React.Component {
 
     render() {
         const navigation = this.props.navigation;
-        const date = this.state.date;
-        const dd = String(date.getDate()).padStart(2, '0');
-        const mm = date.getMonth();
+        const dd = this.state.selectedDate.date();
+        const mm = this.state.selectedDate.month();
         return (
             <View style={styles.container}>
                 <View style={styles.head}>
@@ -62,6 +158,13 @@ export default class Calendar extends React.Component {
                         >
                             {dd} {' ' + this.intToMonth(mm)}
                         </Text>
+                        <TouchableOpacity
+                            onPress={() => {
+                                this.setState({
+                                    selectedDate: moment()
+                                })
+                            }}
+                        >
                         <Text
                             style={{
                                 color: 'black',
@@ -71,6 +174,7 @@ export default class Calendar extends React.Component {
                         >
                             Today
                         </Text>
+                        </TouchableOpacity>
                         </View>
                     </View>
                     <View>
@@ -86,8 +190,15 @@ export default class Calendar extends React.Component {
                             height: 200,
                             fontSize: 50
                         }}
+                        selectedDate={this.state.selectedDate}
+                        onDateSelected={newDate => this.setState({
+                            selectedDate: newDate
+                        })}
                         scrollable
                         headerText=''
+                        iconStyle={{
+                            // backgroundColor: 'red'
+                        }}
                         calendarHeaderStyle={{
                             color: 'black',
                             fontSize: '20rem',
@@ -105,8 +216,17 @@ export default class Calendar extends React.Component {
                         
                         }}
                     />
-
                 </View>
+                <ScrollView
+                    style={{
+                        marginTop: '-10%',
+                        paddingLeft: '2%',
+                        paddingRight: '2%',
+                        paddingBottom: '2%'
+                    }}
+                >
+                    {this.renderTasks()}
+                </ScrollView>
             </View>
         )
     }
