@@ -7,11 +7,15 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Button,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -39,6 +43,17 @@ const Login = (props) => {
       <TouchableOpacity style={styles.loginButton}>
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
+
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Home Screen</Text>
+        <Button
+          title="Go to HomeScreen"
+          onPress={() => {
+            /* 1. Navigate to the Details route with params */
+            navigation.navigate("Home");
+          }}
+        />
+      </View>
     </View>
   );
 };
