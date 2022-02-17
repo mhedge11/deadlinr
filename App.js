@@ -8,17 +8,18 @@ import ChooseCalendar from "./components/Calendar/ChooseCalendar";
 import CreateCalendar from "./components/Calendar/CreateCalendar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./components/Login/Login";
+import Login from "./components/screens/Login";
+import RegistrationScreen from "./components/RegistrationScreen/RegistrationScreen";
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* Change loginScreen pointer to the registration page pointer
-          once registration page has been made */}
-        <Stack.Screen name="LoginScreen" component={Login} />
-        <Stack.Screen name="Home" options={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Registration" component={RegistrationScreen} />
+        <Stack.Screen name="Home" options={{ headerShown: true }}>
           {(props) => <Home {...props} />}
         </Stack.Screen>
         <Stack.Screen name="Profile" options={{ headerShown: false }}>
