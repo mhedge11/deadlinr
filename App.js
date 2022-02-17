@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
@@ -6,14 +7,17 @@ import Profile from './components/Profile';
 import Calendar from './components/Calendar';
 import ChooseCalendar from './components/Calendar/ChooseCalendar';
 import CreateCalendar from './components/Calendar/CreateCalendar';
-import Login from "./components/Login/Login";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from "./components/screens/Login";
+import RegistrationScreen from "./components/RegistrationScreen/RegistrationScreen";
 import moment from 'moment';
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
 
     const [courses, setCourses] = React.useState([
         {
@@ -87,9 +91,8 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-              {/* Change loginScreen pointer to the registration page pointer
-              once registration page has been made */}
-                <Stack.Screen name="LoginScreen" component={Login} />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
                 <Stack.Screen name="Home" options={{ headerShown: false }}>
                     {props => <Home {...props} courses={courses} calendars={calendars}/>}
                 </Stack.Screen>

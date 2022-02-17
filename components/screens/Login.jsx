@@ -10,6 +10,7 @@ import {
   Button,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import RegistrationScreen from "../RegistrationScreen/RegistrationScreen";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -41,16 +42,16 @@ const Login = (props) => {
         <Text style={styles.forgot_button}>Forgot Password</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.loginButton}>
-        <Text style={styles.loginText}>Login</Text>
+        <Text>Login</Text>
       </TouchableOpacity>
 
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Home Screen</Text>
         <Button
-          title="Go to HomeScreen"
+          title="CREATE ACCOUNT"
           onPress={() => {
             /* 1. Navigate to the Details route with params */
-            navigation.navigate("Home");
+            // props.navigation.navigate("RegistrationForm");
+            props.navigation.navigate("Registration");
           }}
         />
       </View>
