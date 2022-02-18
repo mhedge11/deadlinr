@@ -11,6 +11,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from "./components/screens/Login";
 import RegistrationScreen from "./components/RegistrationScreen/RegistrationScreen";
+import ForgotPassword from './components/screens/ForgotPassword';
+import ResetPassword from './components/screens/ResetPassword';
 import moment from 'moment';
 
 
@@ -91,8 +93,18 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="Login" component={Login} />
-                <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen name="Login" options={{ headerShown: false }}>
+                    {props => <Login {...props} />}
+                </Stack.Screen>
+                <Stack.Screen name="Registration" options={{ headerShown: false }}>
+                    {props => <RegistrationScreen {...props} />}
+                </Stack.Screen>
+                <Stack.Screen name='Forgot Password' options={{ headerShown: false }}>
+                    {props => <ForgotPassword {...props} />}
+                </Stack.Screen>
+                <Stack.Screen name='Reset Password' options={{ headerShown: false }}>
+                    {props => <ResetPassword {...props} />}
+                </Stack.Screen>
                 <Stack.Screen name="Home" options={{ headerShown: false }}>
                     {props => <Home {...props} courses={courses} calendars={calendars}/>}
                 </Stack.Screen>

@@ -19,7 +19,7 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigation = useNavigation();
+  const navigation = props.navigation;
 
   const userPressedLogin = () => {
     let emailReturn = emailValidation(email);
@@ -58,7 +58,9 @@ const Login = (props) => {
       <TouchableOpacity style={styles.loginButton} onPress={userPressedLogin}>
         <Text>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Forgot Password')}
+      >
         <Text style={styles.forgot_button}>Forgot Password</Text>
       </TouchableOpacity>
 
