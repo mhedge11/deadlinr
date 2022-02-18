@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
+    width: "90%",
   },
   registerButton: {
     width: "80%",
