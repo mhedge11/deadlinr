@@ -8,9 +8,12 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RegistrationScreen from "../RegistrationScreen/RegistrationScreen";
+import { emailValidation } from "../../validation/emailValidation";
+import { passwordValidation } from "../../validation/passwordValidation";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -18,8 +21,21 @@ const Login = (props) => {
 
   const navigation = useNavigation();
 
+  const userPressedLogin = () => {
+    let emailReturn = emailValidation(email);
+    let passwordReturn = passwordValidation(password);
+
+    if (emailReturn !== "" || passwordReturn !== "") {
+      if (emailReturn !== "") alert(emailReturn);
+      if (passwordReturn !== "") alert(passwordReturn);
+      emailReturn = "";
+      passwordReturn = "";
+      return;
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Image style={styles.image} source={require("../../assets/phone.jpg")} />
       <View style={styles.inputView}>
         <TextInput
@@ -38,11 +54,12 @@ const Login = (props) => {
           onChangeText={(password) => setPassword(password)}
         />
       </View>
+
+      <TouchableOpacity style={styles.loginButton} onPress={userPressedLogin}>
+        <Text>Login</Text>
+      </TouchableOpacity>
       <TouchableOpacity>
         <Text style={styles.forgot_button}>Forgot Password</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.loginButton}>
-        <Text>Login</Text>
       </TouchableOpacity>
 
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -55,18 +72,19 @@ const Login = (props) => {
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
   image: {
+    marginTop: 10,
     marginBottom: 40,
     width: "70%",
     height: undefined,
@@ -85,11 +103,12 @@ const styles = StyleSheet.create({
     height: 50,
     flex: 1,
     padding: 10,
+    width: "90%",
     // marginLeft: 20,
   },
   forgot_button: {
     height: 30,
-    marginBottom: 15,
+    marginTop: 15,
   },
   loginButton: {
     width: "80%",
