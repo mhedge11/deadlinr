@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { deleteAccount } from '../../api/user';
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -10,6 +11,10 @@ export default class Profile extends React.Component {
         }
     }
     showDeleteAccountDialog = () => {
+        if (!this.props.user) {
+            return alert('An error occured');
+        }
+
         return Alert.alert(
             "Are your sure?",
             "Are you sure you want to delete your account?",
@@ -19,6 +24,12 @@ export default class Profile extends React.Component {
                     text: "Yes",
                     onPress: () => {
                         // API Route for deleting account
+                        const res = deleteAccount(this.props.user.uid);
+                        if (res !== '') {
+                            return alert(res);
+                        } else {
+                            this.props.setUser(null);
+                        }
                     },
                 },
                 
@@ -39,6 +50,9 @@ export default class Profile extends React.Component {
                 // The "Yes" button
                 {
                     text: "Yes",
+                    onPress: () => {
+                        this.props.setUser(null);
+                    }
                 },
                 ,
                 // The "No" button
@@ -54,6 +68,7 @@ export default class Profile extends React.Component {
 
     render() {
         const navigation = this.props.navigation;
+        const {firstName, lastName, uid} = this.props.user;
         return (
             <View style={styles.container}>
                 <Text style={{
@@ -63,7 +78,7 @@ export default class Profile extends React.Component {
                     <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => navigation.navigate('Home')}>
                         <Icon name='chevron-left' type='font-awesome' color='black'/>
                     </TouchableOpacity>
-                    {'    '}Hey Tim!
+                    {'    '}Hey {firstName}!
                 </Text>
 
                 <View

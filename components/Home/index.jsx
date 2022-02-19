@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Avatar } from "react-native-elements";
 import Navigator from '../Navigator';
 
-
 function renderScheduleBlock() {
 
 }

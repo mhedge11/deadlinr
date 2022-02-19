@@ -12,6 +12,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from "./components/screens/Login";
 import RegistrationScreen from "./components/RegistrationScreen/RegistrationScreen";
 import ForgotPassword from './components/screens/ForgotPassword';
+import CalendarView from './components/Calendar/CalendarView';
 import ResetPassword from './components/screens/ResetPassword';
 import moment from 'moment';
 
@@ -19,6 +20,27 @@ import moment from 'moment';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+    /*
+        type User = {
+            firstName: string,
+            lastName: string,
+            email: string,
+            uid: string,
+            username: string,
+            token: string
+        }
+    */
+
+    const [user, setUser] = React.useState({
+        firstName: 'Prakhar',
+        lastName: 'Nahar',
+        email: 'naharpra@gmail.com',
+        uid: '1234',
+        username: 'thatprakhar',
+        token: '213'
+    });
+
 
 
     const [courses, setCourses] = React.useState([
@@ -90,36 +112,54 @@ export default function App() {
         }
     ])
 
+
+    if (user === null || user === undefined) {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Login" options={{ headerShown: false }}>
+                        {props => <Login {...props} user={user} setUser={setUser}/>}
+                    </Stack.Screen>
+                    <Stack.Screen name="Registration" options={{ headerShown: false }}>
+                        {props => <RegistrationScreen {...props} user={user} setUser={setUser}/>}
+                    </Stack.Screen>
+                    <Stack.Screen name='Forgot Password' options={{ headerShown: false }}>
+                        {props => <ForgotPassword {...props} user={user} setUser={setUser}/>}
+                    </Stack.Screen>
+                    <Stack.Screen name='Reset Password' options={{ headerShown: false }}>
+                        {props => <ResetPassword {...props} user={user} setUser={setUser}/>}
+                    </Stack.Screen>
+                </Stack.Navigator>
+            </NavigationContainer>
+        )
+    }
+
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name="Login" options={{ headerShown: false }}>
-                    {props => <Login {...props} />}
-                </Stack.Screen>
-                <Stack.Screen name="Registration" options={{ headerShown: false }}>
-                    {props => <RegistrationScreen {...props} />}
-                </Stack.Screen>
-                <Stack.Screen name='Forgot Password' options={{ headerShown: false }}>
-                    {props => <ForgotPassword {...props} />}
-                </Stack.Screen>
-                <Stack.Screen name='Reset Password' options={{ headerShown: false }}>
-                    {props => <ResetPassword {...props} />}
-                </Stack.Screen>
                 <Stack.Screen name="Home" options={{ headerShown: false }}>
-                    {props => <Home {...props} courses={courses} calendars={calendars}/>}
+                    {props => <Home {...props} courses={courses} calendars={calendars} user={user} setUser={setUser}/>}
+                </Stack.Screen>
+
+                <Stack.Screen name='Reset Password' options={{ headerShown: false }}>
+                    {props => <ResetPassword {...props} user={user} setUser={setUser}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Profile" options={{ headerShown: false }}>
-                    {props => <Profile {...props} calendars={calendars}/>}
+                    {props => <Profile {...props} calendars={calendars} user={user} setUser={setUser}/>}
                 </Stack.Screen>
                 <Stack.Screen name="Calendar" options={{ headerShown: false }}>
-                    {props => <Calendar {...props}  courses={courses} calendars={calendars}/>}
+                    {props => <Calendar {...props}  courses={courses} calendars={calendars} user={user} setUser={setUser}/>}
                 </Stack.Screen>
                 <Stack.Screen name='Choose Calendar' options={{ headerShown: false}}>
-                    {props => <ChooseCalendar {...props} courses={courses} calendars={calendars}/>}
+                    {props => <ChooseCalendar {...props} courses={courses} calendars={calendars} user={user} setUser={setUser}/>}
                 </Stack.Screen>
                 <Stack.Screen name='Create Calendar' options={{ headerShown: false}}>
-                    {props => <CreateCalendar {...props} calendars={calendars}/>}
+                    {props => <CreateCalendar {...props} calendars={calendars} user={user} setUser={setUser}/>}
                 </Stack.Screen>
+                <Stack.Screen name='Calendar View' options={{ headerShown: false}}>
+                    {props => <CalendarView {...props} user={user} />}
+                </Stack.Screen>
+
             </Stack.Navigator>
             <StatusBar />
         </NavigationContainer>

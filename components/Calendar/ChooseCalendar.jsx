@@ -31,13 +31,24 @@ const ChooseCalendar = (props) => {
                         backgroundColor: 'transparent'
                     }}
                 >
-                    <Text
-                        style={{
-                            fontSize: '30rem'
+                    <TouchableOpacity
+                        onPress={() => {
+                            props.navigation.navigate('Calendar View', {
+                                title: c.title,
+                                isPrivate: true,
+                                createrUID: '1',
+                            });
                         }}
                     >
-                        {c.title}
-                    </Text>
+                        <Text
+                            style={{
+                                color: 'red',
+                                fontSize: '30rem'
+                            }}
+                        >
+                            {c.title}
+                        </Text>
+                    </TouchableOpacity>
                 </Swipeout>
             )
         });

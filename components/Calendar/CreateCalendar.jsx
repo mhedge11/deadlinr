@@ -8,7 +8,7 @@ const CreateCalendar = (props) => {
     const [calendarName, setCalendarName] = React.useState('');
 
     const createCalendar = () => {
-        
+        // add API call
     }
 
     return (
