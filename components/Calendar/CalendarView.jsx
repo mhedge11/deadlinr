@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Switch } from 'react-native';
+import { View, Text, Switch, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements'; 
 
 /*
 
@@ -32,7 +33,7 @@ export default class CalendarView extends React.Component {
 
 
     render() {
-        const { route, user } = this.props;
+        const { route, user, navigation } = this.props;
         const { title, isPrivate, createrUID } = route.params;
         return (
             <View
@@ -41,14 +42,26 @@ export default class CalendarView extends React.Component {
                     paddingTop: '20%',
                 }}
             >
-                <Text
+                <View
                     style={{
-                        fontSize: '25rem',
-                        fontWeight: '600'
+                        flexDirection: 'row',
+                        paddingTop: '5%',
+                        justifyContent: "flex-start"
                     }}
                 >
-                    {title}
-                </Text>
+                    <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => navigation.goBack()}>
+                        <Icon name='chevron-left' type='font-awesome' color='black'/>
+                    </TouchableOpacity>
+                    <Text
+                        style={{
+                            fontSize: '30rem',
+                            fontWeight: '600',
+                            marginLeft: '10%'
+                        }}
+                    >
+                        {title}
+                    </Text>
+                </View>
                 
                 <View
                     style={{

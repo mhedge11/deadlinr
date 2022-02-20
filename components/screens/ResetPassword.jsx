@@ -111,7 +111,8 @@ const ResetPassword = (props) => {
                         marginTop: '10%'
                     }}
                 >
-                    <Button 
+                    <Button
+                        disabled={showErrorMessage}
                         title='Change Password'
                         onPress={() => changePassword()}
                     />

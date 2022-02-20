@@ -102,7 +102,11 @@ export default class Profile extends React.Component {
                                 Log Out
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('Reset Password');
+                            }}
+                        >
                             <Text style={{
                                 fontSize: '20rem',
                                 color: 'black',

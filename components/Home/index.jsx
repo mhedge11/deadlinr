@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import React, { Component } from 'react';
 import { Avatar } from "react-native-elements";
 import Navigator from '../Navigator';
@@ -7,39 +7,6 @@ function renderScheduleBlock() {
 
 }
 
-function renderCourseCard(course) {
-
-    return (
-        <View 
-            style={{
-                backgroundColor: course.bgColor,
-                borderRadius: '30%',
-                width: '10%',
-                marginRight: '1%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                // maxWidth: '50%',
-                // paddingTop: '15%',
-                // paddingBottom: '15%',
-                shadowColor: '#171717',
-                shadowOffset: {width: -2, height: 4},
-                shadowOpacity: 0.3,
-                shadowRadius: 3,
-            }}
-            key={course.id}
-        >
-            <Text
-                style={{
-                    color: 'white',
-                    fontWeight: 'bold',
-                    fontSize: '20rem',
-                }}
-            >
-                {course.title}
-            </Text>
-        </View>
-    )
-}
 
 export default class Home extends Component {
     constructor(props) {
@@ -49,13 +16,59 @@ export default class Home extends Component {
         }
     }
 
+
+
+    renderCourseCard = (course) => {
+
+        return (
+            <TouchableOpacity 
+                style={{
+                    backgroundColor: course.bgColor,
+                    borderRadius: '30%',
+                    width: '10%',
+                    marginRight: '1%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    shadowColor: '#171717',
+                    shadowOffset: {width: -2, height: 4},
+                    shadowOpacity: 0.3,
+                    shadowRadius: 3,
+                }}
+                key={course.id}
+                onPress={() => {
+                    if (!this.props.navigation) return;
+                    this.props.navigation.navigate('Calendar View', {
+                        title: course.title,
+                        isPrivate: true,
+                        createrUID: '1',
+                    })
+                }}
+            >
+                <Text
+                    style={{
+                        color: 'white',
+                        fontWeight: 'bold',
+                        fontSize: '20rem',
+                    }}
+                >
+                    {course.title}
+                </Text>
+            </TouchableOpacity>
+        )
+    }
+
+
+
     renderCourses(courses) {
         let elements = []
         courses.forEach(course => {
-            elements.push(renderCourseCard(course))
+            elements.push(this.renderCourseCard(course))
         })
         return elements;
     }
+
+
+
 
     render() {
         return (
