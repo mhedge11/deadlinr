@@ -50,7 +50,7 @@ const ChooseCalendar = (props) => {
                     <TouchableOpacity
                         onPress={() => {
                             props.navigation.navigate('Calendar View', {
-                                title: c.title,
+                                ...c,
                                 isPrivate: true,
                                 createrUID: '1',
                             });
@@ -81,7 +81,7 @@ const ChooseCalendar = (props) => {
                     <TouchableOpacity
                         onPress={() => {
                             props.navigation.navigate('Calendar View', {
-                                title: c.title,
+                                ...c,
                                 isPrivate: true,
                                 createrUID: '1',
                             });

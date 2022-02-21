@@ -53,7 +53,8 @@ export default function App() {
                     taskTitle: 'Movie Worksheet 4',
                     dueDate: moment()
                 }
-            ]
+            ],
+            members : []
         },
         {
             id: 1,
@@ -61,7 +62,8 @@ export default function App() {
             bgColor: '#414241',
             tasks: [
                 
-            ]
+            ],
+            members : []
         },
         {
             id: 2,
@@ -69,7 +71,8 @@ export default function App() {
             bgColor: '#f22c3f',
             tasks: [
                 
-            ]
+            ],
+            members : []
         },
         {
             id: 3,
@@ -77,7 +80,8 @@ export default function App() {
             bgColor: '#d66718',
             tasks: [
                 
-            ]
+            ],
+            members : []
         },
         {
             id: 4,
@@ -85,7 +89,8 @@ export default function App() {
             bgColor: '#2180cf',
             tasks: [
                 
-            ]
+            ],
+            members : []
         },
     ]);
 
@@ -108,7 +113,8 @@ export default function App() {
                     note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fringilla velit nec dolor ultrices pulvinar. Nunc scelerisque ipsum tellus, ut dapibus dolor rhoncus nec. Nunc eget magna orci.',
                     dueDate: moment()
                 }
-            ]
+            ],
+            members : []
         }
     ])
 

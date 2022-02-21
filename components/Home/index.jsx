@@ -38,7 +38,7 @@ export default class Home extends Component {
                 onPress={() => {
                     if (!this.props.navigation) return;
                     this.props.navigation.navigate('Calendar View', {
-                        title: course.title,
+                        ...course,
                         isPrivate: true,
                         createrUID: '1',
                     })
