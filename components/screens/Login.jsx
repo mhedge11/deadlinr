@@ -31,6 +31,8 @@ const Login = (props) => {
       emailReturn = "";
       passwordReturn = "";
       return;
+
+      // Would sent to database at this point
     }
   };
 
@@ -40,7 +42,7 @@ const Login = (props) => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
-          placeholder="Enter email"
+          placeholder="Enter email or username"
           placeholderTextColor="black"
           onChangeText={(email) => setEmail(email)}
         />
@@ -56,11 +58,9 @@ const Login = (props) => {
       </View>
 
       <TouchableOpacity style={styles.loginButton} onPress={userPressedLogin}>
-        <Text>Login</Text>
+        <Text style={{ color: "white" }}>Login</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Forgot Password')}
-      >
+      <TouchableOpacity onPress={() => navigation.navigate("Forgot Password")}>
         <Text style={styles.forgot_button}>Forgot Password</Text>
       </TouchableOpacity>
 
