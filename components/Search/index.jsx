@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Platform,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 
 const Search = (props) => {
@@ -52,9 +53,11 @@ const Search = (props) => {
         data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.textInput}>
-            <Text style={{ fontSize: 18 }}>{item.title}</Text>
-          </View>
+          <TouchableOpacity>
+            <View style={styles.textInput}>
+              <Text style={{ fontSize: 18 }}>{item.title}</Text>
+            </View>
+          </TouchableOpacity>
         )}
       />
     </SafeAreaView>
