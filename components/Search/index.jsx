@@ -37,6 +37,8 @@ const Search = (props) => {
           placeholder="Search here..."
           onChangeText={updateSearch}
           value={search}
+          lightTheme
+          round
         />
       </View>
       <View
