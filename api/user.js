@@ -1,21 +1,20 @@
-const API_URL = 'https://localhost:8080';
+const API_URL = 'https://deadlinr.blakekjohnson.dev';
 
-export const deleteAccount = (uid) => {
+export const deleteAccount = async (uid) => {
     const route = API_URL + '/user/delete/' + uid;
-    console.log(route);
-    fetch(route, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(() => {
-        return '';
-    })
-    .catch(err => {
-        console.error(err)
+    // console.log(route);
+    try {
+        await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        return 'success';
+    } catch (err) {
+        console.error(err);
         return err;
-    })
+    }
 
 }

@@ -30,14 +30,7 @@ export default function App() {
         }
     */
 
-  const [user, setUser] = React.useState({
-    firstName: "Prakhar",
-    lastName: "Nahar",
-    email: "naharpra@gmail.com",
-    uid: "1234",
-    username: "thatprakhar",
-    token: "213",
-  });
+  const [user, setUser] = React.useState(null);
 
   const [courses, setCourses] = React.useState([
     {

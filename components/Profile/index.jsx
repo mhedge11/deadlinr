@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { deleteAccount } from '../../api/user';
 
@@ -7,14 +7,16 @@ export default class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            loading: false
         }
     }
     showDeleteAccountDialog = () => {
         if (!this.props.user) {
             return alert('An error occured');
         }
-
+        this.setState({
+            loading: true
+        })
         return Alert.alert(
             "Are your sure?",
             "Are you sure you want to delete your account?",
@@ -24,12 +26,23 @@ export default class Profile extends React.Component {
                     text: "Yes",
                     onPress: () => {
                         // API Route for deleting account
-                        const res = deleteAccount(this.props.user.uid);
-                        if (res !== '') {
-                            return alert(res);
-                        } else {
-                            this.props.setUser(null);
-                        }
+                        deleteAccount(this.props.user.uid)
+                        .then(res => {
+                            this.setState({
+                                loading: true
+                            })
+                            if (res === 'success') {
+                                this.props.setUser(null);
+                                return Alert.alert('User successfully deleted!');
+                            }
+                        })
+                        .catch(err => {
+                            this.setState({
+                                loading: true
+                            })
+                            return Alert.alert(err);
+                        })
+
                     },
                 },
                 
@@ -67,6 +80,18 @@ export default class Profile extends React.Component {
 
 
     render() {
+
+        if (this.state.loading) {
+            return (
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center'
+                }}>
+                    <ActivityIndicator size="large"/>
+                </View>
+            )
+        }
+
         const navigation = this.props.navigation;
         const {firstName, lastName, uid} = this.props.user;
         return (
