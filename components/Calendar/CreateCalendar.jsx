@@ -1,23 +1,61 @@
 import React from 'react';
-import { View, SafeAreaView, Text, StyleSheet, TextInput, Switch, Button, TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, Text, StyleSheet, TextInput, Switch, Button, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { createCalendar as createCalendarAPI } from '../../api/calendar';
+
 
 const CreateCalendar = (props) => {
 
     const [privateCalendar, setPrivate] = React.useState(false);
     const [calendarName, setCalendarName] = React.useState('');
+    const [bcolor, setBorderColor] = React.useState('transparent');
+    const [loading, setLoading] = React.useState(false);
+
+    const [errMsg, setMsg] = React.useState('');
 
     const createCalendar = () => {
-        // add API call
+        if (!props.user) return Alert.alert('An error occured');
+
+        setLoading(true);
+
+        createCalendarAPI(calendarName, privateCalendar, props.user.uid)
+        .then(res => {
+            setLoading(false);
+            if (res === 'success') {
+                props.navigation.goBack();
+            } else {
+                setMsg('An error occured. Please try again later.')
+            }
+        })
+        .catch(err => {
+            setLoading(false);
+            setMsg(err);
+        })
+    }
+
+
+    if (loading) {
+        return (
+            <View style={{
+                flex: 1,
+                justifyContent: 'center'
+            }}>
+                <ActivityIndicator />
+            </View>
+        )
     }
 
     return (
-        <SafeAreaView>
+        <SafeAreaView
+            style={{
+                flex: 1,
+            }}
+        >
             <View
                 style={{
                     padding: '5%',
                     flexDirection: 'row',
-                
+                    
                 }}
             >
                  <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => props.navigation.goBack()}>
@@ -43,11 +81,23 @@ const CreateCalendar = (props) => {
                     Name
                 </Text>
                 <TextInput
-                    style={styles.input}
+                    style={{
+                        ...styles.input,
+                        borderColor: bcolor,
+                        borderWidth: 2,
+                    }}
+                    onBlur={() => {
+                        if (calendarName.length === 0) {
+                            setBorderColor('red');
+                        } else setBorderColor('transparent');
+                    }}
                     placeholder='Calendar Name'
                     value={calendarName}
-                    onChangeText={v => setCalendarName(v)}
+                    onChangeText={v => setCalendarName(v.trim())}
                 />
+                {
+                    bcolor === 'red' && <Text style={{color: 'red'}}>Calendar name cannot be empty.</Text>
+                }
             </View>
 
             <View
@@ -71,6 +121,19 @@ const CreateCalendar = (props) => {
             <View>
                 <Button title='Create' onPress={() => createCalendar()}/>
             </View>
+
+            {
+                errMsg.length > 0 &&        
+                <View
+                    style={{
+                        padding: '15%',
+                        bottom: 0,
+                    }}
+                >
+                    <Text style={{color: 'red', fontSize: '20rem', fontWeight: '500'}}>{errMsg}</Text>
+                </View>
+            }
+
         </SafeAreaView>
     )
 }
