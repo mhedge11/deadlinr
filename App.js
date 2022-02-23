@@ -35,7 +35,7 @@ export default function App() {
     lastName: 'nahar',
     username: 'thatprakhar',
     email: 'naharpra@gmail.com',
-    uid: '123',
+    uid: '1',
     token: '123'
   });
 

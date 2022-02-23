@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, Switch, TouchableOpacity, Button } from "react-native";
+import { View, Text, Switch, TouchableOpacity, Button, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import JoinCalendar from "./JoinCalendar";
-
+import { updatePrivacy } from "../../api/calendar";
 /*
 
     Calendar Props: {
@@ -15,6 +15,7 @@ import JoinCalendar from "./JoinCalendar";
     }
 
     Calendar: {
+        id: string
         title: String,
         deadlines: Deadline [],
         isPrivate: boolean,
@@ -30,7 +31,33 @@ export default class CalendarView extends React.Component {
     this.state = {
       privateCalendar: this.props.route.params.isPrivate,
       isMember: this.props.route.params.members.includes(this.props.user.uid),
+      loading: false,
     };
+  }
+
+  changePrivacy = () => {
+    this.setState({
+      loading: true
+    })
+    updatePrivacy(this.props.uid)
+    .then(res => {
+      this.setState({
+        loading: false
+      })
+      if (res === 'success') {
+        this.setState({
+          privateCalendar: !this.state.privateCalendar
+        })
+      } else {
+        return Alert.alert("An error occured. Please try later");
+      }
+    })
+    .catch(err => {
+      this.setState({
+        loading: false
+      });
+      return Alert.alert("An error occured. Please try later");
+    })
   }
 
   alterMemberStatus = () => {
@@ -84,7 +111,11 @@ export default class CalendarView extends React.Component {
           >
             {title}
           </Text>
-          <TouchableOpacity
+        </View>
+        <TouchableOpacity
+          style={{
+            alignSelf: 'flex-end'
+          }}
             onPress={() => {
               this.alterMemberStatus();
             }}
@@ -94,15 +125,12 @@ export default class CalendarView extends React.Component {
                 color: this.state.isMember ? "red" : "green",
                 fontSize: "20rem",
                 fontWeight: "300",
-                marginLeft: "20%",
                 marginTop: "4%",
               }}
             >
               {this.state.isMember ? "Leave Calendar" : "Join Calendar"}
             </Text>
-          </TouchableOpacity>
-        </View>
-
+        </TouchableOpacity>
         <View
           style={{
             // flexDirection: 'row',
@@ -122,12 +150,7 @@ export default class CalendarView extends React.Component {
               marginTop: "3%",
             }}
             value={this.state.privateCalendar}
-            onValueChange={() => {
-              this.setState({
-                privateCalendar: !this.state.privateCalendar,
-              });
-              // add API call to change setting
-            }}
+            onValueChange={() => this.changePrivacy()}
             trackColor={{ false: "white", true: "#2776f5" }}
           />
         </View>

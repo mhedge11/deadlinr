@@ -31,3 +31,29 @@ export const createCalendar = async (name, isPrivate, createrID) => {
         return err;
     }
 }
+
+export const updatePrivacy = async (cid) => {
+    const route = API_URL + '/updatePrivacy/' + cid;
+    try {
+        await fetch(route, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            if (res.status === 200) {
+                return 'success';
+            }
+            console.log('err');
+            return 'An error occured';
+        })
+        .catch(err => {
+            console.error(err);
+        })
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+}
