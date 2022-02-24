@@ -10,24 +10,40 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import { searchUser } from "../../api/user";
 
 const Search = (props) => {
-  const data = [
-    { id: "1", title: "CS 180" },
-    { id: "2", title: "CS 240" },
-    { id: "3", title: "CS 250" },
-    { id: "4", title: "CS 251" },
-    { id: "5", title: "CS 252" },
-    { id: "6", title: "CS 473" },
-    { id: "7", title: "CS 354" },
-    { id: "8", title: "CS 307" },
-    { id: "9", title: "CS 407" },
-  ];
+  const [loading, setLoading] = useState(false);
+  let data = [];
+  // const data = [
+  //   { id: "1", title: "CS 180" },
+  //   { id: "2", title: "CS 240" },
+  //   { id: "3", title: "CS 250" },
+  //   { id: "4", title: "CS 251" },
+  //   { id: "5", title: "CS 252" },
+  //   { id: "6", title: "CS 473" },
+  //   { id: "7", title: "CS 354" },
+  //   { id: "8", title: "CS 307" },
+  //   { id: "9", title: "CS 407" },
+  // ];
 
   const [search, setSearch] = useState("");
 
   const updateSearch = (search) => {
     setSearch(search);
+
+    // Would sent to database at this point
+    searchUser(search)
+      .then((res) => {
+        if (res === "success") {
+          console.log("Successful");
+          // return object itself
+          // data = res;
+        }
+      })
+      .catch((err) => {
+        return Alert.alert(err);
+      });
   };
 
   return (

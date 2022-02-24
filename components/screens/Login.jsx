@@ -9,72 +9,126 @@ import {
   TouchableOpacity,
   Button,
   SafeAreaView,
+  Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RegistrationScreen from "../RegistrationScreen/RegistrationScreen";
 import { emailValidation } from "../../validation/emailValidation";
 import { passwordValidation } from "../../validation/passwordValidation";
+import { usernameValidation } from "../../validation/usernameValidation";
+import { loginUser } from "../../api/user";
+
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const Login = (props) => {
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  // const [username, setUsername] = useState("");
 
   const navigation = props.navigation;
 
   const userPressedLogin = () => {
-    let emailReturn = emailValidation(email);
+    let loginReturn;
+    if (login.includes("@")) {
+      loginReturn = emailValidation(login);
+    } else {
+      loginReturn = usernameValidation(login);
+    }
+    // let emailReturn = emailValidation(email);
     let passwordReturn = passwordValidation(password);
 
-    if (emailReturn !== "" || passwordReturn !== "") {
-      if (emailReturn !== "") alert(emailReturn);
+    if (loginReturn !== "" || passwordReturn !== "") {
+      if (loginReturn !== "") alert(loginReturn);
       if (passwordReturn !== "") alert(passwordReturn);
-      emailReturn = "";
+      loginReturn = "";
       passwordReturn = "";
       return;
-
-      // Would sent to database at this point
     }
+    // Would sent to database at this point
+    loginUser(login, password)
+      .then((res) => {
+        // console.log(res);
+        setLoading(true);
+        if (res !== null) {
+          // return object itself
+          props.setUser(res);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        return Alert.alert(err);
+      });
   };
 
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Image style={styles.image} source={require("../../assets/phone.jpg")} />
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Enter email or username"
-          placeholderTextColor="black"
-          onChangeText={(email) => setEmail(email)}
+    <DismissKeyboard>
+      <SafeAreaView style={styles.container}>
+        <Image
+          style={styles.image}
+          source={require("../../assets/phone.jpg")}
         />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Enter password"
-          secureTextEntry={true}
-          placeholderTextColor="black"
-          onChangeText={(password) => setPassword(password)}
-        />
-      </View>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter email or username"
+            placeholderTextColor="black"
+            onChangeText={(login) => setLogin(login)}
+          />
+        </View>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter password"
+            secureTextEntry={true}
+            placeholderTextColor="black"
+            onChangeText={(password) => setPassword(password)}
+          />
+        </View>
 
-      <TouchableOpacity style={styles.loginButton} onPress={userPressedLogin}>
-        <Text style={{ color: "white" }}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Forgot Password")}>
-        <Text style={styles.forgot_button}>Forgot Password</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.loginButton} onPress={userPressedLogin}>
+          <Text style={{ color: "white" }}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Forgot Password")}
+        >
+          <Text style={styles.forgot_button}>Forgot Password</Text>
+        </TouchableOpacity>
 
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Button
-          title="CREATE ACCOUNT"
-          onPress={() => {
-            /* 1. Navigate to the Details route with params */
-            // props.navigation.navigate("RegistrationForm");
-            props.navigation.navigate("Registration");
-          }}
-        />
-      </View>
-    </SafeAreaView>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Button
+            title="CREATE ACCOUNT"
+            onPress={() => {
+              /* 1. Navigate to the Details route with params */
+              // props.navigation.navigate("RegistrationForm");
+              props.navigation.navigate("Registration");
+            }}
+          />
+        </View>
+      </SafeAreaView>
+    </DismissKeyboard>
   );
 };
 
