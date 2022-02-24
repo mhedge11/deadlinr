@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, TextInput, Text, SafeAreaView, TouchableOpacity, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Text, SafeAreaView, TouchableOpacity, Alert, StyleSheet, ActivityIndicator } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { emailValidation } from '../../validation/emailValidation';
+import { requestResetCode, verifyResetCode as verifyResetCodeAPI } from '../../api/user';
+
 
 import {
     CodeField,
@@ -10,13 +12,15 @@ import {
     useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-const CELL_COUNT = 4;
+const CELL_COUNT = 6;
 
 const ForgotPassword = (props) => {
 
     const [email, setEmail] = React.useState('');
     const [emailVerificationSend, setEmailVerificationSent] = React.useState(false);
     const [value, setValue] = React.useState('');
+    const [loading, setLoading] = React.useState(false);
+
     const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
     const [tempprops, getCellOnLayoutHandler] = useClearByFocusCell({
       value,
@@ -25,18 +29,33 @@ const ForgotPassword = (props) => {
 
     const [bcolor, setBColor] = React.useState('transparent');
 
-    const sendEmailVerificationCode = () => {
-        // make API CALL
+    const requestCode = async () => {
+        if (email.trim() === '') return;
+        setLoading(true);
+        const res = await requestResetCode({email});
 
-        setEmailVerificationSent(true);
+        if (res) {
+            setLoading(false);
+            setEmailVerificationSent(true);
+        } else {
+            setLoading(false);
+            return Alert.alert('An error occured')
+        }
+
     }
 
-    const verifyVerificationCode = () => {
+    const verifyResetCode = async () => {
         // make API CALL
-
-        const validCode = true;
+        if (value.length != 6) return;
+        setLoading(true);
+        const validCode = await verifyResetCodeAPI({email, code: value})
+       
         if (validCode) {
+            setLoading(false);
             props.navigation.navigate('Reset Password');
+        } else {
+            setLoading(false);
+            return Alert.alert('Incorrect Code!');
         }
 
     }
@@ -54,7 +73,9 @@ const ForgotPassword = (props) => {
                     justifyContent: "flex-start"
                 }}
             >
-                <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => props.navigation.goBack()}>
+                <TouchableOpacity 
+                    style={{ justifyContent: 'center' }} 
+                    onPress={() => props.navigation.goBack()}>
                     <Icon name='chevron-left' type='font-awesome' color='black'/>
                  </TouchableOpacity>
                 <Text
@@ -83,7 +104,7 @@ const ForgotPassword = (props) => {
 
                 <TextInput
                     value={email}
-                    onChangeText={t => setEmail(t)}
+                    onChangeText={t => setEmail(t.trim())}
                     style={{
                         width: '100%',
                         marginTop: '10%',
@@ -110,11 +131,12 @@ const ForgotPassword = (props) => {
                     style={{
                         marginTop: '5%',
                         alignSelf: 'flex-end',
-                        marginRight: '10%',
+                        marginRight: '10%'
                     }}
-                    onPress={() => sendEmailVerificationCode()}
+                    onPress={() => requestCode()}
+                    disabled={emailVerificationSend}
                 >
-                    <Icon name='arrow-circle-right' type='font-awesome' color='black' size={35}/>
+                    <Icon name='arrow-circle-right' type='font-awesome' color={emailVerificationSend ? 'grey' : 'black'} size={35}/>
                 </TouchableOpacity>
             </View>
 
@@ -127,7 +149,7 @@ const ForgotPassword = (props) => {
                                     fontSize: '18rem'
                                 }}
                             >
-                                Enter your email address and we will send a recovery code.
+                                Enter the six digit code sent to your email address.
                         </Text>
                         <CodeField
                             ref={ref}
@@ -155,14 +177,17 @@ const ForgotPassword = (props) => {
                                 alignSelf: 'flex-end',
                                 marginRight: '10%',
                             }}
-                            onPress={() => verifyVerificationCode()}
+                            onPress={() => verifyResetCode()}
                         >
                             <Icon name='arrow-circle-right' type='font-awesome' color='black' size={35}/>
                         </TouchableOpacity>
                     </View>
                 )
             }
-
+                   {
+                            loading && 
+                            <ActivityIndicator />
+                    }
         </View>
     )
 }
@@ -172,9 +197,11 @@ const styles =  StyleSheet.create({
     title: {textAlign: 'center', fontSize: 30},
     codeFieldRoot: {
       marginTop: 20,
-      width: 280,
-      marginLeft: 'auto',
-      marginRight: 'auto',
+      width: '100%',
+      alignSelf: 'center',
+      marginRight: '6githu%'
+      // marginLeft: 'auto',
+      // marginRight: 'auto',
     },
     cellRoot: {
       width: 60,
@@ -183,10 +210,11 @@ const styles =  StyleSheet.create({
       alignItems: 'center',
       borderBottomColor: '#ccc',
       borderBottomWidth: 1,
+      padding: '3%'
     },
     cellText: {
       color: '#000',
-      fontSize: 36,
+      fontSize: 28,
       textAlign: 'center',
     },
     focusCell: {

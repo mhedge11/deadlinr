@@ -3,6 +3,9 @@ import { View, Text, Switch, TouchableOpacity, Button, Alert } from "react-nativ
 import { Icon } from "react-native-elements";
 import JoinCalendar from "./JoinCalendar";
 import { updatePrivacy } from "../../api/calendar";
+import { joinCalendar } from "../../api/calendar";
+
+
 /*
 
     Calendar Props: {
@@ -69,10 +72,17 @@ export default class CalendarView extends React.Component {
       });
     } else {
       // add API call to add user to this calendar
+      joinCalendar(this.props.uid, this.props.user.token)
+      .then(res => {
+        if (res === true) {
+          this.setState({
+            isMember: true,
+          });
+        } else {
+          return Alert.alert("An error occured. Please try later");
+        }
+      })
 
-      this.setState({
-        isMember: true,
-      });
     }
   };
 

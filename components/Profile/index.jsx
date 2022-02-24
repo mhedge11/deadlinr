@@ -9,14 +9,15 @@ export default class Profile extends React.Component {
         this.state = {
             loading: false
         }
+        this.showDeleteAccountDialog.bind(this);
     }
     showDeleteAccountDialog = () => {
         if (!this.props.user) {
             return alert('An error occured');
         }
-        this.setState({
-            loading: true
-        })
+
+        const token = this.props.user['token'];
+        
         return Alert.alert(
             "Are your sure?",
             "Are you sure you want to delete your account?",
@@ -24,25 +25,40 @@ export default class Profile extends React.Component {
                 // The "Yes" button
                 {
                     text: "Yes",
-                    onPress: () => {
+                    onPress: async () => {
+                        this.setState({
+                            loading: true
+                        })
                         // API Route for deleting account
-                        deleteAccount(this.props.user.uid)
-                        .then(res => {
+                        const res = await deleteAccount({token});
+                        console.log(res);
+                        this.setState({
+                            loading: false
+                        })
+                        if (res === 'success') {
+                            this.props.setUser(null);
+                            return Alert.alert('User successfully deleted!');
+                        } else {
+                            return Alert.alert('There was a problem with your request. Please try again later.');
+                        }
+                        /*.then(res => {
                             this.setState({
-                                loading: true
+                                loading: false
                             })
+                            console.log(res);
                             if (res === 'success') {
                                 this.props.setUser(null);
                                 return Alert.alert('User successfully deleted!');
+                            } else {
+                                return Alert.alert('There was a problem with your request. Please try again later.');
                             }
                         })
                         .catch(err => {
                             this.setState({
-                                loading: true
-                            })
-                            return Alert.alert(err);
-                        })
-
+                                loading: false
+                            });
+                            return Alert.alert('There was a problem with your request. Please try again later.');
+                        })*/
                     },
                 },
                 

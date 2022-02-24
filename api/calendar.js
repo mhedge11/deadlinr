@@ -1,20 +1,20 @@
 const API_URL = 'https://deadlinr.blakekjohnson.dev';
 
 
-export const createCalendar = async (name, isPrivate, createrID) => {
+export const createCalendar = async ({name, isPrivate, token}) => {
     const route = API_URL + '/calendar/';
 
     try {
-        await fetch(route, {
+        let result = await fetch(route, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
             },
             body: JSON.stringify({
-                name: name,
-                isPrivate: isPrivate,
-                createrID: createrID
+                title: name,
+                isPrivate: isPrivate
             })
         })
         .then(res => {
@@ -25,21 +25,24 @@ export const createCalendar = async (name, isPrivate, createrID) => {
         })
         .catch(err => {
             return err;
-        })
+        });
+
+        return result;
     } catch (err) {
         console.error(err);
         return err;
     }
 }
 
-export const updatePrivacy = async (cid) => {
+export const updatePrivacy = async (cid, token) => {
     const route = API_URL + '/updatePrivacy/' + cid;
     try {
-        await fetch(route, {
+        let result = await fetch(route, {
             method: 'PATCH',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
             }
         })
         .then(res => {
@@ -51,9 +54,45 @@ export const updatePrivacy = async (cid) => {
         })
         .catch(err => {
             console.error(err);
-        })
+            return 'An error occured';
+        });
+
+        return result;
     } catch (err) {
         console.error(err);
         return err;
+    }
+}
+
+export const joinCalendar = async (cid, token) => {
+    const route = API_URL + '/calendar/' + cid + '/join';
+
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            },
+            body: JSON.stringify({
+                cid: cid
+            })
+        })
+        .then(res => {
+            if (res.status === 200) {
+                return true; 
+            }
+            return false;
+        })
+        .catch(err => {
+            console.error(err);
+            return false;
+        });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
     }
 }
