@@ -153,3 +153,33 @@ export const searchForAllCalendars = async ({ token }) => {
         return err;
     }
 };
+
+export const inviteToCalendar = async ({ token, cid, users }) => {
+    const route = API_URL + `/calendar/${cid}/invite`;
+    try {
+        const result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                users,
+            })
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    return null;
+                }
+                return res;
+            })
+            .catch(err => console.error(err));
+
+            console.log(result)
+            return result;
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+}

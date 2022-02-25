@@ -13,6 +13,7 @@ import {
     Alert,
 } from 'react-native';
 import { searchForUser } from '../../api/user';
+import { inviteToCalendar } from '../../api/calendar';
 
 /*
 This is user search
@@ -74,8 +75,19 @@ const JoinCalendar = (props) => {
                 keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
                     <TouchableOpacity
-                        onPress={() => {
-                            alert('User would be Added');
+                        onPress={async () => {
+                            const { user } = props.user;
+                            if (user.calendars && user.calendars.length < 1) {
+                                alert('You have no calendars!');
+                                return;
+                            }
+                            const data = {
+                                token: props.user.token,
+                                cid: user.calendars[0],
+                                users: [ item._id ],
+                            };
+                            await inviteToCalendar(data);
+                            alert(`An invitation was sent to ${item.username}`);
                         }}
                     >
                         <View style={styles.textInput}>
