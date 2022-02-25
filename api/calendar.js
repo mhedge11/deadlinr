@@ -1,5 +1,35 @@
 const API_URL = 'https://deadlinr.blakekjohnson.dev';
 
+
+export const getCalendar = async ({ cid }) => {
+    const route = API_URL + '/calendar/' + cid;
+    try { 
+        const result = await fetch(route, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    return data.calendar;
+                }
+                return null;
+            })
+            .catch(err => {
+                console.error(err);
+                return null;
+        })
+    
+        return result;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
 export const createCalendar = async ({ calendarName, isPrivate, token }) => {
     const route = API_URL + '/calendar/';
 
@@ -36,7 +66,6 @@ export const createCalendar = async ({ calendarName, isPrivate, token }) => {
 
 export const updatePrivacy = async ({ cid, token }) => {
     const route = API_URL + '/calendar/' + cid + '/privacy';
-
     try {
         let result = await fetch(route, {
             method: 'PATCH',

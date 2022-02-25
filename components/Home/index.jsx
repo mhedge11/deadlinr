@@ -14,7 +14,6 @@ function renderScheduleBlock() {}
 
 export default class Home extends Component {
     constructor(props) {
-        console.log(props.user);
         super(props);
         this.state = {
             courses: props.courses,

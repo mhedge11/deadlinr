@@ -10,10 +10,28 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
+import { getCalendar } from '../../api/calendar';
 
 const ChooseCalendar = (props) => {
-    const calendars = props.calendars;
-    const courses = props.courses;
+
+    const [calendars, setCalendars] = React.useState([]);
+
+    React.useEffect(() => { 
+        fetchCalendars();
+    }, []);
+
+    fetchCalendars = () => {
+        setCalendars([]);
+        props.user.user.calendars.forEach(async (c) => {
+            const item = await getCalendar({ cid: c })
+            setCalendars(c => [
+                ...c,
+                item
+            ])
+        });
+    }
+
+   
 
     const renderList = () => {
         let elems = [];
@@ -44,7 +62,6 @@ const ChooseCalendar = (props) => {
                 },
             },
         ];
-
         calendars.forEach((c) => {
             elems.push(
                 <Swipeout
@@ -74,38 +91,6 @@ const ChooseCalendar = (props) => {
                 </Swipeout>
             );
         });
-        courses.forEach((c) => {
-            elems.push(
-                <Swipeout
-                    id={c.id + calendars.length}
-                    right={swipeBtns}
-                    style={{
-                        backgroundColor: 'transparent',
-                        marginTop: '10%',
-                    }}
-                >
-                    <TouchableOpacity
-                        onPress={() => {
-                            props.navigation.navigate('Calendar View', {
-                                ...c,
-                                isPrivate: true,
-                                createrUID: '1',
-                            });
-                        }}
-                    >
-                        <Text
-                            style={{
-                                color: 'black',
-                                fontSize: '30rem',
-                            }}
-                        >
-                            {c.title}
-                        </Text>
-                    </TouchableOpacity>
-                </Swipeout>
-            );
-        });
-
         return elems;
     };
 

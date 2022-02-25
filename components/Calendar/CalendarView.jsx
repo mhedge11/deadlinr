@@ -37,7 +37,7 @@ export default class CalendarView extends React.Component {
         this.state = {
             privateCalendar: this.props.route.params.isPrivate,
             isMember: this.props.route.params.members.includes(
-                this.props.user.uid
+                this.props.user.user._id
             ),
             loading: false,
         };
@@ -48,7 +48,7 @@ export default class CalendarView extends React.Component {
             loading: true,
         });
         const res = await updatePrivacy({
-            cid: this.props.route.params.id,
+            cid: this.props.route.params._id,
             token: this.props.user['token'],
         });
 
@@ -69,7 +69,7 @@ export default class CalendarView extends React.Component {
         if (this.state.isMember === true) {
             // add API call to remove user from this calendar
             const res = await leaveCalendar({
-                cid: this.props.route.params.id,
+                cid: this.props.route.params._id,
                 token: this.props.user.token,
             });
             if (res === true) {
@@ -85,7 +85,7 @@ export default class CalendarView extends React.Component {
         } else {
             // add API call to add user to this calendar
             const res = await joinCalendar({
-                cid: this.props.route.params.id,
+                cid: this.props.route.params._id,
                 token: this.props.user.token,
             });
             if (res === true) {

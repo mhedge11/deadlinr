@@ -80,11 +80,7 @@ const RegistrationForm = (props) => {
             password
         );
         props.setUser({
-            firstName,
-            lastName,
-            username,
-            email,
-            uid: data.uid,
+            user: data,
             token: data.token,
         });
     };
