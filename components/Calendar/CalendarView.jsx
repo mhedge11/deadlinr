@@ -8,7 +8,6 @@ import {
     Alert,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import JoinCalendar from './JoinCalendar';
 import { joinCalendar, leaveCalendar, updatePrivacy } from '../../api/calendar';
 
 /*
@@ -182,9 +181,6 @@ export default class CalendarView extends React.Component {
                         onValueChange={() => this.changePrivacy()}
                         trackColor={{ false: 'white', true: '#2776f5' }}
                     />
-                </View>
-                <View>
-                    <JoinCalendar />
                 </View>
             </View>
         );

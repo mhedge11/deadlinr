@@ -14,6 +14,7 @@ import ForgotPassword from './components/screens/ForgotPassword';
 import CalendarView from './components/Calendar/CalendarView';
 import ResetPassword from './components/screens/ResetPassword';
 import Search from './components/Search';
+import JoinCalendar from './components/Calendar/JoinCalendar';
 import ChangePassword from './components/screens/ChangePassword';
 import moment from 'moment';
 import mockCourses from './mockData/courses';
@@ -168,6 +169,12 @@ export default function App() {
                     options={{ headerShown: false }}
                 >
                     {(props) => <CalendarView {...props} user={user} />}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Join Calendar'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <JoinCalendar {...props} user={user} />}
                 </Stack.Screen>
             </Stack.Navigator>
             <StatusBar />
