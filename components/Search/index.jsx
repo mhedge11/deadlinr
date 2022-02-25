@@ -14,7 +14,7 @@ import { searchUser } from "../../api/user";
 
 const Search = (props) => {
   const [loading, setLoading] = useState(false);
-  let data = [];
+  // let data = [];
   // const data = [
   //   { id: "1", title: "CS 180" },
   //   { id: "2", title: "CS 240" },
@@ -39,6 +39,10 @@ const Search = (props) => {
           console.log("Successful");
           // return object itself
           // data = res;
+
+          // *************
+          // data.items is search result
+          // can console.log
         }
       })
       .catch((err) => {
@@ -69,11 +73,14 @@ const Search = (props) => {
       </View>
       <FlatList
         data={data}
-        keyExtractor={(item) => item.id}
+        // data.items
+        // keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity>
             <View style={styles.textInput}>
-              <Text style={{ fontSize: 18 }}>{item.title}</Text>
+              {/* <Text style={{ fontSize: 18 }}>{item.title}</Text> */}
+              <Text style={{ fontSize: 18 }}>{item.username}</Text>
             </View>
           </TouchableOpacity>
         )}

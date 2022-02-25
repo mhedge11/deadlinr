@@ -12,13 +12,14 @@ import {
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RegistrationScreen from "../RegistrationScreen/RegistrationScreen";
 import { emailValidation } from "../../validation/emailValidation";
 import { passwordValidation } from "../../validation/passwordValidation";
 import { usernameValidation } from "../../validation/usernameValidation";
-import { loginUser } from "../../api/user";
+import { getUser, loginUser } from "../../api/user";
 
 const DismissKeyboard = ({ children }) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -34,7 +35,7 @@ const Login = (props) => {
 
   const navigation = props.navigation;
 
-  const userPressedLogin = () => {
+  const userPressedLogin = async () => {
     let loginReturn;
     if (login.includes("@")) {
       loginReturn = emailValidation(login);
@@ -52,20 +53,19 @@ const Login = (props) => {
       return;
     }
     // Would sent to database at this point
-    loginUser(login, password)
-      .then((res) => {
-        // console.log(res);
-        setLoading(true);
-        if (res !== null) {
-          // return object itself
-          props.setUser(res);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        return Alert.alert(err);
-      });
+    const data = await loginUser(login, password);
+    console.log("data---" + data);
+    // console.log(data.token);
+
+    if (data === null) {
+      alert("Error in Email/Username or in Password. Please Fix and try again");
+      return;
+    }
+
+    const getUserByToken = await getUser(data.token);
+    console.log(getUserByToken.user);
+
+    props.setUser({ user: getUserByToken.user });
   };
 
   if (loading) {

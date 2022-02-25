@@ -29,7 +29,7 @@ const RegistrationForm = (props) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmission = () => {
+  const handleSubmission = async () => {
     emailReturn = "";
     passwordReturn = "";
     firstNameReturn = "";
@@ -72,26 +72,42 @@ const RegistrationForm = (props) => {
 
     // Would send to database at this point
     // Will have to check that email is unique and username is unique
-    createUser(firstName, lastName, email, username, password)
-      .then((data) => {
-        console.log(data);
-        const { user, uid } = data;
-        console.log(user);
-        props.setUser(user);
-        setLoading(false);
-        if (res !== null) {
-          // const val = data;
-          console.log("res: " + res);
-          const { user } = data;
-          // console.log(user);
-          // const { uid } = req.params;
-          // props.setUser(user);
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        return Alert.alert(err);
-      });
+    const data = await createUser(
+      firstName,
+      lastName,
+      email,
+      username,
+      password
+    );
+    console.log("data---" + data);
+    console.log(data.uid, data.token);
+    props.setUser({
+      firstName,
+      lastName,
+      username,
+      email,
+      uid: data.uid,
+      token: data.token,
+    });
+    // .then((data) => {
+    //   console.log(data);
+    //   const { user, uid } = data;
+    //   console.log(user);
+    //   props.setUser(user);
+    //   setLoading(false);
+    //   if (res !== null) {
+    //     // const val = data;
+    //     console.log("res: " + res);
+    //     const { user } = data;
+    //     // console.log(user);
+    //     // const { uid } = req.params;
+    //     // props.setUser(user);
+    //   }
+    // })
+    // .catch((err) => {
+    //   setLoading(false);
+    //   return Alert.alert(err);
+    // });
   };
 
   // const handleSubmission = (e) => {

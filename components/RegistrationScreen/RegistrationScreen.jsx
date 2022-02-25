@@ -11,12 +11,12 @@ import {
 
 import RegistrationForm from "../RegistrationForm";
 
-const RegistrationScreen = () => {
+const RegistrationScreen = (props) => {
   const registerUser = (user) => {
     userid = Math.random().toString();
   };
 
-  return <RegistrationForm />;
+  return <RegistrationForm setUser={props.setUser} />;
 };
 
 export default RegistrationScreen;
