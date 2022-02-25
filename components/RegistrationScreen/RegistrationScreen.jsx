@@ -1,22 +1,22 @@
-import React from "react";
-import { useState } from "react";
+import React from 'react';
+import { useState } from 'react';
 import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  Scrollview,
-  SafeAreaView,
-} from "react-native";
+    View,
+    Text,
+    TextInput,
+    Button,
+    Scrollview,
+    SafeAreaView,
+} from 'react-native';
 
-import RegistrationForm from "../RegistrationForm";
+import RegistrationForm from '../RegistrationForm';
 
 const RegistrationScreen = (props) => {
-  const registerUser = (user) => {
-    userid = Math.random().toString();
-  };
+    const registerUser = (user) => {
+        userid = Math.random().toString();
+    };
 
-  return <RegistrationForm setUser={props.setUser} />;
+    return <RegistrationForm setUser={props.setUser} />;
 };
 
 export default RegistrationScreen;

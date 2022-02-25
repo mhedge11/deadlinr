@@ -1,27 +1,27 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import {
+    StyleSheet,
+    Text,
+    View,
+    ScrollView,
+    TouchableOpacity,
+} from 'react-native';
 import React, { Component } from 'react';
-import { Avatar } from "react-native-elements";
+import { Avatar } from 'react-native-elements';
 import Navigator from '../Navigator';
 
-function renderScheduleBlock() {
-
-}
-
+function renderScheduleBlock() {}
 
 export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            courses: props.courses
-        }
+            courses: props.courses,
+        };
     }
 
-
-
     renderCourseCard = (course) => {
-
         return (
-            <TouchableOpacity 
+            <TouchableOpacity
                 style={{
                     backgroundColor: course.bgColor,
                     borderRadius: '30%',
@@ -30,7 +30,7 @@ export default class Home extends Component {
                     justifyContent: 'center',
                     alignItems: 'center',
                     shadowColor: '#171717',
-                    shadowOffset: {width: -2, height: 4},
+                    shadowOffset: { width: -2, height: 4 },
                     shadowOpacity: 0.3,
                     shadowRadius: 3,
                 }}
@@ -41,7 +41,7 @@ export default class Home extends Component {
                         ...course,
                         isPrivate: true,
                         createrUID: '1',
-                    })
+                    });
                 }}
             >
                 <Text
@@ -54,33 +54,30 @@ export default class Home extends Component {
                     {course.title}
                 </Text>
             </TouchableOpacity>
-        )
-    }
-
-
+        );
+    };
 
     renderCourses(courses) {
-        let elements = []
-        courses.forEach(course => {
-            elements.push(this.renderCourseCard(course))
-        })
+        let elements = [];
+        courses.forEach((course) => {
+            elements.push(this.renderCourseCard(course));
+        });
         return elements;
     }
-
-
-
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <View style={{
-                        justifyContent: 'space-between'
-                    }}>
+                    <View
+                        style={{
+                            justifyContent: 'space-between',
+                        }}
+                    >
                         <Text
                             style={{
                                 fontSize: '15rem',
-                                color: '#a2a3a6'
+                                color: '#a2a3a6',
                             }}
                         >
                             Hello Tim
@@ -88,38 +85,40 @@ export default class Home extends Component {
                         <Text
                             style={{
                                 fontSize: '25rem',
-                                fontWeight: '700'
+                                fontWeight: '700',
                             }}
                         >
                             You've got {'\n'}
                             <Text
                                 style={{
-                                    color: '#36e373'
+                                    color: '#36e373',
                                 }}
                             >
                                 4 upcoming tasks
                             </Text>
                         </Text>
                     </View>
-                    <Avatar 
+                    <Avatar
                         activeOpacity={0.9}
                         avatarStyle={{}}
-                        containerStyle={{ 
-                            backgroundColor: "#BDBDBD",
+                        containerStyle={{
+                            backgroundColor: '#BDBDBD',
                             marginRight: 0,
                             shadowColor: '#171717',
-                            shadowOffset: {width: -1, height: 4},
+                            shadowOffset: { width: -1, height: 4 },
                             shadowOpacity: 0.5,
                             shadowRadius: 4,
                         }}
-                        onLongPress={() => alert("onLongPress")}
-                        onPress={() => alert("onPress")}
+                        onLongPress={() => alert('onLongPress')}
+                        onPress={() => alert('onPress')}
                         overlayContainerStyle={{}}
                         placeholderStyle={{}}
                         rounded
-                        size="large"
-                        source={{ uri: "https://cdn.vox-cdn.com/thumbor/LJsKwxxJ8VYHNXpWCIlYljhIIps=/0x104:438x396/1820x1213/filters:focal(0x104:438x396):format(webp)/cdn.vox-cdn.com/imported_assets/846325/steve-jobs-1.jpg" }}
-                        title="P"
+                        size='large'
+                        source={{
+                            uri: 'https://cdn.vox-cdn.com/thumbor/LJsKwxxJ8VYHNXpWCIlYljhIIps=/0x104:438x396/1820x1213/filters:focal(0x104:438x396):format(webp)/cdn.vox-cdn.com/imported_assets/846325/steve-jobs-1.jpg',
+                        }}
+                        title='P'
                         titleStyle={{}}
                     />
                 </View>
@@ -127,7 +126,7 @@ export default class Home extends Component {
                     <Text
                         style={{
                             fontSize: '30rem',
-                            fontWeight: '700'
+                            fontWeight: '700',
                         }}
                     >
                         Courses
@@ -152,19 +151,17 @@ export default class Home extends Component {
                         contentContainerStyle={{
                             flexGrow: 1,
                             width: '500%',
-                            overflow: 'hidden'
+                            overflow: 'hidden',
                         }}
-                    > 
-                        {
-                            this.renderCourses(this.state.courses)
-                        }
+                    >
+                        {this.renderCourses(this.state.courses)}
                     </ScrollView>
                 </View>
                 <View style={styles.courses}>
                     <Text
                         style={{
                             fontSize: '30rem',
-                            fontWeight: '700'
+                            fontWeight: '700',
                         }}
                     >
                         Your Schedule
@@ -190,14 +187,13 @@ export default class Home extends Component {
                             flexGrow: 1,
                             width: '500%',
                             overflow: 'hidden',
-                            height: '100%'
+                            height: '100%',
                         }}
-                    > 
-
-                    </ScrollView>
+                    ></ScrollView>
                 </View>
-                <Navigator navigation={this.props.navigation}/>
-            </View>)
+                <Navigator navigation={this.props.navigation} />
+            </View>
+        );
     }
 }
 
@@ -210,15 +206,15 @@ const styles = StyleSheet.create({
         paddingTop: '20%',
         paddingLeft: '5%',
         paddingRight: '5%',
-        paddingBottom: '10%'
+        paddingBottom: '10%',
     },
     header: {
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     courses: {
         width: '100%',
         marginTop: '10%',
-    }
-})
+    },
+});

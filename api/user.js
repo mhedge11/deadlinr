@@ -1,194 +1,175 @@
-const API_URL = "https://deadlinr.blakekjohnson.dev";
-
+const API_URL = 'https://deadlinr.blakekjohnson.dev';
 
 export const getUser = async (token) => {
-  const route = API_URL + "/user/me";
-  console.log(token);
-  try {
-    const result = await fetch(route, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-      // body: JSON.stringify({
-      //   token,
-      // }),
-    })
-      .then(async (res) => {
-        console.log(res.status);
-        if (!res.ok) {
-          return null;
-        }
-        let resultData = await res.json();
-        return resultData;
-        // console.log(res);
-      })
-
-      .catch((err) => {
-        console.error(err);
-      });
-
-    return result;
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
-};
-
-export const loginUser = async (login, password) => {
-  const route = API_URL + "/user/login/";
-  console.log(login, password);
-  try {
-    const result = await fetch(route, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        login: login,
-        password: password,
-      }),
-    })
-      .then(async (res) => {
-        console.log(res.status);
-        if (!res.ok) {
-          return null;
-        }
-        let resultData = await res.json();
-        return resultData;
-        // console.log(res);
-      })
-
-      .catch((err) => {
-        console.error(err);
-      });
-
-    return result;
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
-};
-
-export const createUser = async (
-  firstName,
-  lastName,
-  email,
-  username,
-  password
-) => {
-  const route = API_URL + "/user/";
-  console.log(firstName, lastName, email, username, password);
-  try {
-    const result = await fetch(route, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        username: username,
-        password: password,
-      }),
-    })
-      .then(async (res) => {
-        console.log(res.status);
-        if (!res.ok) {
-          return null;
-        }
-        let resultData = await res.json();
-        return resultData;
-        // console.log(res);
-      })
-
-      .catch((err) => {
-        console.error(err);
-      });
-
-    return result;
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
-};
-
-export const searchUser = async (query) => {
-  const route = API_URL + "/user/search";
-  // console.log(route);
-  try {
-    await fetch(route, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query }),
-    })
-      .then((response) => {
-        response.json();
-      })
-      .then((data) => {
-        return data;
-      });
-
-    // return data;
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
-};
-
-
-// Returns success if account deleted successfully, empty string otherwise
-
-export const deleteAccount = async ({
-    token
-}) => {
     const route = API_URL + '/user/me';
-
     try {
-        let result = await fetch(route, {
-            method: 'DELETE',
+        const result = await fetch(route, {
+            method: 'GET',
             headers: {
-                Authorization: 'Bearer ' + token
-            }
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            // body: JSON.stringify({
+            //   token,
+            // }),
         })
-        .then(res => {
-            if (res.ok) {
-                return 'success';
-            } else {
-                return '';
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            return '';
-        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    return null;
+                }
+                let resultData = await res.json();
+                return resultData;
+            })
+
+            .catch((err) => {
+                console.error(err);
+            });
 
         return result;
     } catch (err) {
         console.error(err);
         return err;
     }
+};
 
-}
+export const loginUser = async (login, password) => {
+    const route = API_URL + '/user/login/';
+    try {
+        const result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                login: login,
+                password: password,
+            }),
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    return null;
+                }
+                let resultData = await res.json();
+                return resultData;
+            })
 
+            .catch((err) => {
+                console.error(err);
+            });
 
+        return result;
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+};
+
+export const createUser = async (
+    firstName,
+    lastName,
+    email,
+    username,
+    password
+) => {
+    const route = API_URL + '/user/';
+    try {
+        const result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                username: username,
+                password: password,
+            }),
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    return null;
+                }
+                let resultData = await res.json();
+                return resultData;
+            })
+
+            .catch((err) => {
+                console.error(err);
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+};
+
+export const searchUser = async (query) => {
+    const route = API_URL + '/user/search';
+    try {
+        await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query }),
+        })
+            .then((response) => {
+                response.json();
+            })
+            .then((data) => {
+                return data;
+            });
+
+        // return data;
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+};
+
+// Returns success if account deleted successfully, empty string otherwise
+
+export const deleteAccount = async ({ token }) => {
+    const route = API_URL + '/user/me';
+
+    try {
+        let result = await fetch(route, {
+            method: 'DELETE',
+            headers: {
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return 'success';
+                } else {
+                    return '';
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                return '';
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+};
 
 // return the verification code if call made successfully, otherwise null
 
-export const requestResetCode = async ({
-    email
-}) => {
+export const requestResetCode = async ({ email }) => {
     const route = API_URL + '/user/requestResetCode';
 
-    try {   
+    try {
         let result = await fetch(route, {
             method: 'POST',
             headers: {
@@ -196,10 +177,9 @@ export const requestResetCode = async ({
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: email
-            })
-        })
-        .then(res => {
+                email: email,
+            }),
+        }).then((res) => {
             if (res.ok) {
                 return true;
             } else {
@@ -209,16 +189,14 @@ export const requestResetCode = async ({
 
         return result;
     } catch (err) {
-       
         return false;
     }
-}
+};
 
 // returns true if correct reset code, false otherwise
 
-export const verifyResetCode = async ({email, code}) => {
+export const verifyResetCode = async ({ email, code }) => {
     const route = API_URL + '/user/validateCode';
-    console.log(email, code);
     try {
         const result = await fetch(route, {
             method: 'POST',
@@ -228,27 +206,93 @@ export const verifyResetCode = async ({email, code}) => {
             },
             body: JSON.stringify({
                 email: email,
-                newResetCode: code
+                newResetCode: code,
+            }),
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return true;
+                } else {
+                    return false;
+                }
             })
-    
-        })
-        .then(res => {
-            console.log(res.status);
-            if (res.ok) {
-                return true;
-            } else {
+            .catch((err) => {
+                console.error(err);
                 return false;
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            return false;
-        });
+            });
 
         return result;
     } catch (err) {
         console.error(err);
         return false;
     }
-}   
+};
 
+export const resetPassword = async ({ email, newPassword }) => {
+    const route = API_URL + '/user/resetPassword';
+
+    try {
+        const result = fetch(route, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                newPassword,
+            }),
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                console.error(err);
+                return err;
+            });
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
+
+export const changePassword = async ({
+    token,
+    currentPassword,
+    newPassword,
+}) => {
+    const route = API_URL + '/user/me/password';
+    try {
+        const res = await fetch(route, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                currentPassword,
+                newPassword,
+            }),
+        })
+            .then((res) => {
+                console.log(res.status);
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                console.error(err);
+                return false;
+            });
+        return res;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
