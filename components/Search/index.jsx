@@ -24,26 +24,12 @@ Is represented by magnifying glass
 */
 
 const Search = (props) => {
-    // const data = [
-    //     { id: '1', title: 'Dr J' },
-    //     { id: '2', title: 'MJ' },
-    //     { id: '3', title: 'Chuck' },
-    //     { id: '4', title: 'Shaq' },
-    //     { id: '5', title: 'Kobe' },
-    //     { id: '6', title: 'Reggie' },
-    //     { id: '7', title: 'Lebron' },
-    //     { id: '8', title: 'Steph' },
-    //     { id: '9', title: 'KD' },
-    // ];
-
     const [search, setSearch] = useState('');
     const [modalVisible, setModalVisible] = useState(true);
     const [data, setData] = useState([]);
 
     const updateSearch = async () => {
         setData(await searchForAllCalendars(search));
-
-        console.log(data.items);
     };
 
     const AddCalendars = () => {
@@ -60,7 +46,7 @@ const Search = (props) => {
                     visible={modalVisible}
                     onRequestClose={() => {
                         Alert.alert('modal is closed');
-                        setModalVisible(!modalVisible);
+                        props.navigation.goBack();
                     }}
                 >
                     <View style={styles.bar}>
@@ -72,7 +58,21 @@ const Search = (props) => {
                             lightTheme
                             round
                         />
-                        <Button title='Search' onPress={updateSearch} />
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-around',
+                            }}
+                        >
+                            <Button title='Search' onPress={updateSearch} />
+                            <Button
+                                title='Close'
+                                onPress={() => {
+                                    setModalVisible(false);
+                                    props.navigation.goBack();
+                                }}
+                            />
+                        </View>
                     </View>
                     <View>
                         <View style={[styles.modalView]}>
@@ -143,8 +143,10 @@ const Search = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 10,
         padding: 5,
+    },
+    centeredView: {
+        padding: '10%',
     },
     textInput: {
         marginTop: 10,

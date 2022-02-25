@@ -98,7 +98,7 @@ export default class Profile extends React.Component {
         }
 
         const navigation = this.props.navigation;
-        const { firstName, lastName, uid } = this.props.user;
+        const { firstName, lastName, uid } = this.props.user.user;
         return (
             <View style={styles.container}>
                 <Text

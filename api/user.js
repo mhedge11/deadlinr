@@ -110,7 +110,6 @@ export const createUser = async (
 
 export const searchForUser = async (query) => {
     const route = API_URL + '/user/search/';
-    console.log(query);
     try {
         const result = await fetch(route, {
             method: 'POST',
@@ -128,13 +127,11 @@ export const searchForUser = async (query) => {
             }),
         })
             .then(async (res) => {
-                console.log(res.status);
                 if (!res.ok) {
                     return null;
                 }
                 let resultData = await res.json();
                 return resultData;
-                // console.log(res);
             })
 
             .catch((err) => {
@@ -295,7 +292,6 @@ export const changePassword = async ({
             }),
         })
             .then((res) => {
-                console.log(res.status);
                 if (res.ok) {
                     return true;
                 }

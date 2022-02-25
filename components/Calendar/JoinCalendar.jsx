@@ -38,18 +38,7 @@ const JoinCalendar = (props) => {
     const [search, setSearch] = useState('');
 
     const updateSearch = async () => {
-        // setSearch(search);
-
-        // Would sent to database at this point
-        // data = await searchForUser(search);
         setData(await searchForUser(search));
-
-        // console.log("data---" + data);
-        console.log(data.items);
-
-        // *************
-        // data.items is search result
-        // can console.log
     };
 
     return (

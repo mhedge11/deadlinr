@@ -14,6 +14,7 @@ function renderScheduleBlock() {}
 
 export default class Home extends Component {
     constructor(props) {
+        console.log(props.user);
         super(props);
         this.state = {
             courses: props.courses,
@@ -81,7 +82,7 @@ export default class Home extends Component {
                                 color: '#a2a3a6',
                             }}
                         >
-                            Hello Tim
+                            Hello {this.props.user.user.firstName}
                         </Text>
                         <Text
                             style={{
