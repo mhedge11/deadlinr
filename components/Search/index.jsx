@@ -15,6 +15,12 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 
+/*
+This is Calendar Searching
+to add to your list of calendars
+Is represented by magnifying glass
+*/
+
 const Search = (props) => {
     const data = [
         { id: '1', title: 'Dr J' },
@@ -29,10 +35,15 @@ const Search = (props) => {
     ];
 
     const [search, setSearch] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(true);
 
     const updateSearch = (search) => {
         setSearch(search);
+    };
+
+    const AddCalendars = () => {
+        alert('Success');
+        props.navigation.goBack();
     };
 
     return (
@@ -72,7 +83,7 @@ const Search = (props) => {
                                             margin: 5,
                                         }}
                                     >
-                                        Add People to Calendar
+                                        Add Public Calendars
                                     </Text>
                                 </View>
                                 <FlatList
@@ -95,11 +106,12 @@ const Search = (props) => {
                                 />
                             </View>
                             <Pressable
-                                onPress={() => setModalVisible(!modalVisible)}
+                                // onPress={() => props.navigation.goBack()}
+                                onPress={AddCalendars}
                                 style={[styles.button, styles.modalClose]}
                             >
                                 <Text style={styles.textStyle}>
-                                    CLICK TO INVITE
+                                    Add Calendars
                                 </Text>
                             </Pressable>
                         </View>
@@ -116,23 +128,7 @@ const Search = (props) => {
                     width: '100%',
                     height: 100,
                 }}
-            >
-                <Pressable
-                    onPress={() => setModalVisible(true)}
-                    style={[
-                        styles.button,
-                        styles.modalOpen,
-                        { backgroundColor: 'black' },
-                    ]}
-                >
-                    <Icon
-                        name='paper-plane'
-                        type='font-awesome'
-                        color='white'
-                    />
-                    <Text style={[{ color: 'white' }]}>Invite</Text>
-                </Pressable>
-            </View>
+            ></View>
         </SafeAreaView>
     );
 };

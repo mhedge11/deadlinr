@@ -14,6 +14,12 @@ import {
 } from 'react-native';
 import { searchForUser } from '../../api/user';
 
+/*
+This is user search
+to invite people to use one of your calendars
+Is represented by invite logo
+*/
+
 const JoinCalendar = (props) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
