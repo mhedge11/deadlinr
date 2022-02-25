@@ -9,12 +9,13 @@ import {
   Platform,
   FlatList,
   TouchableOpacity,
+  Button,
 } from "react-native";
-import { searchUser } from "../../api/user";
+import { searchForUser } from "../../api/user";
 
 const Search = (props) => {
   const [loading, setLoading] = useState(false);
-  // let data = [];
+  const [data, setData] = useState([]);
   // const data = [
   //   { id: "1", title: "CS 180" },
   //   { id: "2", title: "CS 240" },
@@ -29,25 +30,19 @@ const Search = (props) => {
 
   const [search, setSearch] = useState("");
 
-  const updateSearch = (search) => {
-    setSearch(search);
+  const updateSearch = async () => {
+    // setSearch(search);
 
     // Would sent to database at this point
-    searchUser(search)
-      .then((res) => {
-        if (res === "success") {
-          console.log("Successful");
-          // return object itself
-          // data = res;
+    // data = await searchForUser(search);
+    setData(await searchForUser(search));
 
-          // *************
-          // data.items is search result
-          // can console.log
-        }
-      })
-      .catch((err) => {
-        return Alert.alert(err);
-      });
+    // console.log("data---" + data);
+    console.log(data.items);
+
+    // *************
+    // data.items is search result
+    // can console.log
   };
 
   return (
@@ -55,11 +50,14 @@ const Search = (props) => {
       <View style={styles.bar}>
         <SearchBar
           placeholder="Search here..."
-          onChangeText={updateSearch}
+          // onChangeText={updateSearch}
+          onChangeText={(text) => setSearch(text.trim())}
           value={search}
           lightTheme
           round
+          clearButtonMode="always"
         />
+        <Button title="Search" onPress={updateSearch} />
       </View>
       <View
         style={{
@@ -80,6 +78,7 @@ const Search = (props) => {
           <TouchableOpacity>
             <View style={styles.textInput}>
               {/* <Text style={{ fontSize: 18 }}>{item.title}</Text> */}
+              {/* <Text style={{ fontSize: 18 }}>{item.username}</Text> */}
               <Text style={{ fontSize: 18 }}>{item.username}</Text>
             </View>
           </TouchableOpacity>
