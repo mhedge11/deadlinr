@@ -15,7 +15,7 @@ import {
     Button,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { searchForAllCalendars } from '../../api/calendar';
+import { joinCalendar, searchForAllCalendars } from '../../api/calendar';
 
 /*
 This is Calendar Searching
@@ -49,9 +49,18 @@ const Search = (props) => {
         }
     };
 
-    const AddCalendars = () => {
-        alert('Calendars would be added now. Success.');
-        props.navigation.goBack();
+    const addCalendar = async (cid) => {
+        try {
+            await joinCalendar({
+                token: props.user.token,
+                cid,
+            });
+            alert('You have joined this calendar');
+            props.navigation.goBack();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to joiin calendar');
+        }
     };
 
     return (
@@ -114,7 +123,10 @@ const Search = (props) => {
                                     data={data.items}
                                     keyExtractor={(item) => item._id}
                                     renderItem={({ item }) => (
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                addCalendar(item._id)
+                                            }}>
                                             <View
                                                 style={[
                                                     styles.textInput,
@@ -129,15 +141,6 @@ const Search = (props) => {
                                     )}
                                 />
                             </View>
-                            <Pressable
-                                // onPress={() => props.navigation.goBack()}
-                                onPress={AddCalendars}
-                                style={[styles.button, styles.modalClose]}
-                            >
-                                <Text style={styles.textStyle}>
-                                    Add Calendars
-                                </Text>
-                            </Pressable>
                         </View>
                     </View>
                 </Modal>
