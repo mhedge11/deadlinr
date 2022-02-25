@@ -70,7 +70,7 @@ const Search = (props) => {
         </Text>
       </View>
       <FlatList
-        data={data}
+        data={data.items}
         // data.items
         // keyExtractor={(item) => item.id}
         keyExtractor={(item) => item._id}
