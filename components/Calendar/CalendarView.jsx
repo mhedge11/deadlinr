@@ -38,32 +38,29 @@ export default class CalendarView extends React.Component {
     };
   }
 
-  changePrivacy = () => {
+  changePrivacy = async () => {
     this.setState({
       loading: true
     })
-    updatePrivacy(this.props.uid)
-    .then(res => {
+    const res = await updatePrivacy({
+      cid: this.props.route.params.id, 
+      token: this.props.user['token']
+    })
+
+    this.setState({
+      loading: false
+    })
+  
+    if (res === 'success') {
       this.setState({
-        loading: false
+        privateCalendar: !this.state.privateCalendar
       })
-      if (res === 'success') {
-        this.setState({
-          privateCalendar: !this.state.privateCalendar
-        })
-      } else {
-        return Alert.alert("An error occured. Please try later");
-      }
-    })
-    .catch(err => {
-      this.setState({
-        loading: false
-      });
+    } else {
       return Alert.alert("An error occured. Please try later");
-    })
+    }
   }
 
-  alterMemberStatus = () => {
+  alterMemberStatus = async () => {
     if (this.state.isMember === true) {
       // add API call to remove user from this calendar
 
@@ -71,24 +68,22 @@ export default class CalendarView extends React.Component {
         isMember: false,
       });
     } else {
+
       // add API call to add user to this calendar
-      joinCalendar(this.props.uid, this.props.user.token)
-      .then(res => {
-        if (res === true) {
+      const res = await joinCalendar({cid: this.props.uid, token: this.props.user.token});
+      if (res === true) {
           this.setState({
             isMember: true,
           });
-        } else {
-          return Alert.alert("An error occured. Please try later");
-        }
-      })
-
+      } else {
+        return Alert.alert("An error occured. Please try later");
+      }
     }
   };
 
   render() {
     const { route, user, navigation } = this.props;
-    const { title, isPrivate, createrUID } = route.params;
+    const { title, isPrivate } = route.params;
 
     return (
       <View
@@ -155,7 +150,7 @@ export default class CalendarView extends React.Component {
             Private
           </Text>
           <Switch
-            disabled={createrUID !== user.uid}
+            //  disabled={createrUID !== user.uid}
             style={{
               marginTop: "3%",
             }}

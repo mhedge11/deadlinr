@@ -1,7 +1,7 @@
 const API_URL = 'https://deadlinr.blakekjohnson.dev';
 
 
-export const createCalendar = async ({name, isPrivate, token}) => {
+export const createCalendar = async ({calendarName, isPrivate, token}) => {
     const route = API_URL + '/calendar/';
 
     try {
@@ -13,29 +13,30 @@ export const createCalendar = async ({name, isPrivate, token}) => {
                 Authorization: 'Bearer ' + token
             },
             body: JSON.stringify({
-                title: name,
+                title: calendarName,
                 isPrivate: isPrivate
             })
         })
         .then(res => {
-            if (res.status === 200) {
-                return 'success';
+            if (res.ok) {
+                return true;
             }
-            return 'An error occured';
+            return false;
         })
         .catch(err => {
-            return err;
+            return false;
         });
 
         return result;
     } catch (err) {
         console.error(err);
-        return err;
+        return false;
     }
 }
 
-export const updatePrivacy = async (cid, token) => {
-    const route = API_URL + '/updatePrivacy/' + cid;
+export const updatePrivacy = async ({cid, token}) => {
+    const route = API_URL + '/calendar/' + cid + '/privacy';
+
     try {
         let result = await fetch(route, {
             method: 'PATCH',
@@ -46,6 +47,7 @@ export const updatePrivacy = async (cid, token) => {
             }
         })
         .then(res => {
+            console.log(res.status);
             if (res.status === 200) {
                 return 'success';
             }
@@ -64,7 +66,7 @@ export const updatePrivacy = async (cid, token) => {
     }
 }
 
-export const joinCalendar = async (cid, token) => {
+export const joinCalendar = async ({cid, token}) => {
     const route = API_URL + '/calendar/' + cid + '/join';
 
     try {
@@ -80,7 +82,8 @@ export const joinCalendar = async (cid, token) => {
             })
         })
         .then(res => {
-            if (res.status === 200) {
+            console.log(res.status);
+            if (res.ok) {
                 return true; 
             }
             return false;

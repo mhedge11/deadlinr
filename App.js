@@ -30,7 +30,14 @@ export default function App() {
         }
     */
 
-  const [user, setUser] = React.useState();
+  const [user, setUser] = React.useState({
+    firstName: 'Prakhar',
+    lastName: 'Nahar',
+    token: 'eyJhbGciOiJIUzI1NiJ9.NjIxODM5Zjc3MmFhMzk3YWI1ZTkyZWEy.ioozykZvJXJ3BblRUFw9-UZu-nhtSGemPoVGADlYyXs',
+    id: '621839f772aa397ab5e92ea2',
+    email: 'naharpra@gmail.com',
+    username: 'thatprakhar'
+  });
 
   const [courses, setCourses] = React.useState([
     {
@@ -74,13 +81,12 @@ export default function App() {
       members: [],
     },
   ]);
-
   const [calendars, setCalendars] = React.useState([
     {
-      id: 0,
-      title: "Personal Calendar",
+      id: '62183c7e72aa397ab5e92eb2',
+      title: "Private Calendar",
       private: true,
-      note: "My personal calendar",
+      note: "My first calendar",
       tasks: [
         {
           id: 0,

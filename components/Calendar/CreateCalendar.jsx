@@ -13,24 +13,25 @@ const CreateCalendar = (props) => {
 
     const [errMsg, setMsg] = React.useState('');
 
-    const createCalendar = () => {
+    const createCalendar = async () => {
         if (!props.user) return Alert.alert('An error occured');
+        if (calendarName.trim() === '') return;
 
         setLoading(true);
 
-        createCalendarAPI(calendarName, privateCalendar, props.user.uid)
-        .then(res => {
-            setLoading(false);
-            if (res === 'success') {
-                props.navigation.goBack();
-            } else {
-                setMsg('An error occured. Please try again later.')
-            }
+        const res = await createCalendarAPI({
+            calendarName,
+            isPrivate: privateCalendar,
+            token: props.user['token']
         })
-        .catch(err => {
-            setLoading(false);
-            setMsg(err);
-        })
+
+        if (res) {
+            setMsg('');
+            props.navigation.goBack();
+            return;
+        } else {
+            setMsg('An error occured. Please try again later.')
+        }
     }
 
 
@@ -93,7 +94,7 @@ const CreateCalendar = (props) => {
                     }}
                     placeholder='Calendar Name'
                     value={calendarName}
-                    onChangeText={v => setCalendarName(v.trim())}
+                    onChangeText={v => setCalendarName(v)}
                 />
                 {
                     bcolor === 'red' && <Text style={{color: 'red'}}>Calendar name cannot be empty.</Text>
@@ -119,7 +120,7 @@ const CreateCalendar = (props) => {
             </View>
 
             <View>
-                <Button title='Create' onPress={() => createCalendar()}/>
+                <Button title='Create' onPress={() => createCalendar()} disabled={calendarName.length === 0}/>
             </View>
 
             {
