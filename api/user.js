@@ -108,60 +108,79 @@ export const createUser = async (
     }
 };
 
-export const searchUser = async (query) => {
-    const route = API_URL + '/user/search';
-    try {
-        await fetch(route, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ query }),
-        })
-            .then((response) => {
-                response.json();
-            })
-            .then((data) => {
-                return data;
-            });
 
-        // return data;
-    } catch (err) {
+
+
+export const searchForUser = async (query) => {
+  const route = API_URL + "/user/search/";
+  console.log(query);
+  try {
+    const result = await fetch(route, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: {
+          username: query,
+          // firstName: query,
+          // lastName: query,
+          // email: query,
+        },
+      }),
+    })
+      .then(async (res) => {
+        console.log(res.status);
+        if (!res.ok) {
+          return null;
+        }
+        let resultData = await res.json();
+        return resultData;
+        // console.log(res);
+      })
+
+      .catch((err) => {
         console.error(err);
-        return err;
-    }
+      });
+
+    return result;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
 };
 
 // Returns success if account deleted successfully, empty string otherwise
 
 export const deleteAccount = async ({ token }) => {
-    const route = API_URL + '/user/me';
+  const route = API_URL + "/user/me";
 
-    try {
-        let result = await fetch(route, {
-            method: 'DELETE',
-            headers: {
-                Authorization: 'Bearer ' + token,
-            },
-        })
-            .then((res) => {
-                if (res.ok) {
-                    return 'success';
-                } else {
-                    return '';
-                }
-            })
-            .catch((err) => {
-                console.error(err);
-                return '';
-            });
-
-        return result;
-    } catch (err) {
+  try {
+    let result = await fetch(route, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return "success";
+        } else {
+          return "";
+        }
+      })
+      .catch((err) => {
         console.error(err);
-        return err;
-    }
+        return "";
+      });
+
+    return result;
+  } catch (err) {
+    console.error(err);
+    return err;
+  }
+
 };
 
 // return the verification code if call made successfully, otherwise null
@@ -191,6 +210,7 @@ export const requestResetCode = async ({ email }) => {
     } catch (err) {
         return false;
     }
+
 };
 
 // returns true if correct reset code, false otherwise
