@@ -30,7 +30,9 @@ export default function App() {
         }
     */
 
-  const [user, setUser] = React.useState();
+
+  const [user, setUser] = React.useState(null);
+
 
   const [courses, setCourses] = React.useState([
     {

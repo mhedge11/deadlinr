@@ -10,12 +10,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 
 import { emailValidation } from "../validation/emailValidation";
 import { nameValidation } from "../validation/nameValidation";
 import { passwordValidation } from "../validation/passwordValidation";
 import { usernameValidation } from "../validation/usernameValidation";
+import { createUser } from "../api/user";
 
 const RegistrationForm = (props) => {
   const [email, setEmail] = useState("");
@@ -24,36 +27,17 @@ const RegistrationForm = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // const [user, setUser] = useState({
-  //   email: "",
-  //   password: "",
-  //   confirmPassword: "",
-  // });
+  const handleSubmission = async () => {
+    emailReturn = "";
+    passwordReturn = "";
+    firstNameReturn = "";
+    lastNameReturn = "";
+    usernameReturn = "";
 
-  // const handleEmail = (event) => {
-  //   setUser({
-  //     email: event.target.value,
-  //     password: user.password,
-  //     confirmPassword: user.confirmPassword,
-  //   });
-  // };
-  // const handlePassword = (event) => {
-  //   setUser({
-  //     email: user.email,
-  //     password: event.target.value,
-  //     confirmPassword: user.confirmPassword,
-  //   });
-  // };
-  // const handleConfirmPassword = (event) => {
-  //   setUser({
-  //     email: user.email,
-  //     password: user.password,
-  //     confirmPassword: event.target.value,
-  //   });
-  // };
+    setLoading(false);
 
-  const handleSubmission = () => {
     let emailReturn = emailValidation(email);
     let passwordReturn = passwordValidation(password);
     let firstNameReturn = nameValidation(firstName);
@@ -72,9 +56,6 @@ const RegistrationForm = (props) => {
       } else if (usernameReturn !== "") {
         alert(usernameReturn);
       }
-      // alert(firstNameReturn || lastNameReturn || usernameReturn);
-      emailReturn = "";
-      passwordReturn = "";
       return;
     }
 
@@ -86,13 +67,47 @@ const RegistrationForm = (props) => {
     if (emailReturn !== "" || passwordReturn !== "") {
       if (emailReturn !== "") alert(emailReturn);
       if (passwordReturn !== "") alert(passwordReturn);
-      emailReturn = "";
-      passwordReturn = "";
       return;
-
-      // Would send to database at this point
-      // Will have to check that email is unique and username is unique
     }
+
+    // Would send to database at this point
+    // Will have to check that email is unique and username is unique
+    const data = await createUser(
+      firstName,
+      lastName,
+      email,
+      username,
+      password
+    );
+    console.log("data---" + data);
+    console.log(data.uid, data.token);
+    props.setUser({
+      firstName,
+      lastName,
+      username,
+      email,
+      uid: data.uid,
+      token: data.token,
+    });
+    // .then((data) => {
+    //   console.log(data);
+    //   const { user, uid } = data;
+    //   console.log(user);
+    //   props.setUser(user);
+    //   setLoading(false);
+    //   if (res !== null) {
+    //     // const val = data;
+    //     console.log("res: " + res);
+    //     const { user } = data;
+    //     // console.log(user);
+    //     // const { uid } = req.params;
+    //     // props.setUser(user);
+    //   }
+    // })
+    // .catch((err) => {
+    //   setLoading(false);
+    //   return Alert.alert(err);
+    // });
   };
 
   // const handleSubmission = (e) => {
@@ -105,24 +120,20 @@ const RegistrationForm = (props) => {
   //     alert("Password not long enough");
   //     return;
   //   }
-
-  //   let userAlreadyExists = false;
-
-  //   props.users.forEach((element) => {
-  //     if (element.email === user.email) {
-  //       userAlreadyExists = true;
-  //       alert("username already exists");
-  //     }
-  //   });
-
-  //   if (userAlreadyExists) {
-  //     return;
-  //   }
-
-  //   // After verification ==> send to database
-
-  //   // props.register(user);
   // };
+
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={{ marginVertical: 50 }}>
