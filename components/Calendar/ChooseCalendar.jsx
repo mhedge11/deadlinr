@@ -25,7 +25,7 @@ const ChooseCalendar = (props) => {
         setCalendars([]);
         try {
             const user = await getUser(props.user.token);
-            user.calendars.forEach(async (c) => {
+            user.user.calendars.forEach(async (c) => {
                 const item = await getCalendar({ cid: c })
                 setCalendars(c => [
                     ...c,
