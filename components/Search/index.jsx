@@ -10,6 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
   Button,
+  Alert,
 } from "react-native";
 import { searchForUser } from "../../api/user";
 
@@ -75,7 +76,11 @@ const Search = (props) => {
         // keyExtractor={(item) => item.id}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              alert("User Added");
+            }}
+          >
             <View style={styles.textInput}>
               {/* <Text style={{ fontSize: 18 }}>{item.title}</Text> */}
               <Text style={{ fontSize: 18 }}>{item.username}</Text>
