@@ -129,13 +129,13 @@ export default class Home extends Component {
                         { fontSize: '30', fontWeight: '600', marginTop: 300 },
                     ]}
                 >
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         onPress={() =>
                             this.props.navigation.navigate('Join Calendar')
                         }
                     >
                         <Text>Join Calendar</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
                 <View style={styles.courses}>
                     <Text

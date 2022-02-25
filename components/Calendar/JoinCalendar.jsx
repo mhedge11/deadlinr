@@ -86,7 +86,7 @@ const JoinCalendar = (props) => {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={() => {
-                            alert('User Added');
+                            alert('User would be Added');
                         }}
                     >
                         <View style={styles.textInput}>
