@@ -78,8 +78,8 @@ const Search = (props) => {
           <TouchableOpacity>
             <View style={styles.textInput}>
               {/* <Text style={{ fontSize: 18 }}>{item.title}</Text> */}
-              {/* <Text style={{ fontSize: 18 }}>{item.username}</Text> */}
               <Text style={{ fontSize: 18 }}>{item.username}</Text>
+              {/* <Text style={{ fontSize: 18 }}>{item}</Text> */}
             </View>
           </TouchableOpacity>
         )}

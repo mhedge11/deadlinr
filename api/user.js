@@ -154,7 +154,12 @@ export const searchForUser = async (query) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: query,
+        query: {
+          username: query,
+          // firstName: query,
+          // lastName: query,
+          // email: query,
+        },
       }),
     })
       .then(async (res) => {
