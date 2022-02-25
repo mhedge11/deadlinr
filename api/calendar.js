@@ -3,7 +3,7 @@ const API_URL = 'https://deadlinr.blakekjohnson.dev';
 
 export const createCalendar = async ({calendarName, isPrivate, token}) => {
     const route = API_URL + '/calendar/';
-
+    console.log(token);
     try {
         let result = await fetch(route, {
             method: 'POST',
@@ -17,9 +17,12 @@ export const createCalendar = async ({calendarName, isPrivate, token}) => {
                 isPrivate: isPrivate
             })
         })
-        .then(res => {
+        .then(async (res) => {
+            console.log(res.status);
             if (res.ok) {
-                return true;
+                const data = await res.json();
+                console.log(data);
+                return data;
             }
             return false;
         })
@@ -68,6 +71,37 @@ export const updatePrivacy = async ({cid, token}) => {
 
 export const joinCalendar = async ({cid, token}) => {
     const route = API_URL + '/calendar/' + cid + '/join';
+    console.log(cid, token);
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token
+            }
+        })
+        .then(res => {
+            console.log(res.status);
+            if (res.ok) {
+                return true; 
+            }
+            return false;
+        })
+        .catch(err => {
+            console.error(err);
+            return false;
+        });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}
+
+export const leaveCalendar = async ({cid, token}) => {
+    const route = API_URL + '/calendar/' + cid + '/leave';
 
     try {
         let result = await fetch(route, {
@@ -76,10 +110,7 @@ export const joinCalendar = async ({cid, token}) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token
-            },
-            body: JSON.stringify({
-                cid: cid
-            })
+            }
         })
         .then(res => {
             console.log(res.status);

@@ -2,8 +2,7 @@ import React from "react";
 import { View, Text, Switch, TouchableOpacity, Button, Alert } from "react-native";
 import { Icon } from "react-native-elements";
 import JoinCalendar from "./JoinCalendar";
-import { updatePrivacy } from "../../api/calendar";
-import { joinCalendar } from "../../api/calendar";
+import { joinCalendar, leaveCalendar, updatePrivacy } from "../../api/calendar";
 
 
 /*
@@ -30,7 +29,7 @@ import { joinCalendar } from "../../api/calendar";
 export default class CalendarView extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(props.route.params);
     this.state = {
       privateCalendar: this.props.route.params.isPrivate,
       isMember: this.props.route.params.members.includes(this.props.user.uid),
@@ -63,14 +62,21 @@ export default class CalendarView extends React.Component {
   alterMemberStatus = async () => {
     if (this.state.isMember === true) {
       // add API call to remove user from this calendar
-
+      const res = await leaveCalendar({cid: this.props.route.params.id, token: this.props.user.token});
+      if (res === true) {
+          this.setState({
+            isMember: false,
+          });
+      } else {
+        return Alert.alert("An error occured. Please try later");
+      }
       this.setState({
         isMember: false,
       });
     } else {
 
       // add API call to add user to this calendar
-      const res = await joinCalendar({cid: this.props.uid, token: this.props.user.token});
+      const res = await joinCalendar({cid: this.props.route.params.id, token: this.props.user.token});
       if (res === true) {
           this.setState({
             isMember: true,

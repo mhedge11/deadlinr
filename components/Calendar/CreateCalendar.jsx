@@ -24,9 +24,20 @@ const CreateCalendar = (props) => {
             isPrivate: privateCalendar,
             token: props.user['token']
         })
-
-        if (res) {
+        setLoading(false);
+        if (res !== false) {
             setMsg('');
+            console.log(res);
+            props.setCalendars([
+                ...props.calendars,
+                {
+                    id: res.id,
+                    isPrivate: privateCalendar,
+                    title: calendarName,
+                    tasks: [],
+                    members: []
+                }
+            ])
             props.navigation.goBack();
             return;
         } else {

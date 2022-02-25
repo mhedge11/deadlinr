@@ -51,8 +51,6 @@ const ChooseCalendar = (props) => {
                         onPress={() => {
                             props.navigation.navigate('Calendar View', {
                                 ...c,
-                                isPrivate: true,
-                                createrUID: '1',
                             });
                         }}
                     >

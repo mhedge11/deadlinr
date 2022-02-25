@@ -55,8 +55,6 @@ const Login = (props) => {
     // Would sent to database at this point
     const data = await loginUser(login, password);
     console.log("data---" + data);
-    // console.log(data.token);
-
     if (data === null) {
       alert("Error in Email/Username or in Password. Please Fix and try again");
       return;
@@ -65,7 +63,10 @@ const Login = (props) => {
     const getUserByToken = await getUser(data.token);
     console.log(getUserByToken.user);
 
-    props.setUser({ user: getUserByToken.user });
+    props.setUser({ 
+      user: getUserByToken.user,
+      token: data.token
+    });
   };
 
   if (loading) {

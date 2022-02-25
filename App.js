@@ -15,90 +15,18 @@ import CalendarView from "./components/Calendar/CalendarView";
 import ResetPassword from "./components/screens/ResetPassword";
 import Search from "./components/Search";
 import moment from "moment";
+import mockCourses from "./mockData/courses";
+
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  /*
-        type User = {
-            firstName: string,
-            lastName: string,
-            email: string,
-            uid: string,
-            username: string,
-            token: string
-        }
-    */
-
 
   const [user, setUser] = React.useState(null);
 
 
-  const [courses, setCourses] = React.useState([
-    {
-      id: 0,
-      title: "EAPS 106",
-      bgColor: "#08c43d",
-      tasks: [
-        {
-          taskTitle: "Movie Worksheet 4",
-          dueDate: moment(),
-        },
-      ],
-      members: [],
-    },
-    {
-      id: 1,
-      title: "CS 180",
-      bgColor: "#414241",
-      tasks: [],
-      members: [],
-    },
-    {
-      id: 2,
-      title: "MA 165",
-      bgColor: "#f22c3f",
-      tasks: [],
-      members: [],
-    },
-    {
-      id: 3,
-      title: "ENGL 106",
-      bgColor: "#d66718",
-      tasks: [],
-      members: [],
-    },
-    {
-      id: 4,
-      title: "CS 193",
-      bgColor: "#2180cf",
-      tasks: [],
-      members: [],
-    },
-  ]);
-  const [calendars, setCalendars] = React.useState([
-    {
-      id: '62183c7e72aa397ab5e92eb2',
-      title: "Private Calendar",
-      private: true,
-      note: "My first calendar",
-      tasks: [
-        {
-          id: 0,
-          taskTitle: "Sample title 1",
-          note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fringilla velit nec dolor ultrices pulvinar. Nunc scelerisque ipsum tellus, ut dapibus dolor rhoncus nec. Nunc eget magna orci.",
-          dueDate: moment(),
-        },
-        {
-          id: 1,
-          taskTitle: "Sample title 2",
-          note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fringilla velit nec dolor ultrices pulvinar. Nunc scelerisque ipsum tellus, ut dapibus dolor rhoncus nec. Nunc eget magna orci.",
-          dueDate: moment(),
-        },
-      ],
-      members: [],
-    },
-  ]);
+  const [courses, setCourses] = React.useState(mockCourses);
+  const [calendars, setCalendars] = React.useState([]);
 
   if (user === null || user === undefined) {
     return (
@@ -195,6 +123,7 @@ export default function App() {
             <CreateCalendar
               {...props}
               calendars={calendars}
+              setCalendars={setCalendars}
               user={user}
               setUser={setUser}
             />
