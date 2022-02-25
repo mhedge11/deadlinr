@@ -34,6 +34,16 @@ export default class Navigator extends React.Component {
                     <Icon name='search' type='font-awesome' color='white' />
                     <Text style={styles.text}>Search</Text>
                 </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Join Calendar')}
+                >
+                    <Icon
+                        name='paper-plane'
+                        type='font-awesome'
+                        color='white'
+                    />
+                    <Text style={styles.text}>Invite</Text>
+                </TouchableOpacity>
             </View>
         );
     }
