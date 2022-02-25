@@ -6,36 +6,43 @@ import {
     Button,
     TouchableOpacity,
     Alert,
+    ActivityIndicator,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { passwordValidation } from '../../validation/passwordValidation';
-import { resetPassword } from '../../api/user';
+import { changePassword as changePasswordAPI } from '../../api/user';
 
-const ResetPassword = (props) => {
+const ChangePassword = (props) => {
+    const [oldPass, setOldPass] = React.useState('');
     const [newPass, setNewPass] = React.useState('');
     const [confirmNewPass, setConfirmNewPass] = React.useState('');
+
+    const [loading, setLoading] = React.useState(false);
 
     const [bcolor, setBcolor] = React.useState('transparent');
 
     const [showErrorMessage, setShowErrorMessage] = React.useState(false);
 
-    const email = props.route.params.email;
-
     const changePassword = async () => {
         // make API Call here
+        if (oldPass === '') {
+            return Alert.alert('Please enter your old password');
+        }
+
         const validPass = passwordValidation(newPass);
 
         if (validPass !== '') {
             return Alert.alert(validPass);
         }
-
-        const res = await resetPassword({
-            email,
+        setLoading(true);
+        const res = await changePasswordAPI({
+            token: props.user.token,
             newPassword: newPass,
+            currentPassword: oldPass,
         });
-
+        setLoading(false);
         if (res === true) {
-            props.navigation.navigate('Login');
+            props.navigation.goBack();
             return Alert.alert('Password successfully changed');
         } else return Alert.alert('An error occured. Please try again');
     };
@@ -82,6 +89,28 @@ const ResetPassword = (props) => {
                 <Text
                     style={{
                         fontSize: '18rem',
+                    }}
+                >
+                    Enter your old password
+                </Text>
+                <TextInput
+                    style={{
+                        width: '100%',
+                        marginTop: '5%',
+                        fontSize: '12rem',
+                        backgroundColor: '#e0e0e0',
+                        padding: '5%',
+                        borderRadius: 5,
+                        color: 'black',
+                    }}
+                    value={oldPass}
+                    onChangeText={(t) => setOldPass(t)}
+                    secureTextEntry
+                />
+                <Text
+                    style={{
+                        fontSize: '18rem',
+                        marginTop: '10%',
                     }}
                 >
                     Enter your new password
@@ -151,8 +180,9 @@ const ResetPassword = (props) => {
                     />
                 </View>
             </View>
+            {loading && <ActivityIndicator />}
         </View>
     );
 };
 
-export default ResetPassword;
+export default ChangePassword;

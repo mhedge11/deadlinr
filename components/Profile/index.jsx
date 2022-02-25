@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Alert,
+    ActivityIndicator,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
 import { deleteAccount } from '../../api/user';
 
@@ -7,8 +14,8 @@ export default class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
-        }
+            loading: false,
+        };
         this.showDeleteAccountDialog.bind(this);
     }
     showDeleteAccountDialog = () => {
@@ -17,55 +24,38 @@ export default class Profile extends React.Component {
         }
 
         const token = this.props.user['token'];
-        
+
         return Alert.alert(
-            "Are your sure?",
-            "Are you sure you want to delete your account?",
+            'Are your sure?',
+            'Are you sure you want to delete your account?',
             [
                 // The "Yes" button
                 {
-                    text: "Yes",
+                    text: 'Yes',
                     onPress: async () => {
                         this.setState({
-                            loading: true
-                        })
+                            loading: true,
+                        });
                         // API Route for deleting account
-                        const res = await deleteAccount({token});
-                        console.log(res);
+                        const res = await deleteAccount({ token });
                         this.setState({
-                            loading: false
-                        })
+                            loading: false,
+                        });
                         if (res === 'success') {
                             this.props.setUser(null);
                             return Alert.alert('User successfully deleted!');
                         } else {
-                            return Alert.alert('There was a problem with your request. Please try again later.');
+                            return Alert.alert(
+                                'There was a problem with your request. Please try again later.'
+                            );
                         }
-                        /*.then(res => {
-                            this.setState({
-                                loading: false
-                            })
-                            console.log(res);
-                            if (res === 'success') {
-                                this.props.setUser(null);
-                                return Alert.alert('User successfully deleted!');
-                            } else {
-                                return Alert.alert('There was a problem with your request. Please try again later.');
-                            }
-                        })
-                        .catch(err => {
-                            this.setState({
-                                loading: false
-                            });
-                            return Alert.alert('There was a problem with your request. Please try again later.');
-                        })*/
                     },
                 },
-                
+
                 // The "No" button
                 // Does nothing but dismiss the dialog when tapped
                 {
-                    text: "No",
+                    text: 'No',
                 },
             ]
         );
@@ -73,51 +63,59 @@ export default class Profile extends React.Component {
 
     showLogoutConfirmation = () => {
         return Alert.alert(
-            "Are your sure?",
-            "Are you sure you want to logout?",
+            'Are your sure?',
+            'Are you sure you want to logout?',
             [
                 // The "Yes" button
                 {
-                    text: "Yes",
+                    text: 'Yes',
                     onPress: () => {
                         this.props.setUser(null);
-                    }
+                    },
                 },
                 ,
                 // The "No" button
                 // Does nothing but dismiss the dialog when tapped
                 {
-                    text: "No",
+                    text: 'No',
                 },
             ]
         );
     };
 
-
-
     render() {
-
         if (this.state.loading) {
             return (
-                <View style={{
-                    flex: 1,
-                    justifyContent: 'center'
-                }}>
-                    <ActivityIndicator size="large"/>
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                    }}
+                >
+                    <ActivityIndicator size='large' />
                 </View>
-            )
+            );
         }
 
         const navigation = this.props.navigation;
-        const {firstName, lastName, uid} = this.props.user;
+        const { firstName, lastName, uid } = this.props.user;
         return (
             <View style={styles.container}>
-                <Text style={{
-                    fontSize: '30rem',
-                    fontWeight: '700'
-                }}>
-                    <TouchableOpacity style={{ justifyContent: 'center' }} onPress={() => navigation.navigate('Home')}>
-                        <Icon name='chevron-left' type='font-awesome' color='black'/>
+                <Text
+                    style={{
+                        fontSize: '30rem',
+                        fontWeight: '700',
+                    }}
+                >
+                    <TouchableOpacity
+                        style={{ justifyContent: 'center' }}
+                        onPress={() => navigation.navigate('Home')}
+                    >
+                        <Icon
+                            name='chevron-left'
+                            type='font-awesome'
+                            color='black'
+                        />
                     </TouchableOpacity>
                     {'    '}Hey {firstName}!
                 </Text>
@@ -126,34 +124,37 @@ export default class Profile extends React.Component {
                     style={{
                         marginTop: '30%',
                         flex: 1,
-                        justifyContent: 'space-around'
+                        justifyContent: 'space-around',
                     }}
                 >
-                    <View
-                        style={{
-                        }}
-                    >
-                        <TouchableOpacity onPress={() => this.showLogoutConfirmation()}>
-                            <Text style={{
-                                fontSize: '20rem',
-                                color: 'black',
-                                fontWeight: '600',
-                                padding: '5%'
-                            }}>
+                    <View style={{}}>
+                        <TouchableOpacity
+                            onPress={() => this.showLogoutConfirmation()}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: '20rem',
+                                    color: 'black',
+                                    fontWeight: '600',
+                                    padding: '5%',
+                                }}
+                            >
                                 Log Out
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                navigation.navigate('Reset Password');
+                                navigation.navigate('Change Password');
                             }}
                         >
-                            <Text style={{
-                                fontSize: '20rem',
-                                color: 'black',
-                                fontWeight: '600',
-                                padding: '5%'
-                            }}>
+                            <Text
+                                style={{
+                                    fontSize: '20rem',
+                                    color: 'black',
+                                    fontWeight: '600',
+                                    padding: '5%',
+                                }}
+                            >
                                 Change Password
                             </Text>
                         </TouchableOpacity>
@@ -166,16 +167,15 @@ export default class Profile extends React.Component {
                                 fontSize: '20rem',
                                 color: '#f55a42',
                                 fontWeight: '600',
-                                padding: '5%'
+                                padding: '5%',
                             }}
                         >
                             Delete Account
                         </Text>
                     </TouchableOpacity>
                 </View>
-
             </View>
-        )
+        );
     }
 }
 
@@ -188,5 +188,5 @@ const styles = StyleSheet.create({
         paddingRight: '5%',
         paddingBottom: '30%',
         justifyContent: 'flex-start',
-    }
+    },
 });

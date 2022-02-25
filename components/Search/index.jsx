@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { SearchBar } from "react-native-elements";
+import React, { useState } from 'react';
+import { SearchBar } from 'react-native-elements';
 import {
+
   View,
   Text,
   StyleSheet,
@@ -29,7 +30,9 @@ const Search = (props) => {
   //   { id: "9", title: "CS 407" },
   // ];
 
-  const [search, setSearch] = useState("");
+
+    const [search, setSearch] = useState('');
+
 
   const updateSearch = async () => {
     // setSearch(search);
@@ -85,30 +88,44 @@ const Search = (props) => {
               {/* <Text style={{ fontSize: 18 }}>{item.title}</Text> */}
               <Text style={{ fontSize: 18 }}>{item.username}</Text>
               {/* <Text style={{ fontSize: 18 }}>{item}</Text> */}
+
             </View>
-          </TouchableOpacity>
-        )}
-      />
-    </SafeAreaView>
-  );
+            <FlatList
+                data={data}
+                // data.items
+                // keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item._id}
+                renderItem={({ item }) => (
+                    <TouchableOpacity>
+                        <View style={styles.textInput}>
+                            {/* <Text style={{ fontSize: 18 }}>{item.title}</Text> */}
+                            <Text style={{ fontSize: 18 }}>
+                                {item.username}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
+            />
+        </SafeAreaView>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 10,
-    padding: 5,
-  },
-  textInput: {
-    marginTop: 10,
-    padding: 20,
-    alignItems: "center",
-    backgroundColor: "grey",
-    width: "100%",
-  },
-  bar: {
-    marginTop: 10,
-  },
+    container: {
+        flex: 1,
+        margin: 10,
+        padding: 5,
+    },
+    textInput: {
+        marginTop: 10,
+        padding: 20,
+        alignItems: 'center',
+        backgroundColor: 'grey',
+        width: '100%',
+    },
+    bar: {
+        marginTop: 10,
+    },
 });
 
 export default Search;
