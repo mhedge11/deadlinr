@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchBar } from 'react-native-elements';
 import {
     View,
@@ -27,9 +27,26 @@ const Search = (props) => {
     const [search, setSearch] = useState('');
     const [modalVisible, setModalVisible] = useState(true);
     const [data, setData] = useState([]);
+    const [allCalendars, setAllCalendars] = useState([]);
+
+    useEffect(() => {
+        initialFetch();
+    }, []);
+
+    const initialFetch = async () => {
+        const newAllCalendars = await searchForAllCalendars(search);
+        setAllCalendars(newAllCalendars);
+        setData(newAllCalendars);
+    };
 
     const updateSearch = async () => {
-        setData(await searchForAllCalendars(search));
+        if (allCalendars) {
+            let newData = { ...allCalendars };
+            newData.items = newData.items.filter((val) => {
+                return val.title.toLowerCase().startsWith(search.toLowerCase());
+            });
+            setData(newData);
+        }
     };
 
     const AddCalendars = () => {
