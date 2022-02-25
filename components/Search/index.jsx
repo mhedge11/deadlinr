@@ -12,8 +12,10 @@ import {
     Modal,
     Alert,
     Pressable,
+    Button,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { searchForAllCalendars } from '../../api/calendar';
 
 /*
 This is Calendar Searching
@@ -22,27 +24,30 @@ Is represented by magnifying glass
 */
 
 const Search = (props) => {
-    const data = [
-        { id: '1', title: 'Dr J' },
-        { id: '2', title: 'MJ' },
-        { id: '3', title: 'Chuck' },
-        { id: '4', title: 'Shaq' },
-        { id: '5', title: 'Kobe' },
-        { id: '6', title: 'Reggie' },
-        { id: '7', title: 'Lebron' },
-        { id: '8', title: 'Steph' },
-        { id: '9', title: 'KD' },
-    ];
+    // const data = [
+    //     { id: '1', title: 'Dr J' },
+    //     { id: '2', title: 'MJ' },
+    //     { id: '3', title: 'Chuck' },
+    //     { id: '4', title: 'Shaq' },
+    //     { id: '5', title: 'Kobe' },
+    //     { id: '6', title: 'Reggie' },
+    //     { id: '7', title: 'Lebron' },
+    //     { id: '8', title: 'Steph' },
+    //     { id: '9', title: 'KD' },
+    // ];
 
     const [search, setSearch] = useState('');
     const [modalVisible, setModalVisible] = useState(true);
+    const [data, setData] = useState([]);
 
-    const updateSearch = (search) => {
-        setSearch(search);
+    const updateSearch = async () => {
+        setData(await searchForAllCalendars(search));
+
+        console.log(data.items);
     };
 
     const AddCalendars = () => {
-        alert('Success');
+        alert('Calendars would be added now. Success.');
         props.navigation.goBack();
     };
 
@@ -61,11 +66,13 @@ const Search = (props) => {
                     <View style={styles.bar}>
                         <SearchBar
                             placeholder='Search here...'
-                            onChangeText={updateSearch}
+                            // onChangeText={updateSearch}
+                            onChangeText={(text) => setSearch(text.trim())}
                             value={search}
                             lightTheme
                             round
                         />
+                        <Button title='Search' onPress={updateSearch} />
                     </View>
                     <View>
                         <View style={[styles.modalView]}>
@@ -87,8 +94,8 @@ const Search = (props) => {
                                     </Text>
                                 </View>
                                 <FlatList
-                                    data={data}
-                                    keyExtractor={(item) => item.id}
+                                    data={data.items}
+                                    keyExtractor={(item) => item._id}
                                     renderItem={({ item }) => (
                                         <TouchableOpacity>
                                             <View

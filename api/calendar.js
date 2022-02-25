@@ -122,3 +122,34 @@ export const leaveCalendar = async ({ cid, token }) => {
         return false;
     }
 };
+
+/* Currently you do need a token to get the public calendars */
+export const searchForAllCalendars = async ({ token }) => {
+    const route = API_URL + '/calendar/';
+    try {
+        const result = await fetch(route, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    return null;
+                }
+                let resultData = await res.json();
+                return resultData;
+            })
+
+            .catch((err) => {
+                console.error(err);
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+};
