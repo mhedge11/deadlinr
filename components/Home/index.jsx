@@ -4,6 +4,7 @@ import {
     View,
     ScrollView,
     TouchableOpacity,
+    Button,
 } from 'react-native';
 import React, { Component } from 'react';
 import { Avatar } from 'react-native-elements';
@@ -122,6 +123,20 @@ export default class Home extends Component {
                         titleStyle={{}}
                     />
                 </View>
+                <View
+                    styles={[
+                        styles.header,
+                        { fontSize: '30', fontWeight: '600', marginTop: 300 },
+                    ]}
+                >
+                    <TouchableOpacity
+                        onPress={() =>
+                            this.props.navigation.navigate('Join Calendar')
+                        }
+                    >
+                        <Text>Join Calendar</Text>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.courses}>
                     <Text
                         style={{
@@ -157,6 +172,7 @@ export default class Home extends Component {
                         {this.renderCourses(this.state.courses)}
                     </ScrollView>
                 </View>
+
                 <View style={styles.courses}>
                     <Text
                         style={{
