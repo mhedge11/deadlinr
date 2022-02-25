@@ -30,14 +30,9 @@ export default function App() {
         }
     */
 
-  const [user, setUser] = React.useState({
-    firstName: 'Prakhar',
-    lastName: 'Nahar',
-    token: 'eyJhbGciOiJIUzI1NiJ9.NjIxODM5Zjc3MmFhMzk3YWI1ZTkyZWEy.ioozykZvJXJ3BblRUFw9-UZu-nhtSGemPoVGADlYyXs',
-    id: '621839f772aa397ab5e92ea2',
-    email: 'naharpra@gmail.com',
-    username: 'thatprakhar'
-  });
+
+  const [user, setUser] = React.useState(null);
+
 
   const [courses, setCourses] = React.useState([
     {

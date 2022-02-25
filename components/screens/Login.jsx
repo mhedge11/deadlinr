@@ -9,72 +9,126 @@ import {
   TouchableOpacity,
   Button,
   SafeAreaView,
+  Alert,
+  Keyboard,
+  TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RegistrationScreen from "../RegistrationScreen/RegistrationScreen";
 import { emailValidation } from "../../validation/emailValidation";
 import { passwordValidation } from "../../validation/passwordValidation";
+import { usernameValidation } from "../../validation/usernameValidation";
+import { getUser, loginUser } from "../../api/user";
+
+const DismissKeyboard = ({ children }) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const Login = (props) => {
-  const [email, setEmail] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  // const [username, setUsername] = useState("");
 
   const navigation = props.navigation;
 
-  const userPressedLogin = () => {
-    let emailReturn = emailValidation(email);
+  const userPressedLogin = async () => {
+    let loginReturn;
+    if (login.includes("@")) {
+      loginReturn = emailValidation(login);
+    } else {
+      loginReturn = usernameValidation(login);
+    }
+    // let emailReturn = emailValidation(email);
     let passwordReturn = passwordValidation(password);
 
-    if (emailReturn !== "" || passwordReturn !== "") {
-      if (emailReturn !== "") alert(emailReturn);
+    if (loginReturn !== "" || passwordReturn !== "") {
+      if (loginReturn !== "") alert(loginReturn);
       if (passwordReturn !== "") alert(passwordReturn);
-      emailReturn = "";
+      loginReturn = "";
       passwordReturn = "";
       return;
-
-      // Would sent to database at this point
     }
+    // Would sent to database at this point
+    const data = await loginUser(login, password);
+    console.log("data---" + data);
+    // console.log(data.token);
+
+    if (data === null) {
+      alert("Error in Email/Username or in Password. Please Fix and try again");
+      return;
+    }
+
+    const getUserByToken = await getUser(data.token);
+    console.log(getUserByToken.user);
+
+    props.setUser({ user: getUserByToken.user });
   };
 
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Image style={styles.image} source={require("../../assets/phone.jpg")} />
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Enter email or username"
-          placeholderTextColor="black"
-          onChangeText={(email) => setEmail(email)}
+    <DismissKeyboard>
+      <SafeAreaView style={styles.container}>
+        <Image
+          style={styles.image}
+          source={require("../../assets/phone.jpg")}
         />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Enter password"
-          secureTextEntry={true}
-          placeholderTextColor="black"
-          onChangeText={(password) => setPassword(password)}
-        />
-      </View>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter email or username"
+            placeholderTextColor="black"
+            onChangeText={(login) => setLogin(login)}
+          />
+        </View>
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="Enter password"
+            secureTextEntry={true}
+            placeholderTextColor="black"
+            onChangeText={(password) => setPassword(password)}
+          />
+        </View>
 
-      <TouchableOpacity style={styles.loginButton} onPress={userPressedLogin}>
-        <Text style={{ color: "white" }}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Forgot Password")}>
-        <Text style={styles.forgot_button}>Forgot Password</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.loginButton} onPress={userPressedLogin}>
+          <Text style={{ color: "white" }}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Forgot Password")}
+        >
+          <Text style={styles.forgot_button}>Forgot Password</Text>
+        </TouchableOpacity>
 
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Button
-          title="CREATE ACCOUNT"
-          onPress={() => {
-            /* 1. Navigate to the Details route with params */
-            // props.navigation.navigate("RegistrationForm");
-            props.navigation.navigate("Registration");
-          }}
-        />
-      </View>
-    </SafeAreaView>
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Button
+            title="CREATE ACCOUNT"
+            onPress={() => {
+              /* 1. Navigate to the Details route with params */
+              // props.navigation.navigate("RegistrationForm");
+              props.navigation.navigate("Registration");
+            }}
+          />
+        </View>
+      </SafeAreaView>
+    </DismissKeyboard>
   );
 };
 
