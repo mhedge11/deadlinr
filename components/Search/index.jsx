@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SearchBar } from 'react-native-elements';
 import {
     View,
@@ -15,7 +15,7 @@ import {
     Button,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { searchForAllCalendars } from '../../api/calendar';
+import { joinCalendar, searchForAllCalendars } from '../../api/calendar';
 
 /*
 This is Calendar Searching
@@ -27,14 +27,40 @@ const Search = (props) => {
     const [search, setSearch] = useState('');
     const [modalVisible, setModalVisible] = useState(true);
     const [data, setData] = useState([]);
+    const [allCalendars, setAllCalendars] = useState([]);
 
-    const updateSearch = async () => {
-        setData(await searchForAllCalendars(search));
+    useEffect(() => {
+        initialFetch();
+    }, []);
+
+    const initialFetch = async () => {
+        const newAllCalendars = await searchForAllCalendars(search);
+        setAllCalendars(newAllCalendars);
+        setData(newAllCalendars);
     };
 
-    const AddCalendars = () => {
-        alert('Calendars would be added now. Success.');
-        props.navigation.goBack();
+    const updateSearch = async () => {
+        if (allCalendars) {
+            let newData = { ...allCalendars };
+            newData.items = newData.items.filter((val) => {
+                return val.title.toLowerCase().startsWith(search.toLowerCase());
+            });
+            setData(newData);
+        }
+    };
+
+    const addCalendar = async (cid) => {
+        try {
+            await joinCalendar({
+                token: props.user.token,
+                cid,
+            });
+            alert('You have joined this calendar');
+            props.navigation.goBack();
+        } catch (err) {
+            console.error(err);
+            alert('Failed to joiin calendar');
+        }
     };
 
     return (
@@ -97,7 +123,10 @@ const Search = (props) => {
                                     data={data.items}
                                     keyExtractor={(item) => item._id}
                                     renderItem={({ item }) => (
-                                        <TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                addCalendar(item._id)
+                                            }}>
                                             <View
                                                 style={[
                                                     styles.textInput,
@@ -112,15 +141,6 @@ const Search = (props) => {
                                     )}
                                 />
                             </View>
-                            <Pressable
-                                // onPress={() => props.navigation.goBack()}
-                                onPress={AddCalendars}
-                                style={[styles.button, styles.modalClose]}
-                            >
-                                <Text style={styles.textStyle}>
-                                    Add Calendars
-                                </Text>
-                            </Pressable>
                         </View>
                     </View>
                 </Modal>
