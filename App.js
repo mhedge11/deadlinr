@@ -16,6 +16,7 @@ import ResetPassword from './components/screens/ResetPassword';
 import Search from './components/Search';
 import JoinCalendar from './components/Calendar/JoinCalendar';
 import ChangePassword from './components/screens/ChangePassword';
+import Threads from './components/Threads';
 import moment from 'moment';
 import mockCourses from './mockData/courses';
 
@@ -117,6 +118,17 @@ export default function App() {
                 <Stack.Screen name='Calendar' options={{ headerShown: false }}>
                     {(props) => (
                         <Calendar
+                            {...props}
+                            courses={courses}
+                            calendars={calendars}
+                            user={user}
+                            setUser={setUser}
+                        />
+                    )}
+                </Stack.Screen>
+                <Stack.Screen name='Threads' options={{ headerShown: false }}>
+                    {(props) => (
+                        <Threads
                             {...props}
                             courses={courses}
                             calendars={calendars}
