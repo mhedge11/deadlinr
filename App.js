@@ -16,9 +16,13 @@ import ResetPassword from './components/screens/ResetPassword';
 import Search from './components/Search';
 import JoinCalendar from './components/Calendar/JoinCalendar';
 import ChangePassword from './components/screens/ChangePassword';
-import Threads from './components/Threads';
 import moment from 'moment';
 import mockCourses from './mockData/courses';
+import ThreadGridTile from './components/Threads/ThreadGridTile';
+import CalendarGridTile from './components/Threads/CalendarGridTile';
+import ThreadsScreen from './components/Threads/ThreadsScreen';
+import CalendarScreen from './components/Threads/CalendarScreen';
+import IndividualThreadScreen from './components/Threads/IndividualThreadScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -126,9 +130,12 @@ export default function App() {
                         />
                     )}
                 </Stack.Screen>
-                <Stack.Screen name='Threads' options={{ headerShown: false }}>
+                <Stack.Screen
+                    name='calendarScreen'
+                    options={{ headerShown: false }}
+                >
                     {(props) => (
-                        <Threads
+                        <CalendarScreen
                             {...props}
                             courses={courses}
                             calendars={calendars}
@@ -187,6 +194,38 @@ export default function App() {
                     options={{ headerShown: false }}
                 >
                     {(props) => <JoinCalendar {...props} user={user} />}
+                </Stack.Screen>
+                {/* <Stack.Screen
+                    name='CalendarScreen'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <CalendarScreen {...props} user={user} />}
+                </Stack.Screen> */}
+                <Stack.Screen
+                    name='ThreadsScreen'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <ThreadsScreen {...props} user={user} />}
+                </Stack.Screen>
+                {/* <Stack.Screen
+                    name='Calendar Grid Tile'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <CalendarGridTile {...props} user={user} />}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Thread Grid Tile'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <ThreadGridTile {...props} user={user} />}
+                </Stack.Screen> */}
+                <Stack.Screen
+                    name='IndividualThreadScreen'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => (
+                        <IndividualThreadScreen {...props} user={user} />
+                    )}
                 </Stack.Screen>
             </Stack.Navigator>
             <StatusBar />
