@@ -14,10 +14,9 @@ import { getCalendar } from '../../api/calendar';
 import { getUser } from '../../api/user';
 
 const ChooseCalendar = (props) => {
-
     const [calendars, setCalendars] = React.useState([]);
 
-    React.useEffect(() => { 
+    React.useEffect(() => {
         fetchCalendars();
     }, []);
 
@@ -26,16 +25,13 @@ const ChooseCalendar = (props) => {
         try {
             const user = await getUser(props.user.token);
             user.user.calendars.forEach(async (c) => {
-                const item = await getCalendar({ cid: c })
-                setCalendars(c => [
-                    ...c,
-                    item
-                ])
+                const item = await getCalendar({ cid: c });
+                setCalendars((c) => [...c, item]);
             });
-        } catch (e) { console.error(e); }
-    }
-
-   
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const renderList = () => {
         let elems = [];
