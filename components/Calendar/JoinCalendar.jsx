@@ -84,7 +84,7 @@ const JoinCalendar = (props) => {
                             const data = {
                                 token: props.user.token,
                                 cid: user.calendars[0],
-                                users: [ item._id ],
+                                users: [item._id],
                             };
                             await inviteToCalendar(data);
                             alert(`An invitation was sent to ${item.username}`);

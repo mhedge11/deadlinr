@@ -125,8 +125,9 @@ const Search = (props) => {
                                     renderItem={({ item }) => (
                                         <TouchableOpacity
                                             onPress={() => {
-                                                addCalendar(item._id)
-                                            }}>
+                                                addCalendar(item._id);
+                                            }}
+                                        >
                                             <View
                                                 style={[
                                                     styles.textInput,

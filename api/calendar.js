@@ -1,15 +1,14 @@
 const API_URL = 'https://deadlinr.blakekjohnson.dev';
 
-
 export const getCalendar = async ({ cid }) => {
     const route = API_URL + '/calendar/' + cid;
-    try { 
+    try {
         const result = await fetch(route, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-            }
+            },
         })
             .then(async (res) => {
                 if (res.ok) {
@@ -18,17 +17,17 @@ export const getCalendar = async ({ cid }) => {
                 }
                 return null;
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error(err);
                 return null;
-        })
-    
+            });
+
         return result;
     } catch (err) {
         console.error(err);
         return null;
     }
-}
+};
 
 export const createCalendar = async ({ calendarName, isPrivate, token }) => {
     const route = API_URL + '/calendar/';
@@ -195,7 +194,7 @@ export const inviteToCalendar = async ({ token, cid, users }) => {
             },
             body: JSON.stringify({
                 users,
-            })
+            }),
         })
             .then(async (res) => {
                 if (!res.ok) {
@@ -203,12 +202,12 @@ export const inviteToCalendar = async ({ token, cid, users }) => {
                 }
                 return res;
             })
-            .catch(err => console.error(err));
+            .catch((err) => console.error(err));
 
-            console.log(result)
-            return result;
+        console.log(result);
+        return result;
     } catch (err) {
         console.error(err);
         return err;
     }
-}
+};
