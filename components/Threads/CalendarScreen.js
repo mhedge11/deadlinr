@@ -1,5 +1,5 @@
 import { NavigationRouteContext } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -12,6 +12,9 @@ import {
 
 // import THREADDATA from '../../mockData/threadsDummyData.js';
 import CalendarGridTile from './CalendarGridTile.js';
+import { THREADDATA } from '../../mockData/threadsDummyData.js';
+import { getCalendar } from '../../api/calendar';
+import { getUser } from '../../api/user';
 
 // const DATA = [
 //     {
@@ -100,49 +103,98 @@ const CALENDARDATA = [
     },
 ];
 
-const THREADDATA = [
-    {
-        id: 0,
-        title: 'HW 1',
-        body: 'How difficult is HW 1?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: [1, 2],
-    },
-    {
-        id: 1,
-        title: 'HW 2',
-        body: 'How difficult is HW 2?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: [1, 2],
-    },
-    {
-        id: 2,
-        title: 'HW 3',
-        body: 'How difficult is HW 3?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: [],
-    },
-    {
-        id: 3,
-        title: 'HW 4',
-        body: 'How difficult is HW 4?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: [],
-    },
-];
+// const THREADDATA = [
+//     {
+//         id: 0,
+//         title: 'HW 0',
+//         body: 'How difficult is HW 1?',
+//         author: 0,
+//         timestamp: Date.now,
+//         lastActivity: Date.now,
+//         replies: [1, 2],
+//     },
+//     {
+//         id: 1,
+//         title: 'HW 1',
+//         body: 'How difficult is HW 2?',
+//         author: 0,
+//         timestamp: Date.now,
+//         lastActivity: Date.now,
+//         replies: [1, 2],
+//     },
+//     {
+//         id: 2,
+//         title: 'HW 2',
+//         body: 'How difficult is HW 3?',
+//         author: 0,
+//         timestamp: Date.now,
+//         lastActivity: Date.now,
+//         replies: [],
+//     },
+//     {
+//         id: 3,
+//         title: 'HW 3',
+//         body: 'How difficult is HW 4?',
+//         author: 0,
+//         timestamp: Date.now,
+//         lastActivity: Date.now,
+//         replies: [],
+//     },
+// ];
 
-const CalendarScreen = ({ navigation }) => {
+// const buildCalendarList = (array) => {
+//     setCalendars([]);
+//     array.forEach((element) => {
+//         fetchCalendars = async () => {
+//             try {
+//                 const user = await getUser(props.user.token);
+//                 user.user.calendars.forEach(async (c) => {
+//                     const item = await getCalendar({ cid: c });
+//                     setCalendars((c) => [...c, item]);
+//                 });
+//             } catch (e) {
+//                 console.error(e);
+//             }
+//         };
+//     });
+// };
+
+const CalendarScreen = (props) => {
+    console.log(props.user.user.calendars);
+
+    const [calendars, setCalendars] = React.useState([]);
+
+    React.useEffect(() => {
+        fetchCalendars();
+    }, []);
+
+    fetchCalendars = async () => {
+        setCalendars([]);
+        try {
+            const user = await getUser(props.user.token);
+            user.user.calendars.forEach(async (c) => {
+                const item = await getCalendar({ cid: c });
+                if (item !== null) {
+                    setCalendars((c) => [...c, item]);
+                }
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+    console.log(calendars);
+    // CALENDARDATA = calendars;
+
+    // setCalendar();
     function renderCalendarItem(itemData) {
+        // buildCalendarList();
         function pressHandler() {
-            navigation.navigate('ThreadsScreen', {
+            // navigation.navigate('CreateThread', {
+            //     // calendarId: itemData.item.id,
+            //     // threadArray: itemData.item.threads,
+            // });
+
+            props.navigation.navigate('ThreadsScreen', {
                 calendarId: itemData.item.id,
                 threadArray: itemData.item.threads,
             });
@@ -154,7 +206,7 @@ const CalendarScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={CALENDARDATA}
+                data={calendars}
                 keyExtractor={(item) => item.id}
                 renderItem={renderCalendarItem}
             />

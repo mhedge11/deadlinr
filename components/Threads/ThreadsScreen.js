@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     View,
     Text,
@@ -5,33 +6,38 @@ import {
     FlatList,
     SafeAreaView,
     StatusBar,
+    Button,
 } from 'react-native';
 import IndividualThreadScreen from './IndividualThreadScreen';
 import ThreadGridTile from './ThreadGridTile';
+// import { THREADDATA } from '../../mockData/threadsDummyData.js';
+import CreateThread from './CreateThread';
+import { getCalendar } from '../../api/calendar';
+import { getUser } from '../../api/user';
 
 const THREADDATA = [
     {
         id: 0,
-        title: 'HW 1',
+        title: 'HW 0000',
         body: 'How difficult is HW 1?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: ['Why is it this way?', 'Which way to do this?'],
-    },
-    {
-        id: 1,
-        title: 'HW 2',
-        body: 'How difficult is HW 2?',
         author: 0,
         timestamp: Date.now,
         lastActivity: Date.now,
         replies: [1, 2],
     },
     {
+        id: 1,
+        title: 'HW 1',
+        body: 'How difficult is HW 1?',
+        author: 0,
+        timestamp: Date.now,
+        lastActivity: Date.now,
+        replies: [3],
+    },
+    {
         id: 2,
-        title: 'HW 3',
-        body: 'How difficult is HW 3?',
+        title: 'HW 2',
+        body: 'How difficult is HW 2?',
         author: 0,
         timestamp: Date.now,
         lastActivity: Date.now,
@@ -39,8 +45,8 @@ const THREADDATA = [
     },
     {
         id: 3,
-        title: 'HW 4',
-        body: 'How difficult is HW 4?',
+        title: 'HW 3',
+        body: 'How difficult is HW 3?',
         author: 0,
         timestamp: Date.now,
         lastActivity: Date.now,
@@ -71,11 +77,16 @@ const THREADDATA = [
 //         </SafeAreaView>
 //     );
 // }
-
-const ThreadsScreen = ({ route, navigation, onPress }) => {
+// const calId = '';
+const ThreadsScreen = (props) => {
+    console.log('ThreadsScreen');
+    console.log(props);
+    const [calId, setCalId] = useState('');
     function renderThreadItem(itemData) {
+        setCalId(itemData.item.id);
+        // calId = itemData.item.id;
         function pressHandler() {
-            navigation.navigate('IndividualThreadScreen', {
+            props.navigation.navigate('IndividualThreadScreen', {
                 threadId: itemData.item.id,
                 threadArray: itemData.item.body,
                 threadReplies: itemData.item.replies,
@@ -94,6 +105,18 @@ const ThreadsScreen = ({ route, navigation, onPress }) => {
             <StatusBar style='light' />
 
             <SafeAreaView style={styles.container}>
+                <View>
+                    <Button
+                        title='Create New Post'
+                        onPress={() =>
+                            props.navigation.navigate('CreateThread', {
+                                calendarId: calId,
+                                // threadArray: itemData.item.threads,
+                            })
+                        }
+                        // onPress={() => {}}
+                    />
+                </View>
                 <FlatList
                     data={THREADDATA}
                     keyExtractor={(item) => item.id}

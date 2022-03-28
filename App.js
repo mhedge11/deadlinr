@@ -23,6 +23,7 @@ import CalendarGridTile from './components/Threads/CalendarGridTile';
 import ThreadsScreen from './components/Threads/ThreadsScreen';
 import CalendarScreen from './components/Threads/CalendarScreen';
 import IndividualThreadScreen from './components/Threads/IndividualThreadScreen';
+import CreateThread from './components/Threads/CreateThread';
 
 const Stack = createNativeStackNavigator();
 
@@ -224,8 +225,18 @@ export default function App() {
                     options={{ headerShown: false }}
                 >
                     {(props) => (
-                        <IndividualThreadScreen {...props} user={user} />
+                        <IndividualThreadScreen
+                            {...props}
+                            user={user}
+                            calendars={calendars}
+                        />
                     )}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='CreateThread'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <CreateThread {...props} user={user} />}
                 </Stack.Screen>
             </Stack.Navigator>
             <StatusBar />
