@@ -15,7 +15,7 @@ import { Pressable, View, Text, StyleSheet } from 'react-native';
 //     </SafeAreaView>
 // );
 
-function ThreadGridTile({ route, navigation, calendar, onPress }) {
+function ThreadGridTile({ route, navigation, thread, onPress }) {
     return (
         <View style={styles.gridItem}>
             <Pressable
@@ -31,7 +31,7 @@ function ThreadGridTile({ route, navigation, calendar, onPress }) {
                         { backgroundColor: 'orange' },
                     ]}
                 >
-                    <Text style={styles.title}>{calendar.title}</Text>
+                    <Text style={styles.title}>{thread.title}</Text>
                 </View>
             </Pressable>
         </View>

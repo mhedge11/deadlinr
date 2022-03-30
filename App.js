@@ -206,7 +206,13 @@ export default function App() {
                     name='ThreadsScreen'
                     options={{ headerShown: false }}
                 >
-                    {(props) => <ThreadsScreen {...props} user={user} />}
+                    {(props) => (
+                        <ThreadsScreen
+                            {...props}
+                            user={user}
+                            calendars={calendars}
+                        />
+                    )}
                 </Stack.Screen>
                 {/* <Stack.Screen
                     name='Calendar Grid Tile'
