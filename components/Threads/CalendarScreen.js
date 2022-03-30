@@ -160,7 +160,7 @@ const CALENDARDATA = [
 // };
 
 const CalendarScreen = (props) => {
-    console.log(props.user.user.calendars);
+    // console.log(props.user.user.calendars);
 
     const [calendars, setCalendars] = React.useState([]);
 
@@ -168,7 +168,7 @@ const CalendarScreen = (props) => {
         fetchCalendars();
     }, []);
 
-    fetchCalendars = async () => {
+    const fetchCalendars = async () => {
         setCalendars([]);
         try {
             const user = await getUser(props.user.token);
