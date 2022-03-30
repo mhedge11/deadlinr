@@ -36,16 +36,17 @@ const CreateCalendar = (props) => {
         setLoading(false);
         if (res !== false) {
             setMsg('');
-            props.setCalendars([
-                ...props.calendars,
-                {
-                    id: res.id,
-                    isPrivate: privateCalendar,
-                    title: calendarName,
-                    tasks: [],
-                    members: [],
-                },
-            ]);
+            props.setUser({ 
+                token: props.user.token,
+                user: {
+                    ...props.user.user,
+                    calendars: [
+                        ...props.user.user.calendars,
+                        res.id
+                    ]
+                }
+            });
+
             props.navigation.goBack();
             return;
         } else {

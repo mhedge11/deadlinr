@@ -5,43 +5,78 @@ import {
     ScrollView,
     TouchableOpacity,
     Button,
+    ActivityIndicator
 } from 'react-native';
 import React, { Component } from 'react';
 import { Avatar } from 'react-native-elements';
 import Navigator from '../Navigator';
+import { getUser } from '../../api/user';
+import { getCalendar } from '../../api/calendar';
 
-function renderScheduleBlock() {}
 
 export default class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             courses: props.courses,
+            calendars: [],
+            loading: true,
         };
     }
 
-    renderCourseCard = (course) => {
+    getAllCalendars = () => {
+        this.setState({
+            loading: true
+        })
+        this.props.user.user.calendars.forEach(async c => { 
+            const data = await getCalendar({ cid: c });
+            console.log(data);
+            this.setState({ 
+                calendars: [...this.state.calendars, data]
+            })
+        })
+        console.log(this.state.calendars);
+        this.setState({
+            loading: false
+        })
+    }
+
+    componentDidMount() {
+        const token = this.props.user.token;
+        getUser(token).then((user) => {
+            this.props.setUser({
+                ...user,
+                token
+            });
+        });
+        this.getAllCalendars();
+    }
+
+    getDarkColor = () => {
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += Math.floor(Math.random() * 10);
+        }
+        return color;
+    }
+
+    renderCourseCard = (calendar) => {
+        console.log(calendar);
         return (
             <TouchableOpacity
                 style={{
-                    backgroundColor: course.bgColor,
-                    borderRadius: '30%',
+                    backgroundColor: this.getDarkColor(),
+                    borderRadius: 15,
                     width: '10%',
                     marginRight: '1%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    shadowColor: '#171717',
-                    shadowOffset: { width: -2, height: 4 },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 3,
                 }}
-                key={course.id}
+                key={calendar._id}
                 onPress={() => {
                     if (!this.props.navigation) return;
                     this.props.navigation.navigate('Calendar View', {
-                        ...course,
-                        isPrivate: true,
-                        createrUID: '1',
+                        ...calendar,
                     });
                 }}
             >
@@ -52,21 +87,27 @@ export default class Home extends Component {
                         fontSize: '20rem',
                     }}
                 >
-                    {course.title}
+                    {calendar.title}
                 </Text>
             </TouchableOpacity>
         );
     };
 
-    renderCourses(courses) {
-        let elements = [];
-        courses.forEach((course) => {
-            elements.push(this.renderCourseCard(course));
-        });
-        return elements;
+    renderCourses = () => {
+        while (this.state.loading || this.state.calendars.length !== this.props.user.user.calendars.length) {
+            return <ActivityIndicator />
+        }
+        let elemes = [];
+        this.state.calendars.forEach(c => { 
+            const d = this.renderCourseCard(c);
+            elemes.push(d);
+        })
+        console.log(this.state.calendars.length)
+        return elemes;
     }
 
     render() {
+
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
@@ -78,7 +119,7 @@ export default class Home extends Component {
                         <Text
                             style={{
                                 fontSize: '15rem',
-                                color: '#a2a3a6',
+                                color: '#787878',
                             }}
                         >
                             Hello {this.props.user.user.firstName}
@@ -95,7 +136,7 @@ export default class Home extends Component {
                                     color: '#36e373',
                                 }}
                             >
-                                4 upcoming tasks
+                                0 upcoming tasks
                             </Text>
                         </Text>
                     </View>
@@ -117,7 +158,7 @@ export default class Home extends Component {
                         rounded
                         size='large'
                         source={{
-                            uri: 'https://cdn.vox-cdn.com/thumbor/LJsKwxxJ8VYHNXpWCIlYljhIIps=/0x104:438x396/1820x1213/filters:focal(0x104:438x396):format(webp)/cdn.vox-cdn.com/imported_assets/846325/steve-jobs-1.jpg',
+                            uri: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png',
                         }}
                         title='P'
                         titleStyle={{}}
@@ -144,14 +185,14 @@ export default class Home extends Component {
                             fontWeight: '700',
                         }}
                     >
-                        Courses
+                        Calendars
                     </Text>
                     <Text
                         style={{
                             color: '#a2a3a6',
                         }}
                     >
-                        Your running courses
+                        Your running calendars
                     </Text>
                     <ScrollView
                         horizontal
@@ -169,7 +210,7 @@ export default class Home extends Component {
                             overflow: 'hidden',
                         }}
                     >
-                        {this.renderCourses(this.state.courses)}
+                        {this.renderCourses()}
                     </ScrollView>
                 </View>
 

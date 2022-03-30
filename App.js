@@ -16,6 +16,8 @@ import ResetPassword from './components/screens/ResetPassword';
 import Search from './components/Search';
 import JoinCalendar from './components/Calendar/JoinCalendar';
 import ChangePassword from './components/screens/ChangePassword';
+import CreateDeadline from './components/Calendar/CreateDeadline';
+import ViewDeadline from './components/Calendar/ViewDeadline';
 import moment from 'moment';
 import mockCourses from './mockData/courses';
 
@@ -175,6 +177,34 @@ export default function App() {
                     options={{ headerShown: false }}
                 >
                     {(props) => <JoinCalendar {...props} user={user} />}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Create Deadline'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => (
+                        <CreateDeadline
+                            {...props}
+                            calendars={calendars}
+                            setCalendars={setCalendars}
+                            user={user}
+                            setUser={setUser}
+                        />
+                    )}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Deadline View'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => (
+                        <ViewDeadline
+                            {...props}
+                            calendars={calendars}
+                            setCalendars={setCalendars}
+                            user={user}
+                            setUser={setUser}
+                        />
+                    )}
                 </Stack.Screen>
             </Stack.Navigator>
             <StatusBar />

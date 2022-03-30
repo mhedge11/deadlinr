@@ -204,8 +204,6 @@ export const inviteToCalendar = async ({ token, cid, users }) => {
                 return res;
             })
             .catch(err => console.error(err));
-
-            console.log(result)
             return result;
     } catch (err) {
         console.error(err);
