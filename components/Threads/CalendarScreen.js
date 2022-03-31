@@ -182,7 +182,7 @@ const CalendarScreen = (props) => {
             console.error(e);
         }
     };
-    console.log(calendars);
+    // console.log(calendars);
     // CALENDARDATA = calendars;
 
     // setCalendar();

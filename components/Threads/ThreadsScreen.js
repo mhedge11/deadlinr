@@ -81,7 +81,7 @@ const THREADDATA = [
 // const calId = '';
 const ThreadsScreen = (props) => {
     // console.log('ThreadsScreen');
-    console.log(props.route);
+    // console.log(props.route);
     const [calId, setCalId] = useState('');
 
     const [threads, setThreads] = React.useState([]);
@@ -104,13 +104,14 @@ const ThreadsScreen = (props) => {
         }
     };
 
-    console.log(threads);
+    // console.log(threads);
 
     function renderThreadItem(itemData) {
         setCalId(itemData.item.id);
         // calId = itemData.item.id;
         function pressHandler() {
             props.navigation.navigate('IndividualThreadScreen', {
+                threadObject: itemData.item,
                 threadId: itemData.item.id,
                 threadArray: itemData.item.body,
                 threadReplies: itemData.item.replies,
