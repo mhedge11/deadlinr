@@ -32,6 +32,7 @@ function ThreadGridTile({ route, navigation, thread, onPress }) {
                     ]}
                 >
                     <Text style={styles.title}>{thread.title}</Text>
+                    <Text style={{ fontSize: 24 }}>{thread.body}</Text>
                 </View>
             </Pressable>
         </View>

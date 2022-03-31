@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -60,7 +60,10 @@ function IndividualThreadScreen(props) {
     const threadArray = props.route.params.threadArray;
     const threadReplies = props.route.params.threadReplies;
 
+    console.log('Individual Thread Screen');
     // console.log(calendars);
+    console.log(props);
+    // console.log(threadArray);
 
     const displayedIndividualThreads = THREADDATA.filter((threadItem) => {
         return threadItem.replies.indexOf(threadId) >= 0;
