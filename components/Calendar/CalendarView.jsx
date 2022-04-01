@@ -57,6 +57,7 @@ export default class CalendarView extends React.Component {
                     id: did,
                     token: this.props.user.token,
                 });
+                console.log(item.deadline);
                 this.setState({
                     deadlines: [...this.state.deadlines, item.deadline],
                 });
@@ -121,6 +122,14 @@ export default class CalendarView extends React.Component {
         }
     };
 
+    getDarkColor = () => {
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += Math.floor(Math.random() * 10);
+        }
+        return color;
+    };
+
     renderDeadline = (deadline) => {
         const {
             title,
@@ -132,7 +141,10 @@ export default class CalendarView extends React.Component {
             usersVoted,
             usersFinished,
             votesRemaining,
+            groups
         } = deadline.item;
+
+        console.log(groups);
 
         let diffColor = '';
         if (averageDifficulty <= 1) {
@@ -308,7 +320,39 @@ export default class CalendarView extends React.Component {
                             </View>
                         </View>
                     </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            marginTop: '5%',
+                        }}
+                    >
+                        {
+                            groups.map(g => { 
+                                return (
+                                    <View
+                                        style={{
+                                            backgroundColor: this.getDarkColor(),
+                                            padding: '5%',
+                                            borderRadius: 5,
+                                        }}
+                                    >
+                                        <Text
+                                            style={{
+                                                fontSize: 15,
+                                                color: 'white',
+                                                fontWeight: '500'
+
+                                            }}
+                                        >
+                                        { g }
+                                    </Text>
+                                    </View>
+                                )
+                            })
+                        }
+                    </View>
                 </View>
+
             </TouchableOpacity>
         );
     };

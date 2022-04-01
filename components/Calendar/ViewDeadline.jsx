@@ -9,6 +9,7 @@ import {
     SafeAreaView,
     ActivityIndicator,
     Alert,
+    ScrollView
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -131,6 +132,14 @@ const ViewDeadline = (props) => {
         }
     };
 
+    const getDarkColor = () => {
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += Math.floor(Math.random() * 10);
+        }
+        return color;
+    };
+
     const renderDiffButton = (diff) => {
         return (
             <TouchableOpacity
@@ -174,7 +183,12 @@ const ViewDeadline = (props) => {
     }
 
     return (
-        <SafeAreaView>
+        <ScrollView
+            style={{
+                marginTop: '10%',
+                marginBottom: '10%',
+            }}
+        >
             <View
                 style={{
                     padding: '5%',
@@ -204,6 +218,7 @@ const ViewDeadline = (props) => {
             <View
                 style={{
                     flexDirection: 'row',
+                    alignSelf: 'flex-end'
                 }}
             >
                 <Button
@@ -232,6 +247,38 @@ const ViewDeadline = (props) => {
                         );
                     }}
                 />
+            </View>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    padding: '5%',
+                }}
+            >
+                {
+                        deadline.groups.map(g => { 
+                            return (
+                                <View
+                                    style={{
+                                        backgroundColor: getDarkColor(),
+                                        padding: '5%',
+                                        borderRadius: 5,
+                                        marginRight: '5%'
+                                    }}
+                                >
+                                    <Text
+                                        style={{
+                                            fontSize: 15,
+                                            color: 'white',
+                                            fontWeight: '500'
+
+                                        }}
+                                    >
+                                    { g }
+                                </Text>
+                                </View>
+                            )
+                        })
+                }
             </View>
             <View
                 style={{
@@ -505,7 +552,7 @@ const ViewDeadline = (props) => {
                 }}
                 disabled={deadline.usersFinished.includes(props.user.user._id)}
             />
-        </SafeAreaView>
+        </ScrollView>
     );
 };
 

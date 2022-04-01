@@ -21,6 +21,7 @@ const CreateDeadline = (props) => {
     const [bcolor, setBorderColor] = React.useState('transparent');
     const [loading, setLoading] = React.useState(false);
     const [msg, setMsg] = React.useState('');
+    const [group, setGroup] = React.useState('');
 
     const createDeadline = async () => {
         if (!props.user) return Alert.alert('An error occured');
@@ -31,7 +32,7 @@ const CreateDeadline = (props) => {
             dueDate,
             description,
             owner: props.user.user._id,
-            groups: [],
+            groups: [group],
             calendar: props.route.params.calendarID,
             votesRemaining: props.route.params.members.length,
             token: props.user['token'],
@@ -145,13 +146,25 @@ const CreateDeadline = (props) => {
                     />
                 </View>
             </View>
-
+            <View
+                style={{
+                    padding: '5%',
+                }}
+            >
+                <Text style={styles.label}>Groups</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder='Add group name'
+                    value={group}
+                    onChangeText={ (v) => setGroup(v) }
+                />
+            </View>
             <View>
                 <Button
                     title='Create'
                     onPress={() => createDeadline()}
                     disabled={
-                        deadlineName.length === 0 || dueDate <= new Date()
+                        deadlineName.length === 0 || dueDate <= new Date() || group.trim() === ''
                     }
                 />
             </View>
