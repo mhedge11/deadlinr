@@ -21,13 +21,10 @@ function IndividualThreadScreen(props) {
     const threadObject = props.route.params.threadObject;
     console.log(threadObject.replies);
 
-    // console.log('Individual Thread Screen');
-    // console.log(calendars);
-    // console.log(props.route.params.threadObject.replies);
-    // console.log(threadArray);
-
     const [replies, setReplies] = React.useState([]);
     const [userName, setUserName] = React.useState('Unknown');
+    const [userId, setUserId] = React.useState(threadObject.author);
+    const [uid, setuid] = React.useState(threadObject.author);
 
     React.useEffect(() => {
         fetchIndividualThread();
@@ -36,22 +33,16 @@ function IndividualThreadScreen(props) {
     const fetchIndividualThread = async () => {
         setUserName('');
         try {
-            console.log(userId);
-            const data = await fetchUser(userId);
-            console.log(data);
+            let orig = { uid: threadObject.author };
+            const data = await fetchUser(orig);
             setUserName(data.username);
         } catch (e) {
             console.error(e);
         }
     };
 
-    const [userId, setUserId] = React.useState(threadObject.author);
-
     function Comment({ authorId, node }) {
         setUserId(authorId);
-        console.log(authorId);
-        console.log(node.title);
-        // findUser();
         if (!node.replies) {
             return (
                 <View>
