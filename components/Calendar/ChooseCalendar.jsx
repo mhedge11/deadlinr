@@ -24,7 +24,6 @@ const ChooseCalendar = (props) => {
         await fetchCalendars();
         setRefreshing(false);
     };
-
     React.useEffect(() => {
         fetchCalendars();
     }, [props]);

@@ -304,3 +304,34 @@ export const changePassword = async ({
         return false;
     }
 };
+
+// returns a user based on their UID
+
+export const fetchUser = async ({ uid }) => {
+    const route = API_URL + '/user/fetch/' + uid;
+    try {
+        const result = await fetch(route, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    return data.user;
+                }
+                return null;
+            })
+            .catch((err) => {
+                console.error(err);
+                return null;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+};

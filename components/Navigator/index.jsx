@@ -19,7 +19,7 @@ export default class Navigator extends React.Component {
                     <Text style={styles.text}>Calendar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                // onPress={() => navigation.navigate('Threads')}
+                    onPress={() => navigation.navigate('calendarScreen')}
                 >
                     <Icon name='commenting' type='font-awesome' color='white' />
                     <Text style={styles.text}>Threads</Text>
