@@ -27,14 +27,14 @@ export default class Home extends Component {
         this.setState({
             loading: true,
         });
-		if (this.props.user.user.calendars) {
-			this.props.user.user.calendars.forEach(async (c) => {
-				const data = await getCalendar({ cid: c });
-				this.setState({
-					calendars: [...this.state.calendars, data],
-				});
-			});
-		}
+        if (this.props.user.user.calendars) {
+            this.props.user.user.calendars.forEach(async (c) => {
+                const data = await getCalendar({ cid: c });
+                this.setState({
+                    calendars: [...this.state.calendars, data],
+                });
+            });
+        }
         this.setState({
             loading: false,
         });
@@ -94,7 +94,7 @@ export default class Home extends Component {
     renderCourses = () => {
         while (
             this.state.loading ||
-			!this.props.user.user.calendars ||
+            !this.props.user.user.calendars ||
             this.state.calendars.length !==
                 this.props.user.user.calendars.length
         ) {

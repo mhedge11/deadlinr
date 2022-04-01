@@ -156,7 +156,7 @@ const CreateDeadline = (props) => {
                     style={styles.input}
                     placeholder='Add group name'
                     value={group}
-                    onChangeText={ (v) => setGroup(v) }
+                    onChangeText={(v) => setGroup(v)}
                 />
             </View>
             <View>
@@ -164,7 +164,9 @@ const CreateDeadline = (props) => {
                     title='Create'
                     onPress={() => createDeadline()}
                     disabled={
-                        deadlineName.length === 0 || dueDate <= new Date() || group.trim() === ''
+                        deadlineName.length === 0 ||
+                        dueDate <= new Date() ||
+                        group.trim() === ''
                     }
                 />
             </View>

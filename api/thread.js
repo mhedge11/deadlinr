@@ -84,7 +84,7 @@ export const createReplyToThread = async ({ tid, threadBody, token }) => {
                 reply: {
                     body: threadBody,
                 },
-				parents: []
+                parents: [],
             }),
         })
             .then(async (res) => {
@@ -121,7 +121,7 @@ export const createReplyToReply = async ({ tid, rid, threadBody, token }) => {
                 reply: {
                     body: threadBody,
                 },
-				parents: [ rid ]
+                parents: [rid],
             }),
         })
             .then(async (res) => {

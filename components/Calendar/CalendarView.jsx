@@ -141,7 +141,7 @@ export default class CalendarView extends React.Component {
             usersVoted,
             usersFinished,
             votesRemaining,
-            groups
+            groups,
         } = deadline.item;
 
         console.log(groups);
@@ -326,33 +326,29 @@ export default class CalendarView extends React.Component {
                             marginTop: '5%',
                         }}
                     >
-                        {
-                            groups.map(g => { 
-                                return (
-                                    <View
+                        {groups.map((g) => {
+                            return (
+                                <View
+                                    style={{
+                                        backgroundColor: this.getDarkColor(),
+                                        padding: '5%',
+                                        borderRadius: 5,
+                                    }}
+                                >
+                                    <Text
                                         style={{
-                                            backgroundColor: this.getDarkColor(),
-                                            padding: '5%',
-                                            borderRadius: 5,
+                                            fontSize: 15,
+                                            color: 'white',
+                                            fontWeight: '500',
                                         }}
                                     >
-                                        <Text
-                                            style={{
-                                                fontSize: 15,
-                                                color: 'white',
-                                                fontWeight: '500'
-
-                                            }}
-                                        >
-                                        { g }
+                                        {g}
                                     </Text>
-                                    </View>
-                                )
-                            })
-                        }
+                                </View>
+                            );
+                        })}
                     </View>
                 </View>
-
             </TouchableOpacity>
         );
     };

@@ -9,7 +9,7 @@ import {
     SafeAreaView,
     ActivityIndicator,
     Alert,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -218,7 +218,7 @@ const ViewDeadline = (props) => {
             <View
                 style={{
                     flexDirection: 'row',
-                    alignSelf: 'flex-end'
+                    alignSelf: 'flex-end',
                 }}
             >
                 <Button
@@ -254,31 +254,28 @@ const ViewDeadline = (props) => {
                     padding: '5%',
                 }}
             >
-                {
-                        deadline.groups.map(g => { 
-                            return (
-                                <View
-                                    style={{
-                                        backgroundColor: getDarkColor(),
-                                        padding: '5%',
-                                        borderRadius: 5,
-                                        marginRight: '5%'
-                                    }}
-                                >
-                                    <Text
-                                        style={{
-                                            fontSize: 15,
-                                            color: 'white',
-                                            fontWeight: '500'
-
-                                        }}
-                                    >
-                                    { g }
-                                </Text>
-                                </View>
-                            )
-                        })
-                }
+                {deadline.groups.map((g) => {
+                    return (
+                        <View
+                            style={{
+                                backgroundColor: getDarkColor(),
+                                padding: '5%',
+                                borderRadius: 5,
+                                marginRight: '5%',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 15,
+                                    color: 'white',
+                                    fontWeight: '500',
+                                }}
+                            >
+                                {g}
+                            </Text>
+                        </View>
+                    );
+                })}
             </View>
             <View
                 style={{
