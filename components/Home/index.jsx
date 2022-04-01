@@ -27,12 +27,14 @@ export default class Home extends Component {
         this.setState({
             loading: true,
         });
-        this.props.user.user.calendars.forEach(async (c) => {
-            const data = await getCalendar({ cid: c });
-            this.setState({
-                calendars: [...this.state.calendars, data],
-            });
-        });
+		if (this.props.user.user.calendars) {
+			this.props.user.user.calendars.forEach(async (c) => {
+				const data = await getCalendar({ cid: c });
+				this.setState({
+					calendars: [...this.state.calendars, data],
+				});
+			});
+		}
         this.setState({
             loading: false,
         });
