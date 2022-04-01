@@ -1,68 +1,50 @@
 import React from 'react';
 import {
     View,
-    SafeAreaView,
     Text,
-    StyleSheet,
-    TextInput,
-    Switch,
-    Button,
     TouchableOpacity,
+    StyleSheet,
+    Button,
+    TextInput,
+    SafeAreaView,
     ActivityIndicator,
-    Alert,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { createCalendar as createCalendarAPI } from '../../api/calendar';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-const CreateCalendar = (props) => {
-    const [privateCalendar, setPrivate] = React.useState(false);
-    const [calendarName, setCalendarName] = React.useState('');
+import { createDeadline as createDeadlineAPI } from '../../api/deadline';
+
+const CreateDeadline = (props) => {
+    const [deadlineName, setDeadlineName] = React.useState('');
+    const [description, setDescription] = React.useState('');
+    const [dueDate, setDueDate] = React.useState(new Date());
     const [bcolor, setBorderColor] = React.useState('transparent');
     const [loading, setLoading] = React.useState(false);
+    const [msg, setMsg] = React.useState('');
 
-    const [errMsg, setMsg] = React.useState('');
-
-    const createCalendar = async () => {
+    const createDeadline = async () => {
         if (!props.user) return Alert.alert('An error occured');
-        if (calendarName.trim() === '') return;
-
+        if (deadlineName.trim() === '') return;
         setLoading(true);
-
-        const res = await createCalendarAPI({
-            calendarName,
-            isPrivate: privateCalendar,
+        const res = await createDeadlineAPI({
+            title: deadlineName,
+            dueDate,
+            description,
+            owner: props.user.user._id,
+            groups: [],
+            calendar: props.route.params.calendarID,
+            votesRemaining: props.route.params.members.length,
             token: props.user['token'],
         });
         setLoading(false);
         if (res !== false) {
             setMsg('');
-            props.setUser({
-                token: props.user.token,
-                user: {
-                    ...props.user.user,
-                    calendars: [...props.user.user.calendars, res.id],
-                },
-            });
-
             props.navigation.goBack();
             return;
         } else {
             setMsg('An error occured. Please try again later.');
         }
     };
-
-    if (loading) {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                }}
-            >
-                <ActivityIndicator />
-            </View>
-        );
-    }
 
     return (
         <SafeAreaView
@@ -93,7 +75,7 @@ const CreateCalendar = (props) => {
                         marginLeft: '5%',
                     }}
                 >
-                    Create Calendar
+                    Create Deadline
                 </Text>
             </View>
 
@@ -110,19 +92,36 @@ const CreateCalendar = (props) => {
                         borderWidth: 2,
                     }}
                     onBlur={() => {
-                        if (calendarName.length === 0) {
+                        if (deadlineName.length === 0) {
                             setBorderColor('red');
                         } else setBorderColor('transparent');
                     }}
-                    placeholder='Calendar Name'
-                    value={calendarName}
-                    onChangeText={(v) => setCalendarName(v)}
+                    placeholder='Deadline Name'
+                    value={deadlineName}
+                    onChangeText={(v) => setDeadlineName(v)}
                 />
                 {bcolor === 'red' && (
                     <Text style={{ color: 'red' }}>
-                        Calendar name cannot be empty.
+                        Deadline name cannot be empty.
                     </Text>
                 )}
+            </View>
+            <View
+                style={{
+                    padding: '5%',
+                }}
+            >
+                <Text style={styles.label}>Description</Text>
+                <TextInput
+                    style={{
+                        ...styles.input,
+                        borderColor: bcolor,
+                        borderWidth: 2,
+                    }}
+                    placeholder='Deadline description'
+                    value={description}
+                    onChangeText={(v) => setDescription(v)}
+                />
             </View>
 
             <View
@@ -130,42 +129,36 @@ const CreateCalendar = (props) => {
                     padding: '5%',
                 }}
             >
-                <Text style={styles.label}>Private</Text>
-                <Switch
+                <Text style={styles.label}>Due Date</Text>
+                <View
                     style={{
-                        marginTop: '3%',
+                        paddingRight: '20%',
+                        marginTop: '5%',
                     }}
-                    value={privateCalendar}
-                    onValueChange={() => setPrivate(!privateCalendar)}
-                    trackColor={{ false: 'white', true: '#2776f5' }}
-                />
+                >
+                    <DateTimePicker
+                        value={dueDate}
+                        mode='datetime'
+                        onChange={(e, d) => {
+                            setDueDate(d);
+                        }}
+                    />
+                </View>
             </View>
 
             <View>
                 <Button
                     title='Create'
-                    onPress={() => createCalendar()}
-                    disabled={calendarName.length === 0}
+                    onPress={() => createDeadline()}
+                    disabled={
+                        deadlineName.length === 0 || dueDate <= new Date()
+                    }
                 />
             </View>
+            {loading && <ActivityIndicator />}
 
-            {errMsg.length > 0 && (
-                <View
-                    style={{
-                        padding: '15%',
-                        bottom: 0,
-                    }}
-                >
-                    <Text
-                        style={{
-                            color: 'red',
-                            fontSize: '20rem',
-                            fontWeight: '500',
-                        }}
-                    >
-                        {errMsg}
-                    </Text>
-                </View>
+            {msg !== '' && (
+                <Text style={{ color: 'red', fontSize: 18 }}>{msg}</Text>
             )}
         </SafeAreaView>
     );
@@ -187,4 +180,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateCalendar;
+export default CreateDeadline;

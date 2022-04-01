@@ -1,37 +1,16 @@
 const API_URL = 'https://deadlinr.blakekjohnson.dev';
 
-export const getCalendar = async ({ cid }) => {
-    const route = API_URL + '/calendar/' + cid;
-    try {
-        const result = await fetch(route, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(async (res) => {
-                if (res.ok) {
-                    const data = await res.json();
-                    return data.calendar;
-                }
-                return null;
-            })
-            .catch((err) => {
-                console.error(err);
-                return null;
-            });
-
-        return result;
-    } catch (err) {
-        console.error(err);
-        return null;
-    }
-};
-
-export const createCalendar = async ({ calendarName, isPrivate, token }) => {
-    const route = API_URL + '/calendar/';
-
+export const createDeadline = async ({
+    title,
+    description,
+    owner,
+    groups,
+    calendar,
+    dueDate,
+    votesRemaining,
+    token,
+}) => {
+    const route = API_URL + '/deadline/';
     try {
         let result = await fetch(route, {
             method: 'POST',
@@ -41,8 +20,84 @@ export const createCalendar = async ({ calendarName, isPrivate, token }) => {
                 Authorization: 'Bearer ' + token,
             },
             body: JSON.stringify({
-                title: calendarName,
-                isPrivate: isPrivate,
+                deadlineData: {
+                    title,
+                    description,
+                    owner,
+                    groups,
+                    averageCompletionTime: 0,
+                    dueDate,
+                    votesRemaining,
+                },
+                cid: calendar,
+            }),
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    return data;
+                }
+                console.log(res.status);
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
+
+export const getDeadline = async ({ id, token }) => {
+    const route = API_URL + '/deadline/' + id;
+    try {
+        let result = await fetch(route, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    return data;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
+
+export const rateDeadline = async ({
+    did,
+    difficulty,
+    completionTime,
+    token,
+}) => {
+    const route = API_URL + '/deadline/' + did + '/rate';
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                difficulty,
+                completionTime,
             }),
         })
             .then(async (res) => {
@@ -63,8 +118,15 @@ export const createCalendar = async ({ calendarName, isPrivate, token }) => {
     }
 };
 
-export const updatePrivacy = async ({ cid, token }) => {
-    const route = API_URL + '/calendar/' + cid + '/privacy';
+export const editDeadline = async ({
+    did,
+    title,
+    description,
+    dueDate,
+    token,
+}) => {
+    const route = API_URL + '/deadline/' + did;
+
     try {
         let result = await fetch(route, {
             method: 'PATCH',
@@ -73,139 +135,82 @@ export const updatePrivacy = async ({ cid, token }) => {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token,
             },
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    return 'success';
-                }
-                return 'An error occured';
-            })
-            .catch((err) => {
-                console.error(err);
-                return 'An error occured';
-            });
-
-        return result;
-    } catch (err) {
-        console.error(err);
-        return err;
-    }
-};
-
-export const joinCalendar = async ({ cid, token }) => {
-    const route = API_URL + '/calendar/' + cid + '/join';
-    try {
-        let result = await fetch(route, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-            },
-        })
-            .then((res) => {
-                if (res.ok) {
-                    return true;
-                }
-                return false;
-            })
-            .catch((err) => {
-                console.error(err);
-                return false;
-            });
-
-        return result;
-    } catch (err) {
-        console.error(err);
-        return false;
-    }
-};
-
-export const leaveCalendar = async ({ cid, token }) => {
-    const route = API_URL + '/calendar/' + cid + '/leave';
-
-    try {
-        let result = await fetch(route, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-            },
-        })
-            .then((res) => {
-                if (res.ok) {
-                    return true;
-                }
-                return false;
-            })
-            .catch((err) => {
-                console.error(err);
-                return false;
-            });
-
-        return result;
-    } catch (err) {
-        console.error(err);
-        return false;
-    }
-};
-
-/* Currently you do need a token to get the public calendars */
-export const searchForAllCalendars = async ({ token }) => {
-    const route = API_URL + '/calendar/';
-    try {
-        const result = await fetch(route, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-            },
-        })
-            .then(async (res) => {
-                if (!res.ok) {
-                    return null;
-                }
-                let resultData = await res.json();
-                return resultData;
-            })
-
-            .catch((err) => {
-                console.error(err);
-            });
-
-        return result;
-    } catch (err) {
-        console.error(err);
-        return err;
-    }
-};
-
-export const inviteToCalendar = async ({ token, cid, users }) => {
-    const route = API_URL + `/calendar/${cid}/invite`;
-    try {
-        const result = await fetch(route, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-            },
             body: JSON.stringify({
-                users,
+                title,
+                description,
+                dueDate,
             }),
         })
             .then(async (res) => {
-                if (!res.ok) {
-                    return null;
+                console.log(res.status);
+                if (res.ok) {
+                    return true;
                 }
-                return res;
+                return false;
             })
-            .catch((err) => console.error(err));
+            .catch((err) => {
+                return false;
+            });
+
         return result;
     } catch (err) {
         console.error(err);
-        return err;
+        return false;
     }
 };
+
+export const toggleComplete = async ({ did, token }) => {
+    const route = API_URL + '/deadline/' + did + '/toggleComplete';
+
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
+
+export const deleteDeadline = async ({ did, token }) => { 
+    const route = API_URL + '/deadline/' + did;
+    try {
+        let result = await fetch(route, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },   
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+        return result;
+    } catch (err) { 
+        console.error(err);
+        return false;
+    }
+}

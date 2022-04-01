@@ -7,8 +7,9 @@ import {
     TouchableOpacity,
     ScrollView,
     Alert,
+    RefreshControl,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, Card } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import { getCalendar } from '../../api/calendar';
 import { getUser } from '../../api/user';
@@ -16,12 +17,20 @@ import { getUser } from '../../api/user';
 const ChooseCalendar = (props) => {
     const [calendars, setCalendars] = React.useState([]);
 
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = async () => {
+        setRefreshing(true);
+        await fetchCalendars();
+        setRefreshing(false);
+    };
     React.useEffect(() => {
         fetchCalendars();
-    }, []);
+    }, [props]);
 
-    fetchCalendars = async () => {
+    const fetchCalendars = async () => {
         setCalendars([]);
+
         try {
             const user = await getUser(props.user.token);
             user.user.calendars.forEach(async (c) => {
@@ -79,14 +88,61 @@ const ChooseCalendar = (props) => {
                             });
                         }}
                     >
-                        <Text
-                            style={{
-                                color: 'black',
-                                fontSize: '30rem',
-                            }}
-                        >
-                            {c.title}
-                        </Text>
+                        <Card>
+                            <Card.FeaturedTitle
+                                style={{
+                                    color: 'black',
+                                    fontSize: '30rem',
+                                    fontWeight: '300',
+                                }}
+                            >
+                                {c.title}
+                            </Card.FeaturedTitle>
+                            <Card.Divider />
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                    }}
+                                >
+                                    <Icon
+                                        type='font-awesome'
+                                        name='user'
+                                        color='black'
+                                    />
+                                    <Text
+                                        style={{
+                                            fontSize: '25rem',
+                                        }}
+                                    >
+                                        {' ' + c.members.length}
+                                    </Text>
+                                </View>
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                    }}
+                                >
+                                    <Icon
+                                        type='font-awesome'
+                                        name='bullseye'
+                                        color='#fa453e'
+                                    />
+                                    <Text
+                                        style={{
+                                            fontSize: '25rem',
+                                        }}
+                                    >
+                                        {' ' + c.deadlines.length}
+                                    </Text>
+                                </View>
+                            </View>
+                        </Card>
                     </TouchableOpacity>
                 </Swipeout>
             );
@@ -139,9 +195,15 @@ const ChooseCalendar = (props) => {
             </View>
             <ScrollView
                 style={{
-                    padding: '5%',
+                    padding: '3%',
                     marginTop: '5%',
                 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={() => onRefresh()}
+                    />
+                }
             >
                 {renderList()}
             </ScrollView>

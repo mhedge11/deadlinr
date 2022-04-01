@@ -10,9 +10,6 @@ export const getUser = async (token) => {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token,
             },
-            // body: JSON.stringify({
-            //   token,
-            // }),
         })
             .then(async (res) => {
                 if (!res.ok) {
