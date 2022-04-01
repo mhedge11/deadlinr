@@ -311,7 +311,7 @@ export const changePassword = async ({
 // returns a user based on their UID
 
 export const fetchUser = async ({ uid }) => {
-    const route = API_URL + '/user/fetch/' + '62182f4172aa397ab5e92e86';
+    const route = API_URL + '/user/fetch/' + uid;
     try {
         const result = await fetch(route, {
             method: 'GET',
