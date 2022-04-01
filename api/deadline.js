@@ -20,14 +20,16 @@ export const createDeadline = async ({
                 Authorization: 'Bearer ' + token,
             },
             body: JSON.stringify({
-                title,
-                description,
-                owner,
-                groups,
-                calendar,
-                dueDate,
-                votesRemaining,
-                averageCompletionTime: 0,
+                deadlineData: {
+                    title,
+                    description,
+                    owner,
+                    groups,
+                    averageCompletionTime: 0,
+                    dueDate,
+                    votesRemaining,
+                },
+                cid: calendar,
             }),
         })
             .then(async (res) => {
@@ -35,6 +37,7 @@ export const createDeadline = async ({
                     const data = await res.json();
                     return data;
                 }
+                console.log(res.status);
                 return false;
             })
             .catch((err) => {
