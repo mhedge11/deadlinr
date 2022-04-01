@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     SectionList,
     StatusBar,
+    ScrollView,
 } from 'react-native';
 import IndvidualThreadGridTile from './IndividualThreadGridTile';
 import { fetchUser } from '../../api/user';
@@ -26,7 +27,6 @@ function IndividualThreadScreen(props) {
     // console.log(threadArray);
 
     const [replies, setReplies] = React.useState([]);
-    const [userId, setUserId] = React.useState('');
     const [userName, setUserName] = React.useState('Unknown');
 
     React.useEffect(() => {
@@ -45,54 +45,167 @@ function IndividualThreadScreen(props) {
         }
     };
 
+    const [userId, setUserId] = React.useState(threadObject.author);
+
     function Comment({ authorId, node }) {
         setUserId(authorId);
         console.log(authorId);
+        console.log(node.title);
         // findUser();
         if (!node.replies) {
             return (
                 <View>
-                    <Text style={{ marginLeft: 25 }}>
-                        <Text style={{ fontWeight: 'bold' }}>{userName}</Text>
-                        {': '}
-                        {node.body}
+                    <Text style={{ fontSize: 20, marginLeft: 40, padding: 2 }}>
+                        <Text style={{ fontWeight: 'bold' }}>
+                            {userName} {': '}
+                        </Text>
+
+                        <Text>{node.body}</Text>
                     </Text>
+
+                    <TouchableOpacity
+                        style={styles.replyButton2}
+                        onPress={() => {}}
+                    >
+                        <Text style={{ color: 'white' }}>Reply</Text>
+                    </TouchableOpacity>
                 </View>
             );
         }
-        return (
-            <View>
-                <Text style={{ marginLeft: 15 }}>
-                    <Text style={{ fontWeight: 'bold' }}>{userName}</Text>
-                    {': '}
-                    {node.body}
-                </Text>
+        if (!node.title) {
+            return (
+                <View>
+                    <Text
+                        style={{
+                            fontSize: 20,
+                            marginLeft: 10,
+                            padding: 2,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            {userName}
+                        </Text>
+                        {': '}
+                        {node.body}
+                    </Text>
 
-                {node.replies.map((c) => (
-                    <Comment key={c._id} node={c} />
-                ))}
-            </View>
-        );
+                    <TouchableOpacity
+                        style={styles.replyButton1}
+                        onPress={() => {}}
+                    >
+                        <Text style={{ color: 'white' }}>Reply</Text>
+                    </TouchableOpacity>
+                    {/* <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        marginLeft: 10,
+                    }}
+                >
+                    <Button title='Reply' onPress={() => {}} />
+                    <Button
+                                title='Close'
+                                onPress={() => {
+                                    setModalVisible(false);
+                                    props.navigation.goBack();
+                                }}
+                            />
+                </View> */}
+
+                    {node.replies.map((c) => (
+                        <Comment key={c._id} node={c} />
+                    ))}
+                </View>
+            );
+        } else {
+            return (
+                <View>
+                    {node.replies.map((c) => (
+                        <Comment key={c._id} node={c} />
+                    ))}
+                </View>
+            );
+        }
     }
 
     return (
         <>
             <SafeAreaView>
-                <View styles={styles.headline}>
-                    <IndvidualThreadGridTile individual={threadObject.title} />
-
-                    <View styles={styles.container}>
-                        <View styles={styles.innerContainer}>
-                            <Text styles={styles.title}>
+                <ScrollView>
+                    <View styles={styles.headline}>
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 30,
+                                    marginLeft: 10,
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {/* {'Title: '} */}
                                 {threadObject.title}
                             </Text>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-around',
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 30,
+                                        // marginLeft: 10,
+                                        paddingBottom: 5,
+                                    }}
+                                >
+                                    {/* {'Post: '} */}
+                                    {threadObject.body}
+                                </Text>
+                                <TouchableOpacity
+                                    style={{
+                                        marginTop: 3,
+                                        marginLeft: 10,
+                                        width: '15%',
+                                        borderRadius: 25,
+                                        height: 30,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        // marginTop: 40,
+                                        backgroundColor: 'blue',
+                                    }}
+                                    onPress={() => {}}
+                                >
+                                    <Text style={{ color: 'white' }}>
+                                        Reply
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            {/* <Text
+                            style={{
+                                fontSize: 30,
+                                marginLeft: 10,
+                            }}
+                        >
+                            Posted By: {threadObject.author}
+                        </Text> */}
                         </View>
-                        <Comment
-                            authorId={threadObject.author}
-                            node={threadObject}
-                        />
+                        <View styles={styles.container}>
+                            <Comment
+                                authorId={threadObject.author}
+                                node={threadObject}
+                            />
+                        </View>
                     </View>
-                </View>
+                </ScrollView>
             </SafeAreaView>
         </>
     );
@@ -143,5 +256,25 @@ const styles = StyleSheet.create({
         marginTop: 0,
         width: 200,
         backgroundColor: 'yellow',
+    },
+    replyButton1: {
+        marginLeft: 10,
+        width: '15%',
+        borderRadius: 25,
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        // marginTop: 40,
+        backgroundColor: 'blue',
+    },
+    replyButton2: {
+        marginLeft: 40,
+        width: '15%',
+        borderRadius: 25,
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        // marginTop: 40,
+        backgroundColor: 'blue',
     },
 });
