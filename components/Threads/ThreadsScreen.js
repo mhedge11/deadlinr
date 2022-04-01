@@ -16,69 +16,6 @@ import { getCalendar } from '../../api/calendar';
 import { getUser } from '../../api/user';
 import { getThread } from '../../api/thread';
 
-const THREADDATA = [
-    {
-        id: 0,
-        title: 'HW 0000',
-        body: 'How difficult is HW 1?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: [1, 2],
-    },
-    {
-        id: 1,
-        title: 'HW 1',
-        body: 'How difficult is HW 1?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: [3],
-    },
-    {
-        id: 2,
-        title: 'HW 2',
-        body: 'How difficult is HW 2?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: [],
-    },
-    {
-        id: 3,
-        title: 'HW 3',
-        body: 'How difficult is HW 3?',
-        author: 0,
-        timestamp: Date.now,
-        lastActivity: Date.now,
-        replies: [],
-    },
-];
-
-// function renderCalendarItem(itemData) {
-//     function pressHandler() {
-//         navigation.navigate("Thread Grid Tile", {
-//             calendarId: route.params.calendarId,
-//         });
-//     }
-//     return (
-//         <ThreadGridTile calendar={itemData.item} onPress={pressHandler} />
-//     );
-// }
-
-// const calendarId = route.params.calendarId;
-
-// function ThreadsScreen({ route, navigation, onPress }) {
-//     const calendarId = route.params.calendarId;
-//     return (
-//         <SafeAreaView>
-//             <View styles={styles.container}>
-//                 <Text>Thread Screen - {calendarId} </Text>
-//             </View>
-//         </SafeAreaView>
-//     );
-// }
-// const calId = '';
 const ThreadsScreen = (props) => {
     // console.log('ThreadsScreen');
     // console.log(props.route);
@@ -104,7 +41,7 @@ const ThreadsScreen = (props) => {
         }
     };
 
-    // console.log(threads);
+    console.log(threads);
 
     function renderThreadItem(itemData) {
         setCalId(itemData.item.id);

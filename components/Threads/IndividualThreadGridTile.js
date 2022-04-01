@@ -1,7 +1,7 @@
 import { Pressable, View, Text, StyleSheet } from 'react-native';
 
-function IndvidualThreadGridTile({ individualThread }) {
-    console.log(individualThread);
+function IndvidualThreadGridTile({ individual }) {
+    // console.log(individualThread);
     return (
         <View style={styles.gridItem}>
             <Pressable
@@ -17,8 +17,8 @@ function IndvidualThreadGridTile({ individualThread }) {
                         { backgroundColor: 'orange' },
                     ]}
                 >
-                    {/* <Text style={styles.title}>{individualThread.author}</Text> */}
-                    <Text style={{ fontSize: 24 }}>{individualThread}</Text>
+                    <Text style={styles.title}>TITLE</Text>
+                    <Text style={{ fontSize: 24 }}>{individual}</Text>
                 </View>
             </Pressable>
         </View>
