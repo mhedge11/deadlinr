@@ -94,6 +94,7 @@ export default class Home extends Component {
     renderCourses = () => {
         while (
             this.state.loading ||
+			!this.props.user.user.calendars ||
             this.state.calendars.length !==
                 this.props.user.user.calendars.length
         ) {
