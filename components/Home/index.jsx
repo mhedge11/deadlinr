@@ -30,12 +30,10 @@ export default class Home extends Component {
         })
         this.props.user.user.calendars.forEach(async c => { 
             const data = await getCalendar({ cid: c });
-            console.log(data);
             this.setState({ 
                 calendars: [...this.state.calendars, data]
             })
         })
-        console.log(this.state.calendars);
         this.setState({
             loading: false
         })
@@ -61,7 +59,6 @@ export default class Home extends Component {
     }
 
     renderCourseCard = (calendar) => {
-        console.log(calendar);
         return (
             <TouchableOpacity
                 style={{
@@ -102,7 +99,6 @@ export default class Home extends Component {
             const d = this.renderCourseCard(c);
             elemes.push(d);
         })
-        console.log(this.state.calendars.length)
         return elemes;
     }
 

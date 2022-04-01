@@ -1,17 +1,43 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button, TextInput, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Button, TextInput, SafeAreaView, ActivityIndicator } from 'react-native';
 import {Icon } from 'react-native-elements'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import { createDeadline as createDeadlineAPI } from '../../api/deadline';
 
 
 const CreateDeadline = (props) => {
 
     const [deadlineName, setDeadlineName] = React.useState('');
+    const [description, setDescription] = React.useState('');
     const [dueDate, setDueDate] = React.useState(new Date());
     const [bcolor, setBorderColor] = React.useState('transparent');
+    const [loading, setLoading] = React.useState(false);
+    const [msg, setMsg] = React.useState('');
 
-    const createDeadline = () => { 
+    const createDeadline = async  () => { 
+        if (!props.user) return Alert.alert('An error occured');
+        if (deadlineName.trim() === '') return;
+        setLoading(true);
+        const res = await createDeadlineAPI({
+            title: deadlineName,
+            dueDate,
+            description,
+            owner: props.user.user._id,
+            groups: [],
+            calendar: props.route.params.calendarID,
+            votesRemaining: props.route.params.members.length,
+            token: props.user['token'],
+        });
+        setLoading(false);
+        if (res !== false) {
+
+            setMsg('');
+            props.navigation.goBack();
+            return;
+        } else {
+            setMsg('An error occured. Please try again later.');
+        }
 
     }
 
@@ -75,6 +101,23 @@ const CreateDeadline = (props) => {
                     </Text>
                 )}
             </View>
+            <View
+                style={{
+                    padding: '5%',
+                }}
+            >
+                <Text style={styles.label}>Description</Text>
+                <TextInput
+                    style={{
+                        ...styles.input,
+                        borderColor: bcolor,
+                        borderWidth: 2,
+                    }}
+                    placeholder='Deadline description'
+                    value={description}
+                    onChangeText={(v) => setDescription(v)}
+                />
+            </View>
 
             <View
                 style={{
@@ -107,6 +150,13 @@ const CreateDeadline = (props) => {
                     disabled={deadlineName.length === 0 || dueDate <= new Date()}
                 />
             </View>
+            {
+                loading && <ActivityIndicator />
+            }
+
+            {
+                msg !== '' && <Text style={{ color: 'red', fontSize: 18 }}>{msg}</Text>
+            }
         </SafeAreaView>
     )
 }

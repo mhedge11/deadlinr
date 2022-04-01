@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Alert,
+    RefreshControl
 } from 'react-native';
 import { Icon, Card } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
@@ -17,12 +18,21 @@ const ChooseCalendar = (props) => {
 
     const [calendars, setCalendars] = React.useState([]);
 
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = async () => { 
+        setRefreshing(true);
+        await fetchCalendars();
+        setRefreshing(false);
+    }
+
     React.useEffect(() => { 
         fetchCalendars();
-    }, []);
+    }, [props]);
 
-    fetchCalendars = async () => {
+    const fetchCalendars = async () => {
         setCalendars([]);
+
         try {
             const user = await getUser(props.user.token);
             user.user.calendars.forEach(async (c) => {
@@ -67,9 +77,6 @@ const ChooseCalendar = (props) => {
             },
         ];
         calendars.forEach((c) => {
-            c.deadlines.push({
-                dueDate: new Date()
-            })
             elems.push(
                 <Swipeout
                     id={c.id}
@@ -132,17 +139,6 @@ const ChooseCalendar = (props) => {
                                     </Text>
                                 </View>
                             </View>
-                            {
-                                c.deadlines.length > 0 &&
-                                <Text
-                                    style={{
-                                        marginTop: '5%',
-                                        fontSize: '15rem'
-                                    }}
-                                >
-                                        Upcoming deadline : { c.deadlines[0].dueDate.toISOString().substring(0, 10) }
-                                    </Text>
-                            }
                         </Card>
                     </TouchableOpacity>
                 </Swipeout>
@@ -199,6 +195,12 @@ const ChooseCalendar = (props) => {
                     padding: '3%',
                     marginTop: '5%',
                 }}
+                refreshControl={ 
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={() => onRefresh()}
+                    />
+                }
             >
                 {renderList()}
             </ScrollView>

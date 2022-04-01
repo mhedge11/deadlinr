@@ -7,30 +7,13 @@ import {
     Button,
     Alert,
     FlatList,
+    RefreshControl,
+    StyleSheet,
+    ScrollView
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { joinCalendar, leaveCalendar, updatePrivacy } from '../../api/calendar';
-
-/*
-
-    Calendar Props: {
-        route: {
-            title,
-            isPrivate,
-            createrUID
-        },
-        user
-    }
-
-    Calendar: {
-        id: string
-        title: String,
-        deadlines: Deadline [],
-        isPrivate: boolean,
-        createrUID: string,
-        members
-    }
-*/
+import { joinCalendar, leaveCalendar, updatePrivacy, getCalendar } from '../../api/calendar';
+import { getDeadline } from '../../api/deadline';
 
 export default class CalendarView extends React.Component {
     constructor(props) {
@@ -41,8 +24,36 @@ export default class CalendarView extends React.Component {
                 this.props.user.user._id
             ),
             loading: false,
-            members: this.props.route.params.members
+            members: this.props.route.params.members,
+            deadlines: [],
+            refreshing: false,
         };
+    }
+
+    onRefresh = async () => {
+        this.setState({ refreshing: true });
+        await this.fetchDeadlines();
+        this.setState({ refreshing: false });
+    }
+
+    componentDidMount() { 
+        this.fetchDeadlines();
+    }
+
+    fetchDeadlines = async () => {
+        const c = await getCalendar({ cid: this.props.route.params._id });
+        this.setState({
+            deadlines: [],
+            loading: true,
+        });
+        try {
+            c.deadlines.forEach(async (did) => {
+                const item = await getDeadline({ id: did, token: this.props.user.token });
+                this.setState({
+                    deadlines: [...this.state.deadlines, item.deadline],
+                });
+            });
+        } catch (e) { console.error(e); }
     }
 
     changePrivacy = async () => {
@@ -172,7 +183,7 @@ export default class CalendarView extends React.Component {
                             fontSize: '20rem'
                         }}
                     >
-                        {dueDate.toISOString().slice(0, 10)}
+                        {dueDate.slice(0, 10)}
                     </Text>
                 </View>
 
@@ -223,7 +234,7 @@ export default class CalendarView extends React.Component {
                                 style={{
                                     fontSize: '21rem'
                                 }}
-                            >{usersFinished}</Text>
+                            >{usersFinished.length}</Text>
                         </View>
                     </View>
                     <View
@@ -277,42 +288,7 @@ export default class CalendarView extends React.Component {
 
     render() {
         const { route, user, navigation } = this.props;
-        const { title, isPrivate, members } = route.params;
-        const deadlines = [
-            {
-                id: 0,
-                title: 'Deadline 1',
-                dueDate: new Date(),
-                notes: 'This is a description of the deadline',
-                averageCompletionTime: 2,
-                usersFinished: 0,
-                averageDifficulty: 5,
-                usersVoted: 0,
-                votesRemaining: 1,
-            },
-            {
-                id: 1,
-                title: 'Deadline 2',
-                dueDate: new Date(),
-                notes: 'This is a description of the deadline',
-                averageCompletionTime: 1,
-                usersFinished: 1,
-                averageDifficulty: 2,
-                usersVoted: 1,
-                votesRemaining: 0,
-            },
-            {
-                id: 2,
-                title: 'Deadline 3',
-                dueDate: new Date(),
-                notes: 'This is a description of the deadline',
-                averageCompletionTime: 2,
-                usersFinished: 1,
-                averageDifficulty: 3,
-                usersVoted: 1,
-                votesRemaining: 0,
-            }
-        ]
+        const { title, isPrivate, members, deadlines } = route.params;
         return (
             <View
                 style={{
@@ -323,14 +299,22 @@ export default class CalendarView extends React.Component {
             >
                 <View
                     style={{
-                        flexDirection: 'row',
+                        // flexDirection: 'row',
                         paddingTop: '5%',
                         justifyContent: 'flex-start',
                         width: '100%',
                     }}
                 >
+                    <View
+                        style={{
+                            flexDirection: 'row'
+                        }}
+                    >
                     <TouchableOpacity
-                        style={{ justifyContent: 'center' }}
+                            style={{
+                                justifyContent: 'center',
+
+                            }}
                         onPress={() => navigation.goBack()}
                     >
                         <Icon
@@ -348,10 +332,9 @@ export default class CalendarView extends React.Component {
                     >
                         {title}
                     </Text>
+                    </View>
                     <TouchableOpacity
                     style={{
-                            alignSelf: 'flex-end',
-                            marginLeft: 85,
                     }}
                     onPress={() => {
                         this.alterMemberStatus();
@@ -423,7 +406,7 @@ export default class CalendarView extends React.Component {
                                     fontSize: '20rem'
                                 }}
                             >
-                                { deadlines.length } deadlines
+                                { this.state.deadlines.length } deadlines
                             </Text>
                         </View>
                         <View
@@ -456,9 +439,15 @@ export default class CalendarView extends React.Component {
                     style={{
                         marginTop: '10%'
                     }}
-                    data={deadlines}
+                    data={this.state.deadlines}
                     renderItem={this.renderDeadline}
                     keyExtractor={item => item.id}
+                    refreshControl={ 
+                        <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}
+                    />
+                    }
                 />
                 <TouchableOpacity
                     style={{
@@ -467,6 +456,7 @@ export default class CalendarView extends React.Component {
                     onPress={() => {
                         this.props.navigation.navigate('Create Deadline', {
                             calendarID: this.props.route.params._id,
+                            members: this.props.route.params.members
                         });
                     }}
                 >
@@ -477,7 +467,20 @@ export default class CalendarView extends React.Component {
                         size={50}
                     />
                 </TouchableOpacity>
+
             </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    scrollView: {
+      backgroundColor: 'red',
+      alignItems: 'center',
+        justifyContent: 'center',
+      height: 0,
+    },
+  });
