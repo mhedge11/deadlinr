@@ -1,13 +1,20 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button, TextInput, SafeAreaView, ActivityIndicator } from 'react-native';
-import {Icon } from 'react-native-elements'
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Button,
+    TextInput,
+    SafeAreaView,
+    ActivityIndicator,
+} from 'react-native';
+import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { createDeadline as createDeadlineAPI } from '../../api/deadline';
 
-
 const CreateDeadline = (props) => {
-
     const [deadlineName, setDeadlineName] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [dueDate, setDueDate] = React.useState(new Date());
@@ -15,7 +22,7 @@ const CreateDeadline = (props) => {
     const [loading, setLoading] = React.useState(false);
     const [msg, setMsg] = React.useState('');
 
-    const createDeadline = async  () => { 
+    const createDeadline = async () => {
         if (!props.user) return Alert.alert('An error occured');
         if (deadlineName.trim() === '') return;
         setLoading(true);
@@ -31,15 +38,13 @@ const CreateDeadline = (props) => {
         });
         setLoading(false);
         if (res !== false) {
-
             setMsg('');
             props.navigation.goBack();
             return;
         } else {
             setMsg('An error occured. Please try again later.');
         }
-
-    }
+    };
 
     return (
         <SafeAreaView
@@ -128,15 +133,13 @@ const CreateDeadline = (props) => {
                 <View
                     style={{
                         paddingRight: '20%',
-                        marginTop: '5%'
+                        marginTop: '5%',
                     }}
                 >
-
-               
                     <DateTimePicker
                         value={dueDate}
                         mode='datetime'
-                        onChange={(e, d) => { 
+                        onChange={(e, d) => {
                             setDueDate(d);
                         }}
                     />
@@ -147,19 +150,19 @@ const CreateDeadline = (props) => {
                 <Button
                     title='Create'
                     onPress={() => createDeadline()}
-                    disabled={deadlineName.length === 0 || dueDate <= new Date()}
+                    disabled={
+                        deadlineName.length === 0 || dueDate <= new Date()
+                    }
                 />
             </View>
-            {
-                loading && <ActivityIndicator />
-            }
+            {loading && <ActivityIndicator />}
 
-            {
-                msg !== '' && <Text style={{ color: 'red', fontSize: 18 }}>{msg}</Text>
-            }
+            {msg !== '' && (
+                <Text style={{ color: 'red', fontSize: 18 }}>{msg}</Text>
+            )}
         </SafeAreaView>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     input: {

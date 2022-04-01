@@ -1,54 +1,131 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button, TextInput, SafeAreaView } from 'react-native';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Button,
+    TextInput,
+    SafeAreaView,
+    ActivityIndicator,
+    Alert,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Slider from '@react-native-community/slider';
 
+import {
+    rateDeadline,
+    getDeadline,
+    editDeadline as editDeadlineAPI,
+} from '../../api/deadline';
 
 const ViewDeadline = (props) => {
-
     const canEdit = props.route.params.deadline.owner === props.user.user._id;
     const [editMode, setEditMode] = React.useState(false);
 
-    const [dueDate, setDueDate] = React.useState(props.route.params.deadline.dueDate);
-    const [notes, setNotes] = React.useState(props.route.params.deadline.notes);
+    const [deadline, setDeadline] = React.useState(props.route.params.deadline);
+    const [dueDate, setDueDate] = React.useState(deadline.dueDate);
+    const [desc, setDesc] = React.useState(deadline.description);
 
     const diffs = [1, 2, 3, 4, 5];
     const [timeToComplete, setTimeToComplete] = React.useState(1);
 
-
+    const [loading, setLoading] = React.useState(false);
     const [selectedDiff, setSelectedDiff] = React.useState(0);
 
-    const renderDiffButton = (diff) => { 
+    React.useEffect(() => {
+        fetchDeadline();
+    }, []);
+
+    const fetchDeadline = async () => {
+        const res = await getDeadline({
+            id: props.route.params.deadline._id,
+            token: props.user.token,
+        });
+        if (res !== false) {
+            setDesc(res.deadline.description);
+            setDueDate(res.deadline.dueDate);
+            setDeadline(res.deadline);
+            console.log(res.deadline);
+        } else {
+            alert('An error occured');
+        }
+        setLoading(false);
+    };
+
+    const voteDeadline = async () => {
+        setLoading(true);
+        const res = await rateDeadline({
+            did: deadline._id,
+            difficulty: selectedDiff,
+            completionTime: timeToComplete,
+            token: props.user.token,
+        });
+        if (res !== false) {
+            fetchDeadline();
+        } else {
+            setLoading(false);
+            return Alert.alert('An error occured');
+        }
+    };
+
+    const editDeadline = async () => {
+        setLoading(true);
+        console.log(desc, dueDate);
+        const res = await editDeadlineAPI({
+            did: deadline._id,
+            title: deadline.title,
+            description: desc,
+            dueDate: dueDate,
+            token: props.user.token,
+        });
+        // console.log(res);
+        setLoading(false);
+
+        if (res === true) {
+            const res = await fetchDeadline();
+            setEditMode(false);
+            setDesc(deadline.description);
+            setDueDate(new Date(deadline.dueDate));
+            props.route.params.deadline = deadline;
+        } else {
+            setLoading(false);
+            setEditMode(false);
+            return Alert.alert('An error occured');
+        }
+    };
+
+    const renderDiffButton = (diff) => {
         return (
             <TouchableOpacity
                 style={{
                     justifyContent: 'center',
                     borderRadius: 5,
-                    backgroundColor: diff === selectedDiff ? '#03a5fc' : '#d6d6d6'
+                    backgroundColor:
+                        diff === selectedDiff ? '#03a5fc' : '#d6d6d6',
                 }}
                 onPress={() => {
                     setSelectedDiff(diff);
                 }}
-                disabled={props.route.params.deadline.usersVoted.includes(props.user.user._id)}
+                disabled={deadline.usersVoted.includes(props.user.user._id)}
             >
                 <Text
                     style={{
                         fontSize: '25rem',
                         fontWeight: '600',
                         marginLeft: '5%',
-                        textAlign: 'center'
+                        textAlign: 'center',
                     }}
                 >
                     {diff}
                 </Text>
             </TouchableOpacity>
-        )
-    }
-
+        );
+    };
 
     let diffColor = '';
-    const averageDifficulty = props.route.params.deadline.averageDifficulty;
+    const averageDifficulty = deadline.averageDifficulty;
     if (averageDifficulty <= 1) {
         diffColor = '#a2ff38';
     } else if (averageDifficulty <= 2) {
@@ -86,165 +163,175 @@ const ViewDeadline = (props) => {
                         marginLeft: '5%',
                     }}
                 >
-                    {props.route.params.deadline.title}
+                    {deadline.title}
                 </Text>
             </View>
             <View
                 style={{
                     padding: '5%',
-                    
                 }}
             >
-                {
-                    editMode ?
-                        <View
+                {editMode ? (
+                    <View
+                        style={{
+                            width: '100%',
+                        }}
+                    >
+                        <Text
                             style={{
-                                width: '100%',
+                                fontSize: 18,
+                                fontWeight: '600',
                             }}
                         >
-                        <Text
-                        style={{
-                            fontSize: 18,
-                            fontWeight: '600',
-    
-                        }}
-                            >
-                                Due : 
-                    </Text>
+                            Due :
+                        </Text>
                         <DateTimePicker
-                            value={dueDate}
+                            value={new Date(deadline.dueDate)}
                             mode='datetime'
-                            onChange={(e, d) => { 
+                            onChange={(e, d) => {
                                 setDueDate(d);
                             }}
                         />
                     </View>
-                        :
-                        <Text
+                ) : (
+                    <Text
                         style={{
                             fontSize: 18,
                             fontWeight: '600',
-    
                         }}
                     >
-                        Due : { props.route.params.deadline.dueDate.substring(0, 10) + ' ' + props.route.params.deadline.dueDate.substring(11, 16) }
+                        Due :{' '}
+                        {deadline.dueDate.substring(0, 10) +
+                            ' ' +
+                            deadline.dueDate.substring(11, 16)}
                     </Text>
-                }
+                )}
 
-                {
-                    !editMode ?
-                        <Text
-                            style={{
-                                marginTop: '5%',
-                                fontSize: 18,
-                                color: '#8f8f8f',
-                            }}
-                        >
-                            {props.route.params.deadline.notes}
-                        </Text>
-                        :
-                        <TextInput
-                            style={{
-                                borderColor: 'grey',
-                                borderRadius: 4,
-                                borderWidth: 2,
-                                fontSize: 18,
-                                marginTop: '5%',
-                                padding: '2%',
-                            }}
-                            value={notes}
-                            onChangeText={(v) => setNotes(v)}
-                        />                                
-                }
-
+                {!editMode ? (
+                    <Text
+                        style={{
+                            marginTop: '5%',
+                            fontSize: 18,
+                            color: '#8f8f8f',
+                        }}
+                    >
+                        {deadline.description}
+                    </Text>
+                ) : (
+                    <TextInput
+                        style={{
+                            borderColor: 'grey',
+                            borderRadius: 4,
+                            borderWidth: 2,
+                            fontSize: 18,
+                            marginTop: '5%',
+                            padding: '2%',
+                        }}
+                        value={desc}
+                        onChangeText={(v) => setDesc(v)}
+                    />
+                )}
             </View>
             <View
+                style={{
+                    marginTop: '10%',
+                    padding: '5%',
+                }}
+            >
+                <View
                     style={{
-                        marginTop: '10%',
-                        padding: '5%'
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
                     }}
                 >
                     <View
                         style={{
                             flexDirection: 'row',
-                            justifyContent: 'space-between',
                         }}
                     >
-                        <View
+                        <Icon
+                            type='ionicon'
+                            name='time-outline'
+                            color='black'
+                        />
+                        <Text
                             style={{
-                                flexDirection: 'row'
+                                fontSize: '21rem',
                             }}
                         >
-                            <Icon type='ionicon' name='time-outline' color='black' />
-                            <Text
-                                style={{
-                                    fontSize: '21rem'
-                                }}
-                            >{props.route.params.deadline.averageCompletionTime} hr</Text>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: 'row'
-                            }}
-                        >
-                            <Icon type='font-awesome' name='check' color='green' />
-                            <Text
-                                style={{
-                                    fontSize: '21rem'
-                                }}
-                            >{props.route.params.deadline.usersFinished}</Text>
-                        </View>
+                            {deadline.averageCompletionTime} hr
+                        </Text>
                     </View>
                     <View
                         style={{
                             flexDirection: 'row',
-                            marginTop: '3%',
-                            justifyContent: 'space-between',
                         }}
                     >
-                        <View
+                        <Icon type='font-awesome' name='check' color='green' />
+                        <Text
                             style={{
-                                flexDirection: 'row'
+                                fontSize: '21rem',
                             }}
                         >
-                            <Icon type='font-awesome' name='fire' color={ diffColor } />
-                            <Text
-                                style={{
-                                    fontSize: '21rem'
-                                }}
-                            >{' ' + averageDifficulty} </Text>
-                        </View>
-                        <View
-                            style={{
-                                flexDirection: 'row'
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontSize: '25rem',
-                                    color: 'red',
-                                    fontWeight: 'bold'
-                                }}    
-                            >
-                                &#x2717;
-                            </Text> 
-                            <Text
-                                style={{
-                                    fontSize: '21rem'
-                                }}                                
-                            >
-                                {' ' + props.route.params.deadline.votesRemaining}
-                            </Text>
-                        </View>
+                            {deadline.usersFinished}
+                        </Text>
                     </View>
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        marginTop: '3%',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <Icon
+                            type='font-awesome'
+                            name='fire'
+                            color={diffColor}
+                        />
+                        <Text
+                            style={{
+                                fontSize: '21rem',
+                            }}
+                        >
+                            {' ' + averageDifficulty}{' '}
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: '25rem',
+                                color: 'red',
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            &#x2717;
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: '21rem',
+                            }}
+                        >
+                            {' ' + deadline.votesRemaining}
+                        </Text>
+                    </View>
+                </View>
             </View>
             <View
                 style={{
                     marginTop: '10%',
                 }}
             >
-                {
-                    !editMode ? 
+                {!editMode ? (
                     <Button
                         title='Edit'
                         disabled={!canEdit}
@@ -252,18 +339,19 @@ const ViewDeadline = (props) => {
                         onPress={() => {
                             setEditMode(true);
                         }}
-                        />
-                        :
+                    />
+                ) : (
                     <Button
                         title='Done'
                         disabled={!canEdit || dueDate <= new Date()}
                         fontSize={20}
                         onPress={() => {
-                            setEditMode(false);
+                            editDeadline();
                             // add API call
                         }}
                     />
-                }
+                )}
+                {loading && <ActivityIndicator />}
                 <View
                     style={{
                         padding: '5%',
@@ -282,16 +370,11 @@ const ViewDeadline = (props) => {
                             flexDirection: 'row',
                             width: '100%',
                             justifyContent: 'space-between',
-                            marginTop: '8%'
+                            marginTop: '8%',
                         }}
                     >
-                        {
-                       
-
-                        diffs.map(d => renderDiffButton(d))
-                           
-                        }
-                         </View>
+                        {diffs.map((d) => renderDiffButton(d))}
+                    </View>
                 </View>
                 <View
                     style={{
@@ -316,21 +399,23 @@ const ViewDeadline = (props) => {
                         }}
                     >
                         <Slider
-                            style={{width: '100%', height: 40}}
+                            style={{ width: '100%', height: 40 }}
                             value={timeToComplete}
                             onValueChange={(v) => setTimeToComplete(v)}
                             minimumValue={1}
                             maximumValue={20}
-                            minimumTrackTintColor="#00ccfa"
-                            maximumTrackTintColor="white"
+                            minimumTrackTintColor='#00ccfa'
+                            maximumTrackTintColor='white'
                             step={1}
-                            disabled={props.route.params.deadline.usersVoted.includes(props.user.user._id)}
+                            disabled={deadline.usersVoted.includes(
+                                props.user.user._id
+                            )}
                         />
                         <Text
                             style={{
                                 fontSize: '18rem',
                                 marginTop: '2%',
-                                marginLeft: '2%'
+                                marginLeft: '2%',
                             }}
                         >
                             {timeToComplete} hr
@@ -341,14 +426,16 @@ const ViewDeadline = (props) => {
             <Button
                 title='Mark deadline as complete'
                 fontSize={20}
-                onPress={() => { 
+                onPress={() => {
                     // add API call
-                    props.route.params.deadline.usersVoted.push(props.user.user._id);
+                    voteDeadline();
                 }}
-                disabled={props.route.params.deadline.usersVoted.includes(props.user.user._id)} 
+                disabled={props.route.params.deadline.usersVoted.includes(
+                    props.user.user._id
+                )}
             />
         </SafeAreaView>
-    )
-}
+    );
+};
 
 export default ViewDeadline;

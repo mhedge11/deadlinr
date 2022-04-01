@@ -36,15 +36,12 @@ const CreateCalendar = (props) => {
         setLoading(false);
         if (res !== false) {
             setMsg('');
-            props.setUser({ 
+            props.setUser({
                 token: props.user.token,
                 user: {
                     ...props.user.user,
-                    calendars: [
-                        ...props.user.user.calendars,
-                        res.id
-                    ]
-                }
+                    calendars: [...props.user.user.calendars, res.id],
+                },
             });
 
             props.navigation.goBack();

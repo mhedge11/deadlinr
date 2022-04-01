@@ -5,14 +5,13 @@ import {
     ScrollView,
     TouchableOpacity,
     Button,
-    ActivityIndicator
+    ActivityIndicator,
 } from 'react-native';
 import React, { Component } from 'react';
 import { Avatar } from 'react-native-elements';
 import Navigator from '../Navigator';
 import { getUser } from '../../api/user';
 import { getCalendar } from '../../api/calendar';
-
 
 export default class Home extends Component {
     constructor(props) {
@@ -26,25 +25,25 @@ export default class Home extends Component {
 
     getAllCalendars = () => {
         this.setState({
-            loading: true
-        })
-        this.props.user.user.calendars.forEach(async c => { 
+            loading: true,
+        });
+        this.props.user.user.calendars.forEach(async (c) => {
             const data = await getCalendar({ cid: c });
-            this.setState({ 
-                calendars: [...this.state.calendars, data]
-            })
-        })
+            this.setState({
+                calendars: [...this.state.calendars, data],
+            });
+        });
         this.setState({
-            loading: false
-        })
-    }
+            loading: false,
+        });
+    };
 
     componentDidMount() {
         const token = this.props.user.token;
         getUser(token).then((user) => {
             this.props.setUser({
                 ...user,
-                token
+                token,
             });
         });
         this.getAllCalendars();
@@ -56,7 +55,7 @@ export default class Home extends Component {
             color += Math.floor(Math.random() * 10);
         }
         return color;
-    }
+    };
 
     renderCourseCard = (calendar) => {
         return (
@@ -91,19 +90,22 @@ export default class Home extends Component {
     };
 
     renderCourses = () => {
-        while (this.state.loading || this.state.calendars.length !== this.props.user.user.calendars.length) {
-            return <ActivityIndicator />
+        while (
+            this.state.loading ||
+            this.state.calendars.length !==
+                this.props.user.user.calendars.length
+        ) {
+            return <ActivityIndicator />;
         }
         let elemes = [];
-        this.state.calendars.forEach(c => { 
+        this.state.calendars.forEach((c) => {
             const d = this.renderCourseCard(c);
             elemes.push(d);
-        })
+        });
         return elemes;
-    }
+    };
 
     render() {
-
         return (
             <View style={styles.container}>
                 <View style={styles.header}>

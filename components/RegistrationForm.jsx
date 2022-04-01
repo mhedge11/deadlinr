@@ -79,8 +79,8 @@ const RegistrationForm = (props) => {
             username,
             password
         );
-        
-        if (data === null) { 
+
+        if (data === null) {
             alert('Error creating user');
             return;
         }

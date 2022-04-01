@@ -9,10 +9,15 @@ import {
     FlatList,
     RefreshControl,
     StyleSheet,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { joinCalendar, leaveCalendar, updatePrivacy, getCalendar } from '../../api/calendar';
+import {
+    joinCalendar,
+    leaveCalendar,
+    updatePrivacy,
+    getCalendar,
+} from '../../api/calendar';
 import { getDeadline } from '../../api/deadline';
 
 export default class CalendarView extends React.Component {
@@ -34,9 +39,9 @@ export default class CalendarView extends React.Component {
         this.setState({ refreshing: true });
         await this.fetchDeadlines();
         this.setState({ refreshing: false });
-    }
+    };
 
-    componentDidMount() { 
+    componentDidMount() {
         this.fetchDeadlines();
     }
 
@@ -48,13 +53,18 @@ export default class CalendarView extends React.Component {
         });
         try {
             c.deadlines.forEach(async (did) => {
-                const item = await getDeadline({ id: did, token: this.props.user.token });
+                const item = await getDeadline({
+                    id: did,
+                    token: this.props.user.token,
+                });
                 this.setState({
                     deadlines: [...this.state.deadlines, item.deadline],
                 });
             });
-        } catch (e) { console.error(e); }
-    }
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     changePrivacy = async () => {
         this.setState({
@@ -121,7 +131,7 @@ export default class CalendarView extends React.Component {
             averageDifficulty,
             usersVoted,
             usersFinished,
-            votesRemaining
+            votesRemaining,
         } = deadline.item;
 
         let diffColor = '';
@@ -136,155 +146,172 @@ export default class CalendarView extends React.Component {
         } else {
             diffColor = '#eb2e15';
         }
-    
+
         return (
             <TouchableOpacity
-                onPress={() => { 
+                onPress={() => {
                     this.props.navigation.navigate('Deadline View', {
                         deadline: deadline.item,
-                        calendar: this.props.route.params
+                        calendar: this.props.route.params,
                     });
                 }}
             >
-            <View
-                key={id}
-                style={{
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 2,
-                    },
-                    shadowOpacity: 0.2,
-                    shadowRadius: 1.84,
-                    elevation: 5,
-                    borderRadius: 8,
-                    borderColor: '#e0e0e0',
-                    borderWidth: 1,
-                    padding: '5%',
-                    marginTop: '5%'
-                }}
-            >
                 <View
+                    key={id}
                     style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontSize: '20rem',
-                            color: 'black'
-                        }}
-                    >
-                        {title}
-                    </Text>
-                    <Text
-                        style={{
-                            fontSize: '20rem'
-                        }}
-                    >
-                        {dueDate.slice(0, 10)}
-                    </Text>
-                </View>
-
-                <View
-                    style={{
+                        shadowColor: '#000',
+                        shadowOffset: {
+                            width: 0,
+                            height: 2,
+                        },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 1.84,
+                        elevation: 5,
+                        borderRadius: 8,
+                        borderColor: '#e0e0e0',
+                        borderWidth: 1,
+                        padding: '5%',
                         marginTop: '5%',
                     }}
                 >
-                    <Text
-                        style={{
-                            fontSize: '15rem',
-                            color: '#8c8c8c'
-                        }}
-                    >
-                        {notes}
-                    </Text>
-                </View>
-                <View
-                    style={{
-                        marginTop: '10%'
-                    }}
-                >
                     <View
                         style={{
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                         }}
                     >
-                        <View
+                        <Text
                             style={{
-                                flexDirection: 'row'
+                                fontSize: '20rem',
+                                color: 'black',
                             }}
                         >
-                            <Icon type='ionicon' name='time-outline' color='black' />
-                            <Text
-                                style={{
-                                    fontSize: '21rem'
-                                }}
-                            >{averageCompletionTime} hr</Text>
-                        </View>
-                        <View
+                            {title}
+                        </Text>
+                        <Text
                             style={{
-                                flexDirection: 'row'
+                                fontSize: '20rem',
                             }}
                         >
-                            <Icon type='font-awesome' name='check' color='green' />
-                            <Text
-                                style={{
-                                    fontSize: '21rem'
-                                }}
-                            >{usersFinished.length}</Text>
-                        </View>
+                            {dueDate.slice(0, 10)}
+                        </Text>
+                    </View>
+
+                    <View
+                        style={{
+                            marginTop: '5%',
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: '15rem',
+                                color: '#8c8c8c',
+                            }}
+                        >
+                            {notes}
+                        </Text>
                     </View>
                     <View
                         style={{
-                            flexDirection: 'row',
-                            marginTop: '3%',
-                            justifyContent: 'space-between',
+                            marginTop: '10%',
                         }}
                     >
                         <View
                             style={{
-                                flexDirection: 'row'
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
                             }}
                         >
-                            <Icon type='font-awesome' name='fire' color={ diffColor } />
-                            <Text
+                            <View
                                 style={{
-                                    fontSize: '21rem'
+                                    flexDirection: 'row',
                                 }}
-                            >{' ' + averageDifficulty} </Text>
+                            >
+                                <Icon
+                                    type='ionicon'
+                                    name='time-outline'
+                                    color='black'
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: '21rem',
+                                    }}
+                                >
+                                    {averageCompletionTime} hr
+                                </Text>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                }}
+                            >
+                                <Icon
+                                    type='font-awesome'
+                                    name='check'
+                                    color='green'
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: '21rem',
+                                    }}
+                                >
+                                    {usersFinished.length}
+                                </Text>
+                            </View>
                         </View>
                         <View
                             style={{
-                                flexDirection: 'row'
+                                flexDirection: 'row',
+                                marginTop: '3%',
+                                justifyContent: 'space-between',
                             }}
                         >
-                            <Text
+                            <View
                                 style={{
-                                    fontSize: '25rem',
-                                    color: 'red',
-                                    fontWeight: 'bold'
-                                }}    
+                                    flexDirection: 'row',
+                                }}
                             >
-                                &#x2717;
-                            </Text> 
-                            <Text
+                                <Icon
+                                    type='font-awesome'
+                                    name='fire'
+                                    color={diffColor}
+                                />
+                                <Text
+                                    style={{
+                                        fontSize: '21rem',
+                                    }}
+                                >
+                                    {' ' + averageDifficulty}{' '}
+                                </Text>
+                            </View>
+                            <View
                                 style={{
-                                    fontSize: '21rem'
-                                }}                                
+                                    flexDirection: 'row',
+                                }}
                             >
-                                {' ' + votesRemaining}
-                            </Text>
+                                <Text
+                                    style={{
+                                        fontSize: '25rem',
+                                        color: 'red',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    &#x2717;
+                                </Text>
+                                <Text
+                                    style={{
+                                        fontSize: '21rem',
+                                    }}
+                                >
+                                    {' ' + votesRemaining}
+                                </Text>
+                            </View>
                         </View>
                     </View>
                 </View>
-            </View>
             </TouchableOpacity>
         );
-    }
-
+    };
 
     render() {
         const { route, user, navigation } = this.props;
@@ -307,58 +334,56 @@ export default class CalendarView extends React.Component {
                 >
                     <View
                         style={{
-                            flexDirection: 'row'
+                            flexDirection: 'row',
                         }}
                     >
-                    <TouchableOpacity
+                        <TouchableOpacity
                             style={{
                                 justifyContent: 'center',
-
                             }}
-                        onPress={() => navigation.goBack()}
-                    >
-                        <Icon
-                            name='chevron-left'
-                            type='font-awesome'
-                            color='black'
-                        />
-                    </TouchableOpacity>
-                    <Text
-                        style={{
-                            fontSize: '30rem',
-                            fontWeight: '600',
-                            marginLeft: '10%',
-                        }}
-                    >
-                        {title}
-                    </Text>
+                            onPress={() => navigation.goBack()}
+                        >
+                            <Icon
+                                name='chevron-left'
+                                type='font-awesome'
+                                color='black'
+                            />
+                        </TouchableOpacity>
+                        <Text
+                            style={{
+                                fontSize: '30rem',
+                                fontWeight: '600',
+                                marginLeft: '10%',
+                            }}
+                        >
+                            {title}
+                        </Text>
                     </View>
                     <TouchableOpacity
-                    style={{
-                    }}
-                    onPress={() => {
-                        this.alterMemberStatus();
-                    }}
-                >
-                    <Text
-                        style={{
-                            color: this.state.isMember ? 'red' : 'green',
-                            fontSize: '20rem',
-                            fontWeight: '300',
-                            marginTop: '4%',
+                        style={{}}
+                        onPress={() => {
+                            this.alterMemberStatus();
                         }}
                     >
-                        {this.state.isMember
-                            ? 'Leave Calendar'
-                            : 'Join Calendar'}
-                    </Text>
-                </TouchableOpacity>
+                        <Text
+                            style={{
+                                color: this.state.isMember ? 'red' : 'green',
+                                fontSize: '20rem',
+                                fontWeight: '300',
+                                marginTop: '4%',
+                            }}
+                        >
+                            {this.state.isMember
+                                ? 'Leave Calendar'
+                                : 'Join Calendar'}
+                        </Text>
+                    </TouchableOpacity>
                 </View>
 
                 <View
                     style={{
                         // flexDirection: 'row',
-                        marginTop: '10%'
+                        marginTop: '10%',
                     }}
                 >
                     <View
@@ -368,17 +393,13 @@ export default class CalendarView extends React.Component {
                             justifyContent: 'space-between',
                         }}
                     >
-                        <Icon
-                            name='users'
-                            type='font-awesome'
-                            color='black'
-                        />
+                        <Icon name='users' type='font-awesome' color='black' />
                         <Text
                             style={{
                                 fontSize: '20rem',
                             }}
                         >
-                            { members.length } members
+                            {members.length} members
                         </Text>
                     </View>
                     <View
@@ -386,7 +407,7 @@ export default class CalendarView extends React.Component {
                             flexDirection: 'row',
                             width: '100%',
                             justifyContent: 'space-between',
-                            marginTop: '5%'
+                            marginTop: '5%',
                         }}
                     >
                         <View
@@ -403,15 +424,15 @@ export default class CalendarView extends React.Component {
                             />
                             <Text
                                 style={{
-                                    fontSize: '20rem'
+                                    fontSize: '20rem',
                                 }}
                             >
-                                { this.state.deadlines.length } deadlines
+                                {this.state.deadlines.length} deadlines
                             </Text>
                         </View>
                         <View
                             style={{
-                                marginTop: '-10%'
+                                marginTop: '-10%',
                             }}
                         >
                             <Text
@@ -431,32 +452,31 @@ export default class CalendarView extends React.Component {
                                 trackColor={{ false: 'white', true: '#2776f5' }}
                             />
                         </View>
-
                     </View>
                 </View>
 
                 <FlatList
                     style={{
-                        marginTop: '10%'
+                        marginTop: '10%',
                     }}
                     data={this.state.deadlines}
                     renderItem={this.renderDeadline}
-                    keyExtractor={item => item.id}
-                    refreshControl={ 
+                    keyExtractor={(item) => item.id}
+                    refreshControl={
                         <RefreshControl
-                        refreshing={this.state.refreshing}
-                        onRefresh={this.onRefresh}
-                    />
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.onRefresh}
+                        />
                     }
                 />
                 <TouchableOpacity
                     style={{
-                        marginTop: 'auto'
+                        marginTop: 'auto',
                     }}
                     onPress={() => {
                         this.props.navigation.navigate('Create Deadline', {
                             calendarID: this.props.route.params._id,
-                            members: this.props.route.params.members
+                            members: this.props.route.params.members,
                         });
                     }}
                 >
@@ -467,7 +487,6 @@ export default class CalendarView extends React.Component {
                         size={50}
                     />
                 </TouchableOpacity>
-
             </View>
         );
     }
@@ -475,12 +494,12 @@ export default class CalendarView extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+        flex: 1,
     },
     scrollView: {
-      backgroundColor: 'red',
-      alignItems: 'center',
+        backgroundColor: 'red',
+        alignItems: 'center',
         justifyContent: 'center',
-      height: 0,
+        height: 0,
     },
-  });
+});

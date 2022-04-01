@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     ScrollView,
     Alert,
-    RefreshControl
+    RefreshControl,
 } from 'react-native';
 import { Icon, Card } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
@@ -15,18 +15,17 @@ import { getCalendar } from '../../api/calendar';
 import { getUser } from '../../api/user';
 
 const ChooseCalendar = (props) => {
-
     const [calendars, setCalendars] = React.useState([]);
 
     const [refreshing, setRefreshing] = React.useState(false);
 
-    const onRefresh = async () => { 
+    const onRefresh = async () => {
         setRefreshing(true);
         await fetchCalendars();
         setRefreshing(false);
-    }
+    };
 
-    React.useEffect(() => { 
+    React.useEffect(() => {
         fetchCalendars();
     }, [props]);
 
@@ -36,16 +35,13 @@ const ChooseCalendar = (props) => {
         try {
             const user = await getUser(props.user.token);
             user.user.calendars.forEach(async (c) => {
-                const item = await getCalendar({ cid: c })
-                setCalendars(c => [
-                    ...c,
-                    item
-                ])
+                const item = await getCalendar({ cid: c });
+                setCalendars((c) => [...c, item]);
             });
-        } catch (e) { console.error(e); }
-    }
-
-   
+        } catch (e) {
+            console.error(e);
+        }
+    };
 
     const renderList = () => {
         let elems = [];
@@ -98,7 +94,7 @@ const ChooseCalendar = (props) => {
                                 style={{
                                     color: 'black',
                                     fontSize: '30rem',
-                                    fontWeight: '300'
+                                    fontWeight: '300',
                                 }}
                             >
                                 {c.title}
@@ -107,18 +103,22 @@ const ChooseCalendar = (props) => {
                             <View
                                 style={{
                                     flexDirection: 'row',
-                                    justifyContent: 'space-between'
+                                    justifyContent: 'space-between',
                                 }}
                             >
                                 <View
                                     style={{
-                                        flexDirection: 'row'
+                                        flexDirection: 'row',
                                     }}
                                 >
-                                    <Icon type='font-awesome' name='user' color='black' />
+                                    <Icon
+                                        type='font-awesome'
+                                        name='user'
+                                        color='black'
+                                    />
                                     <Text
                                         style={{
-                                            fontSize: '25rem'
+                                            fontSize: '25rem',
                                         }}
                                     >
                                         {' ' + c.members.length}
@@ -126,13 +126,17 @@ const ChooseCalendar = (props) => {
                                 </View>
                                 <View
                                     style={{
-                                        flexDirection: 'row'
+                                        flexDirection: 'row',
                                     }}
                                 >
-                                    <Icon type='font-awesome' name='bullseye' color='#fa453e' />
+                                    <Icon
+                                        type='font-awesome'
+                                        name='bullseye'
+                                        color='#fa453e'
+                                    />
                                     <Text
                                         style={{
-                                            fontSize: '25rem'
+                                            fontSize: '25rem',
                                         }}
                                     >
                                         {' ' + c.deadlines.length}
@@ -150,7 +154,7 @@ const ChooseCalendar = (props) => {
     return (
         <SafeAreaView
             style={{
-                flex: 1
+                flex: 1,
             }}
         >
             <View
@@ -195,7 +199,7 @@ const ChooseCalendar = (props) => {
                     padding: '3%',
                     marginTop: '5%',
                 }}
-                refreshControl={ 
+                refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
                         onRefresh={() => onRefresh()}
