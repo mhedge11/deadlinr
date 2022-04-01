@@ -82,8 +82,7 @@ export const createReplyToThread = async ({ tid, threadBody, token }) => {
             },
             body: JSON.stringify({
                 reply: {
-                    body: 'Hello 3:39',
-                    // body: threadBody,
+                    body: threadBody,
                 },
             }),
         })
