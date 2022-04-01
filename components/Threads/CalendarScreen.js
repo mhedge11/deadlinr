@@ -193,9 +193,8 @@ const CalendarScreen = (props) => {
             //     // calendarId: itemData.item.id,
             //     // threadArray: itemData.item.threads,
             // });
-
             props.navigation.navigate('ThreadsScreen', {
-                calendarId: itemData.item.id,
+                calendarId: itemData.item._id,
                 threadArray: itemData.item.threads,
             });
         }

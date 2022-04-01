@@ -17,9 +17,7 @@ import { getUser } from '../../api/user';
 import { getThread } from '../../api/thread';
 
 const ThreadsScreen = (props) => {
-    // console.log('ThreadsScreen');
-    // console.log(props.route);
-    const [calId, setCalId] = useState('');
+    const [calId, setCalId] = useState(props.route.params.calendarId);
 
     const [threads, setThreads] = React.useState([]);
 
@@ -41,10 +39,8 @@ const ThreadsScreen = (props) => {
         }
     };
 
-    console.log(threads);
-
     function renderThreadItem(itemData) {
-        setCalId(itemData.item.id);
+        // setCalId(itemData.item.id);
         // calId = itemData.item.id;
         function pressHandler() {
             props.navigation.navigate('IndividualThreadScreen', {

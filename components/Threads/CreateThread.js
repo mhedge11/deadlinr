@@ -36,9 +36,8 @@ const CreateThread = (props) => {
     const createThread = async () => {
         if (!props.user) return Alert.alert('An error occured');
         if (threadName.trim() === '') return;
-
+        console.log('cid : ' + cid);
         setLoading(true);
-
         const res = await createThreadAPI({
             threadName,
             threadBody,
@@ -58,7 +57,7 @@ const CreateThread = (props) => {
             //         members: [],
             //     },
             // ]);
-            // props.navigation.goBack();
+            props.navigation.goBack();
             return;
         } else {
             setMsg('An error occured. Please try again later.');

@@ -19,7 +19,6 @@ function IndividualThreadScreen(props) {
     const threadArray = props.route.params.threadArray;
     const threadReplies = props.route.params.threadReplies;
     const threadObject = props.route.params.threadObject;
-    console.log(threadObject.replies);
 
     const [replies, setReplies] = React.useState([]);
     const [userName, setUserName] = React.useState('Unknown');

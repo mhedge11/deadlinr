@@ -37,7 +37,6 @@ export const createDeadline = async ({
                     const data = await res.json();
                     return data;
                 }
-                console.log(res.status);
                 return false;
             })
             .catch((err) => {
@@ -142,7 +141,6 @@ export const editDeadline = async ({
             }),
         })
             .then(async (res) => {
-                console.log(res.status);
                 if (res.ok) {
                     return true;
                 }
@@ -188,7 +186,7 @@ export const toggleComplete = async ({ did, token }) => {
     }
 };
 
-export const deleteDeadline = async ({ did, token }) => { 
+export const deleteDeadline = async ({ did, token }) => {
     const route = API_URL + '/deadline/' + did;
     try {
         let result = await fetch(route, {
@@ -197,7 +195,7 @@ export const deleteDeadline = async ({ did, token }) => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token,
-            },   
+            },
         })
             .then(async (res) => {
                 if (res.ok) {
@@ -209,8 +207,8 @@ export const deleteDeadline = async ({ did, token }) => {
                 return false;
             });
         return result;
-    } catch (err) { 
+    } catch (err) {
         console.error(err);
         return false;
     }
-}
+};

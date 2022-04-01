@@ -19,7 +19,7 @@ import {
     getDeadline,
     editDeadline as editDeadlineAPI,
     toggleComplete,
-    deleteDeadline as deleteDeadlineAPI
+    deleteDeadline as deleteDeadlineAPI,
 } from '../../api/deadline';
 
 const ViewDeadline = (props) => {
@@ -117,19 +117,19 @@ const ViewDeadline = (props) => {
         }
     };
 
-    const deleteDeadline = async () => { 
+    const deleteDeadline = async () => {
         setLoading(true);
         const res = await deleteDeadlineAPI({
             did: deadline._id,
-            token: props.user.token
-        })
+            token: props.user.token,
+        });
         setLoading(false);
         if (res === true) {
             props.navigation.goBack();
-        } else { 
+        } else {
             return Alert.alert('An error occured');
         }
-    }
+    };
 
     const renderDiffButton = (diff) => {
         return (
@@ -217,7 +217,7 @@ const ViewDeadline = (props) => {
                             [
                                 {
                                     text: 'Cancel',
-                                    onPress: () => { },
+                                    onPress: () => {},
                                     style: 'cancel',
                                 },
                                 {
