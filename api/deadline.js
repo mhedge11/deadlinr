@@ -123,6 +123,7 @@ export const editDeadline = async ({
     description,
     dueDate,
     token,
+    groups,
 }) => {
     const route = API_URL + '/deadline/' + did;
 
@@ -138,6 +139,7 @@ export const editDeadline = async ({
                 title,
                 description,
                 dueDate,
+                groups,
             }),
         })
             .then(async (res) => {

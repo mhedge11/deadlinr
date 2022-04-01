@@ -64,8 +64,6 @@ function IndividualThreadScreen(props) {
     function Comment({ authorId, node }) {
         setUserId(authorId);
         setThreadBody(node.body);
-        console.log('----');
-        console.log(node.author.username);
         if (!node.replies) {
             return (
                 <View>

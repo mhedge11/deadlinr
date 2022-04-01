@@ -28,13 +28,6 @@ const CreateReplyToThread = (props) => {
     // console.log(cid);
     // setcid(route.params.calendarId);
     const [errMsg, setMsg] = useState('');
-
-    console.log('beg-----');
-    console.log(props.user.token);
-    console.log(props.threadBody);
-    console.log(props.tid);
-    console.log('end-----');
-
     // Need to put this in variable and then not reset it unless
     // Something changes
     // So put it into a function and only run when necessary

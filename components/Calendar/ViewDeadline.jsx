@@ -37,6 +37,10 @@ const ViewDeadline = (props) => {
     const [loading, setLoading] = React.useState(false);
     const [selectedDiff, setSelectedDiff] = React.useState(0);
 
+    const [groups, setGroups] = React.useState(deadline.groups);
+    const [numGroups, setNumGroups] = React.useState(deadline.groups.length);
+    const [newGroup, setNewGroup] = React.useState('');
+
     React.useEffect(() => {
         if (deadline.difficulty[props.user.user._id] !== undefined) {
             setSelectedDiff(deadline.difficulty[props.user.user._id]);
@@ -82,13 +86,18 @@ const ViewDeadline = (props) => {
 
     const editDeadline = async () => {
         setLoading(true);
+        if (newGroup.trim() !== '') {
+            setGroups([...groups, newGroup]);
+        }
         const res = await editDeadlineAPI({
             did: deadline._id,
             title: deadline.title,
             description: desc,
             dueDate: dueDate,
             token: props.user.token,
+            groups,
         });
+        setNewGroup(false);
         setLoading(false);
 
         if (res === true) {
@@ -254,28 +263,82 @@ const ViewDeadline = (props) => {
                     padding: '5%',
                 }}
             >
-                {deadline.groups.map((g) => {
-                    return (
-                        <View
-                            style={{
-                                backgroundColor: getDarkColor(),
-                                padding: '5%',
-                                borderRadius: 5,
-                                marginRight: '5%',
-                            }}
-                        >
-                            <Text
+                {editMode ? (
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                        }}
+                    >
+                        {deadline.groups.map((g, i) => {
+                            return (
+                                <TextInput
+                                    style={{
+                                        fontSize: 20,
+                                        borderColor: 'black',
+                                        borderWidth: 1,
+                                        borderRadius: 5,
+                                        padding: '5%',
+                                    }}
+                                    value={g}
+                                    onChangeText={(text) => {
+                                        temp = groups;
+                                        temp[i] = text;
+                                        setGroups(temp);
+                                    }}
+                                />
+                            );
+                        })}
+                        {numGroups - deadline.groups.length > 0 && (
+                            <TextInput
                                 style={{
-                                    fontSize: 15,
-                                    color: 'white',
-                                    fontWeight: '500',
+                                    fontSize: 20,
+                                    borderColor: 'black',
+                                    borderWidth: 1,
+                                    borderRadius: 5,
+                                    padding: '5%',
+                                }}
+                                value={newGroup}
+                                onChangeText={(text) => {
+                                    setNewGroup(text);
+                                }}
+                            />
+                        )}
+                        <Button
+                            title='Add group'
+                            onPress={() => {
+                                setNumGroups(numGroups + 1);
+                            }}
+                            disabled={
+                                deadline.groups[
+                                    deadline.groups.length - 1
+                                ].trim() === ''
+                            }
+                        />
+                    </View>
+                ) : (
+                    deadline.groups.map((g) => {
+                        return (
+                            <View
+                                style={{
+                                    backgroundColor: getDarkColor(),
+                                    padding: '5%',
+                                    borderRadius: 5,
+                                    marginRight: '5%',
                                 }}
                             >
-                                {g}
-                            </Text>
-                        </View>
-                    );
-                })}
+                                <Text
+                                    style={{
+                                        fontSize: 15,
+                                        color: 'white',
+                                        fontWeight: '500',
+                                    }}
+                                >
+                                    {g}
+                                </Text>
+                            </View>
+                        );
+                    })
+                )}
             </View>
             <View
                 style={{

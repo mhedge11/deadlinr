@@ -57,7 +57,7 @@ export default class CalendarView extends React.Component {
                     id: did,
                     token: this.props.user.token,
                 });
-                console.log(item.deadline);
+
                 this.setState({
                     deadlines: [...this.state.deadlines, item.deadline],
                 });
@@ -143,8 +143,6 @@ export default class CalendarView extends React.Component {
             votesRemaining,
             groups,
         } = deadline.item;
-
-        console.log(groups);
 
         let diffColor = '';
         if (averageDifficulty <= 1) {
@@ -324,6 +322,7 @@ export default class CalendarView extends React.Component {
                         style={{
                             flexDirection: 'row',
                             marginTop: '5%',
+                            overflow: 'wrap',
                         }}
                     >
                         {groups.map((g) => {
@@ -333,6 +332,7 @@ export default class CalendarView extends React.Component {
                                         backgroundColor: this.getDarkColor(),
                                         padding: '5%',
                                         borderRadius: 5,
+                                        marginRight: '5%',
                                     }}
                                 >
                                     <Text

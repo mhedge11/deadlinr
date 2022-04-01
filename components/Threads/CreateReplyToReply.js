@@ -29,10 +29,6 @@ const CreateReplyToReply = (props) => {
     // setcid(route.params.calendarId);
     const [errMsg, setMsg] = useState('');
 
-    console.log(props.user['token']);
-    console.log(threadBody);
-    console.log(tid);
-
     // Need to put this in variable and then not reset it unless
     // Something changes
     // So put it into a function and only run when necessary
