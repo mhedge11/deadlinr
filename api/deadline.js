@@ -187,3 +187,30 @@ export const toggleComplete = async ({ did, token }) => {
         return false;
     }
 };
+
+export const deleteDeadline = async ({ did, token }) => { 
+    const route = API_URL + '/deadline/' + did;
+    try {
+        let result = await fetch(route, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },   
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+        return result;
+    } catch (err) { 
+        console.error(err);
+        return false;
+    }
+}

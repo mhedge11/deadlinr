@@ -19,6 +19,7 @@ import {
     getDeadline,
     editDeadline as editDeadlineAPI,
     toggleComplete,
+    deleteDeadline as deleteDeadlineAPI
 } from '../../api/deadline';
 
 const ViewDeadline = (props) => {
@@ -54,7 +55,6 @@ const ViewDeadline = (props) => {
             setDeadline(res.deadline);
             setDesc(res.deadline.description);
             setDueDate(res.deadline.dueDate);
-            console.log(res.deadline);
         } else {
             alert('An error occured');
         }
@@ -81,7 +81,6 @@ const ViewDeadline = (props) => {
 
     const editDeadline = async () => {
         setLoading(true);
-        console.log(desc, dueDate);
         const res = await editDeadlineAPI({
             did: deadline._id,
             title: deadline.title,
@@ -89,7 +88,6 @@ const ViewDeadline = (props) => {
             dueDate: dueDate,
             token: props.user.token,
         });
-        // console.log(res);
         setLoading(false);
 
         if (res === true) {
@@ -118,6 +116,20 @@ const ViewDeadline = (props) => {
             return Alert.alert('An error occured');
         }
     };
+
+    const deleteDeadline = async () => { 
+        setLoading(true);
+        const res = await deleteDeadlineAPI({
+            did: deadline._id,
+            token: props.user.token
+        })
+        setLoading(false);
+        if (res === true) {
+            props.navigation.goBack();
+        } else { 
+            return Alert.alert('An error occured');
+        }
+    }
 
     const renderDiffButton = (diff) => {
         return (
@@ -188,6 +200,38 @@ const ViewDeadline = (props) => {
                 >
                     {deadline.title}
                 </Text>
+            </View>
+            <View
+                style={{
+                    flexDirection: 'row',
+                }}
+            >
+                <Button
+                    title='Delete Deadline'
+                    color='red'
+                    disabled={props.user.user._id !== deadline.owner}
+                    onPress={() => {
+                        Alert.alert(
+                            'Delete Deadline',
+                            'Are you sure you want to delete this deadline?',
+                            [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => { },
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK',
+                                    onPress: () => {
+                                        setLoading(true);
+                                        deleteDeadline();
+                                    },
+                                },
+                            ],
+                            { cancelable: false }
+                        );
+                    }}
+                />
             </View>
             <View
                 style={{
