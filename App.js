@@ -24,6 +24,8 @@ import ThreadsScreen from './components/Threads/ThreadsScreen';
 import CalendarScreen from './components/Threads/CalendarScreen';
 import IndividualThreadScreen from './components/Threads/IndividualThreadScreen';
 import CreateThread from './components/Threads/CreateThread';
+import CreateReplyToThread from './components/Threads/CreateReplyToThread';
+import CreateReplyToReply from './components/Threads/CreateReplyToReply';
 
 const Stack = createNativeStackNavigator();
 
@@ -243,6 +245,18 @@ export default function App() {
                     options={{ headerShown: false }}
                 >
                     {(props) => <CreateThread {...props} user={user} />}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='CreateReplyToThread'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <CreateReplyToThread {...props} user={user} />}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='CreateReplyToReply'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <CreateReplyToReply {...props} user={user} />}
                 </Stack.Screen>
             </Stack.Navigator>
             <StatusBar />
