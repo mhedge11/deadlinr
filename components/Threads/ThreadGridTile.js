@@ -1,20 +1,5 @@
 import { Pressable, View, Text, StyleSheet } from 'react-native';
 
-// function renderCalendarItem(itemData) {
-//     return <CalendarGridTile calendar={itemData.item} />;
-// }
-
-// const PostReply = () => (
-//     <SafeAreaView style={styles.container}>
-//         <FlatList
-//             data={CALENDARDATA}
-//             keyExtractor={(item) => item.id}
-//             renderItem={renderCalendarItem}
-//             // numColumns={2}
-//         />
-//     </SafeAreaView>
-// );
-
 function ThreadGridTile({ route, navigation, thread, onPress }) {
     return (
         <View style={styles.gridItem}>
