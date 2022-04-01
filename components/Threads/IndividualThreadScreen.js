@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import IndvidualThreadGridTile from './IndividualThreadGridTile';
 import { fetchUser } from '../../api/user';
+// import { threadReply } from '../../api/user';
+import { createReplyToThread } from '../../api/thread';
+import CreateReplyToThread from './CreateReplyToThread';
 
 function IndividualThreadScreen(props) {
     const threadId = props.route.params.threadId;
@@ -24,7 +27,9 @@ function IndividualThreadScreen(props) {
     const [userName, setUserName] = React.useState('Unknown');
     const [userId, setUserId] = React.useState(threadObject.author);
     const [uid, setuid] = React.useState(threadObject.author);
+    const [threadBody, setThreadBody] = React.useState('');
 
+    // Fetching individual Threads
     React.useEffect(() => {
         fetchIndividualThread();
     }, []);
@@ -32,7 +37,7 @@ function IndividualThreadScreen(props) {
     const fetchIndividualThread = async () => {
         setUserName('');
         try {
-            let orig = { uid: threadObject.author };
+            let orig = { uid: threadObject.author._id };
             const data = await fetchUser(orig);
             setUserName(data.username);
         } catch (e) {
@@ -40,8 +45,27 @@ function IndividualThreadScreen(props) {
         }
     };
 
+    // Fetching Replies
+    // React.useEffect(() => {
+    //     fetchReply();
+    // }, []);
+
+    // const fetchReply = async () => {
+    //     setUserName('');
+    //     try {
+    //         let orig = { tid: threadId, threadBody: threadBody };
+    //         const data = await createReplyToThread(orig);
+    //         // setUserName(data.username);
+    //     } catch (e) {
+    //         console.error(e);
+    //     }
+    // };
+
     function Comment({ authorId, node }) {
         setUserId(authorId);
+        setThreadBody(node.body);
+        console.log('----');
+        console.log(node.author.username);
         if (!node.replies) {
             return (
                 <View>
@@ -55,7 +79,14 @@ function IndividualThreadScreen(props) {
 
                     <TouchableOpacity
                         style={styles.replyButton2}
-                        onPress={() => {}}
+                        onPress={() => {
+                            props.navigation.navigate('CreateReplyToReply', {
+                                tid: threadObject._id,
+                                rid: node.id,
+                                threadBody: node.body,
+                                // calendarId: calId,
+                            });
+                        }}
                     >
                         <Text style={{ color: 'white' }}>Reply</Text>
                     </TouchableOpacity>
@@ -85,10 +116,29 @@ function IndividualThreadScreen(props) {
 
                     <TouchableOpacity
                         style={styles.replyButton1}
-                        onPress={() => {}}
+                        onPress={() => {
+                            props.navigation.navigate('CreateReplyToThread', {
+                                tid: threadObject._id,
+                                threadBody: node.body,
+                                // calendarId: calId,
+                            });
+                        }}
                     >
                         <Text style={{ color: 'white' }}>Reply</Text>
                     </TouchableOpacity>
+
+                    {/* <View>
+                    <Button
+                        title='Create New Post'
+                        onPress={() =>
+                            props.navigation.navigate('CreateThread', {
+                                calendarId: calId,
+                                // threadArray: itemData.item.threads,
+                            })
+                        }
+                        // onPress={() => {}}
+                    />
+                </View> */}
                     {/* <View
                     style={{
                         flexDirection: 'row',
@@ -159,6 +209,7 @@ function IndividualThreadScreen(props) {
                                     {/* {'Post: '} */}
                                     {threadObject.body}
                                 </Text>
+
                                 <TouchableOpacity
                                     style={{
                                         marginTop: 3,
@@ -171,7 +222,16 @@ function IndividualThreadScreen(props) {
                                         // marginTop: 40,
                                         backgroundColor: 'blue',
                                     }}
-                                    onPress={() => {}}
+                                    onPress={() => {
+                                        props.navigation.navigate(
+                                            'CreateReplyToThread',
+                                            {
+                                                tid: threadObject._id,
+                                                threadBody: threadObject.body,
+                                                // calendarId: calId,
+                                            }
+                                        );
+                                    }}
                                 >
                                     <Text style={{ color: 'white' }}>
                                         Reply
@@ -190,7 +250,7 @@ function IndividualThreadScreen(props) {
                         </View>
                         <View styles={styles.container}>
                             <Comment
-                                authorId={threadObject.author}
+                                authorId={threadObject.author._id}
                                 node={threadObject}
                             />
                         </View>
