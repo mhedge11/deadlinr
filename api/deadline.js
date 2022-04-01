@@ -158,3 +158,32 @@ export const editDeadline = async ({
         return false;
     }
 };
+
+export const toggleComplete = async ({ did, token }) => {
+    const route = API_URL + '/deadline/' + did + '/toggleComplete';
+
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};

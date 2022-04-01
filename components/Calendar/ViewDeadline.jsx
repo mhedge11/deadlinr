@@ -18,6 +18,7 @@ import {
     rateDeadline,
     getDeadline,
     editDeadline as editDeadlineAPI,
+    toggleComplete,
 } from '../../api/deadline';
 
 const ViewDeadline = (props) => {
@@ -35,6 +36,12 @@ const ViewDeadline = (props) => {
     const [selectedDiff, setSelectedDiff] = React.useState(0);
 
     React.useEffect(() => {
+        if (deadline.difficulty[props.user.user._id] !== undefined) {
+            setSelectedDiff(deadline.difficulty[props.user.user._id]);
+        }
+        if (deadline.completionTime[props.user.user._id] !== undefined) {
+            setTimeToComplete(deadline.completionTime[props.user.user._id]);
+        }
         fetchDeadline();
     }, []);
 
@@ -44,13 +51,14 @@ const ViewDeadline = (props) => {
             token: props.user.token,
         });
         if (res !== false) {
+            setDeadline(res.deadline);
             setDesc(res.deadline.description);
             setDueDate(res.deadline.dueDate);
-            setDeadline(res.deadline);
             console.log(res.deadline);
         } else {
             alert('An error occured');
         }
+        setEditMode(false);
         setLoading(false);
     };
 
@@ -66,6 +74,7 @@ const ViewDeadline = (props) => {
             fetchDeadline();
         } else {
             setLoading(false);
+            setEditMode(false);
             return Alert.alert('An error occured');
         }
     };
@@ -85,13 +94,27 @@ const ViewDeadline = (props) => {
 
         if (res === true) {
             const res = await fetchDeadline();
-            setEditMode(false);
+
             setDesc(deadline.description);
             setDueDate(new Date(deadline.dueDate));
             props.route.params.deadline = deadline;
         } else {
             setLoading(false);
             setEditMode(false);
+            return Alert.alert('An error occured');
+        }
+    };
+
+    const completeDeadline = async () => {
+        setLoading(true);
+        const res = await toggleComplete({
+            did: deadline._id,
+            token: props.user.token,
+        });
+        if (res !== false) {
+            fetchDeadline();
+        } else {
+            setLoading(false);
             return Alert.alert('An error occured');
         }
     };
@@ -273,7 +296,7 @@ const ViewDeadline = (props) => {
                                 fontSize: '21rem',
                             }}
                         >
-                            {deadline.usersFinished}
+                            {deadline.usersFinished.length}
                         </Text>
                     </View>
                 </View>
@@ -424,15 +447,19 @@ const ViewDeadline = (props) => {
                 </View>
             </View>
             <Button
+                title='Vote deadline'
+                fontSize={20}
+                onPress={() => {
+                    voteDeadline();
+                }}
+            />
+            <Button
                 title='Mark deadline as complete'
                 fontSize={20}
                 onPress={() => {
-                    // add API call
-                    voteDeadline();
+                    completeDeadline();
                 }}
-                disabled={props.route.params.deadline.usersVoted.includes(
-                    props.user.user._id
-                )}
+                disabled={deadline.usersFinished.includes(props.user.user._id)}
             />
         </SafeAreaView>
     );
