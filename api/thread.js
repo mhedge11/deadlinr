@@ -66,3 +66,77 @@ export const getThread = async ({ tid }) => {
         return null;
     }
 };
+
+// Create a thread reply
+export const createReplyToThread = async ({ tid, threadBody, token }) => {
+    // const route = API_URL + '/thread/' + '62474c267c87a8ad88852221' + '/reply';
+    const route = API_URL + '/thread/' + tid + '/reply';
+
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                reply: {
+                    body: 'Hello 3:39',
+                    // body: threadBody,
+                },
+            }),
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    return data;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
+
+// Create a reply to reply
+export const createReplyToReply = async ({ tid, rid, threadBody, token }) => {
+    const route = API_URL + '/thread/' + tid + rid + '/reply';
+
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                reply: {
+                    body: threadBody,
+                },
+            }),
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    return data;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};

@@ -12,37 +12,42 @@ import {
     Alert,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { createThread as createThreadAPI } from '../../api/thread';
+import { createReplyToReply as createReplyToReplyOfThreadAPI } from '../../api/thread';
 
-const CreateThread = (props) => {
+const CreateReplyToReply = (props) => {
     // console.log(props);
     const [bcolor, setBorderColor] = useState('transparent');
     const [loading, setLoading] = useState(false);
 
     const [threadName, setThreadName] = useState('');
     const [threadBody, setThreadBody] = useState('');
-    const [cid, setcid] = useState(props.route.params.calendarId);
+    // const [cid, setcid] = useState(props.route.params.calendarId);
+    const [tid, setTid] = useState(props.route.params.tid);
     // const cid = calId;
     // setcid(calId);
     // console.log(cid);
     // setcid(route.params.calendarId);
     const [errMsg, setMsg] = useState('');
 
+    console.log(props.user['token']);
+    console.log(threadBody);
+    console.log(tid);
+
     // Need to put this in variable and then not reset it unless
     // Something changes
     // So put it into a function and only run when necessary
     // setcid('6241d84925e0bb632f32ddf5');
 
-    const createThread = async () => {
+    const createReplyToReply = async () => {
         if (!props.user) return Alert.alert('An error occured');
         if (threadName.trim() === '') return;
 
         setLoading(true);
 
-        const res = await createThreadAPI({
-            threadName,
+        const res = await createReplyToReplyOfThreadAPI({
+            tid,
+            rid,
             threadBody,
-            cid,
             token: props.user['token'],
         });
         setLoading(false);
@@ -106,21 +111,37 @@ const CreateThread = (props) => {
                 </TouchableOpacity>
                 <Text
                     style={{
-                        fontSize: '32rem',
+                        fontSize: 32,
                         fontWeight: 'bold',
                         marginLeft: '5%',
                     }}
                 >
-                    Create Thread
+                    Create Reply to Reply
                 </Text>
             </View>
-
             <View
+                style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <Text
+                    style={{
+                        fontSize: 20,
+                        // fontWeight: 'bold',
+                    }}
+                >
+                    {props.route.params.threadBody}
+                </Text>
+                {/* <Text>{tid}</Text> */}
+            </View>
+
+            {/* <View
                 style={{
                     padding: '5%',
                 }}
             >
-                <Text style={styles.label}>Name</Text>
+                <Text style={styles.label}>{threadBody}</Text>
                 <TextInput
                     style={{
                         ...styles.input,
@@ -141,14 +162,14 @@ const CreateThread = (props) => {
                         Thread name cannot be empty.
                     </Text>
                 )}
-            </View>
+            </View> */}
 
             <View
                 style={{
                     padding: '5%',
                 }}
             >
-                <Text style={styles.label}>Message</Text>
+                <Text style={styles.label}>Reply Message</Text>
                 <TextInput
                     style={{
                         ...styles.input,
@@ -190,11 +211,9 @@ const CreateThread = (props) => {
             <View>
                 <Button
                     title='Make it so'
-                    onPress={() => createThread()}
+                    onPress={() => createReplyToReply()}
                     // onPress={() => {}}
-                    disabled={
-                        threadName.length === 0 || threadBody.length === 0
-                    }
+                    disabled={threadBody.length === 0}
                 />
             </View>
 
@@ -236,4 +255,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateThread;
+export default CreateReplyToReply;
