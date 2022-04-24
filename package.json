@@ -25,6 +25,7 @@
         "react-native-calendar-strip": "^2.2.5",
         "react-native-confirmation-code-field": "^7.3.0",
         "react-native-elements": "^3.4.2",
+        "react-native-keyboard-aware-scroll-view": "^0.9.5",
         "react-native-option-select": "^1.0.4",
         "react-native-safe-area-context": "3.3.2",
         "react-native-screens": "~3.10.1",

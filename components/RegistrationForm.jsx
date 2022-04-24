@@ -12,7 +12,9 @@ import {
     Image,
     Alert,
     ActivityIndicator,
+    KeyboardAvoidingView,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { emailValidation } from '../validation/emailValidation';
 import { nameValidation } from '../validation/nameValidation';
@@ -105,7 +107,7 @@ const RegistrationForm = (props) => {
     }
 
     return (
-        <ScrollView style={{ marginVertical: 50 }}>
+        <KeyboardAwareScrollView style={{ marginVertical: 50 }}>
             <View style={styles.container}>
                 <Image
                     style={styles.image}
@@ -173,7 +175,7 @@ const RegistrationForm = (props) => {
                     <Text>REGISTER</Text>
                 </TouchableOpacity>
             </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
     );
 };
 
