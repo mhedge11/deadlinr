@@ -2,24 +2,20 @@ import React, { useState } from 'react';
 import {
     View,
     Text,
-    ScrollView,
     StyleSheet,
-    Image,
     TextInput,
     TouchableOpacity,
     Button,
-    SafeAreaView,
-    Alert,
     Keyboard,
     TouchableWithoutFeedback,
     ActivityIndicator,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import RegistrationScreen from '../RegistrationScreen/RegistrationScreen';
+
 import { emailValidation } from '../../validation/emailValidation';
 import { passwordValidation } from '../../validation/passwordValidation';
 import { usernameValidation } from '../../validation/usernameValidation';
 import { getUser, loginUser } from '../../api/user';
+import { connect } from 'react-redux';
 
 const DismissKeyboard = ({ children }) => (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -61,10 +57,9 @@ const Login = (props) => {
         }
 
         const getUserByToken = await getUser(data.token);
-        props.setUser({
-            user: getUserByToken.user,
-            token: data.token,
-        });
+
+        console.log('here');
+        props.dispatch({ type: 'SET_USER', user: { ...getUserByToken.user, token: data.token } });
     };
 
     if (loading) {
@@ -208,4 +203,13 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Login;
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        dispatch: state.dispatch,
+    };
+}
+
+
+export default connect(mapStateToProps, null)(Login);
