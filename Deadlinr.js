@@ -28,14 +28,11 @@ import { connect } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 
-
-
 class Deadlinr extends React.Component {
-
     constructor(props) {
         super(props);
         console.log(props);
-        this.state = {}
+        this.state = {};
     }
 
     render() {
@@ -43,229 +40,144 @@ class Deadlinr extends React.Component {
 
         if (user === null || user === undefined) {
             return (
-                    <NavigationContainer>
-                        <Stack.Navigator>
-                            <Stack.Screen name='Login' options={{ headerShown: false }}>
-                                {(props) => (
-                                    <Login {...props}    />
-                                )}
-                            </Stack.Screen>
-                            <Stack.Screen
-                                name='Registration'
-                                options={{ headerShown: false }}
-                            >
-                                {(props) => (
-                                    <RegistrationScreen
-                                        {...props}
-                                        
-                                         
-                                    />
-                                )}
-                            </Stack.Screen>
-                            <Stack.Screen
-                                name='Forgot Password'
-                                options={{ headerShown: false }}
-                            >
-                                {(props) => (
-                                    <ForgotPassword
-                                        {...props}
-                                        
-                                         
-                                    />
-                                )}
-                            </Stack.Screen>
-                            <Stack.Screen
-                                name='Reset Password'
-                                options={{ headerShown: false }}
-                            >
-                                {(props) => (
-                                    <ResetPassword
-                                        {...props}
-                                        
-                                    />
-                                )}
-                            </Stack.Screen>
-                        </Stack.Navigator>
-                    </NavigationContainer>
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen
+                            name='Login'
+                            options={{ headerShown: false }}
+                        >
+                            {(props) => <Login {...props} />}
+                        </Stack.Screen>
+                        <Stack.Screen
+                            name='Registration'
+                            options={{ headerShown: false }}
+                        >
+                            {(props) => <RegistrationScreen {...props} />}
+                        </Stack.Screen>
+                        <Stack.Screen
+                            name='Forgot Password'
+                            options={{ headerShown: false }}
+                        >
+                            {(props) => <ForgotPassword {...props} />}
+                        </Stack.Screen>
+                        <Stack.Screen
+                            name='Reset Password'
+                            options={{ headerShown: false }}
+                        >
+                            {(props) => <ResetPassword {...props} />}
+                        </Stack.Screen>
+                    </Stack.Navigator>
+                </NavigationContainer>
             );
         }
 
         return (
-                <NavigationContainer>
-                    <Stack.Navigator>
-                        <Stack.Screen name='Home' options={{ headerShown: false }}>
-                            {(props) => (
-                                <Home
-                                    {...props}
-                                />
-                            )}
-                        </Stack.Screen>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name='Home' options={{ headerShown: false }}>
+                        {(props) => <Home {...props} />}
+                    </Stack.Screen>
 
-                        <Stack.Screen
-                            name='Change Password'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => (
-                                <ChangePassword
-                                    {...props}
-                                    
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen name='Profile' options={{ headerShown: false }}>
-                            {(props) => (
-                                <Profile
-                                    {...props}
-                                    
-                                    
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen name='Calendar' options={{ headerShown: false }}>
-                            {(props) => (
-                                <Calendar
-                                    {...props}
-                                    
-                                    
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='calendarScreen'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => (
-                                <CalendarScreen
-                                    {...props}
-                                    
-                                    
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen name='Search' options={{ headerShown: false }}>
-                            {(props) => (
-                                <Search
-                                    {...props}
-                                    
-                                    
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='Choose Calendar'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => (
-                                <ChooseCalendar
-                                    {...props}
-                                    
-                                    
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='Create Calendar'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => (
-                                <CreateCalendar
-                                    {...props}
-                                
-                                
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='Calendar View'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => <CalendarView {...props}  />}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='Join Calendar'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => <JoinCalendar {...props}  />}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='Create Deadline'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => (
-                                <CreateDeadline
-                                    {...props}
-                                    
-                                    
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='Deadline View'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => (
-                                <ViewDeadline
-                                    {...props}
-                                    
-                                    
-                                     
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='ThreadsScreen'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => (
-                                <ThreadsScreen
-                                    {...props}
-                                    
-                                    
-                                />
-                            )}
-                        </Stack.Screen>
+                    <Stack.Screen
+                        name='Change Password'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <ChangePassword {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Profile'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <Profile {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Calendar'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <Calendar {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='calendarScreen'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <CalendarScreen {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Search'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <Search {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Choose Calendar'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <ChooseCalendar {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Create Calendar'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <CreateCalendar {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Calendar View'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <CalendarView {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Join Calendar'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <JoinCalendar {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Create Deadline'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <CreateDeadline {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Deadline View'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <ViewDeadline {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='ThreadsScreen'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <ThreadsScreen {...props} />}
+                    </Stack.Screen>
 
-                        <Stack.Screen
-                            name='IndividualThreadScreen'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => (
-                                <IndividualThreadScreen
-                                    {...props}
-                                    
-                                    
-                                />
-                            )}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='CreateThread'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => <CreateThread {...props}  />}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='CreateReplyToThread'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => <CreateReplyToThread {...props}  />}
-                        </Stack.Screen>
-                        <Stack.Screen
-                            name='CreateReplyToReply'
-                            options={{ headerShown: false }}
-                        >
-                            {(props) => <CreateReplyToReply {...props}  />}
-                        </Stack.Screen>
-                    </Stack.Navigator>
-                    <StatusBar />
-                </NavigationContainer>
+                    <Stack.Screen
+                        name='IndividualThreadScreen'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <IndividualThreadScreen {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='CreateThread'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <CreateThread {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='CreateReplyToThread'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <CreateReplyToThread {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='CreateReplyToReply'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <CreateReplyToReply {...props} />}
+                    </Stack.Screen>
+                </Stack.Navigator>
+                <StatusBar />
+            </NavigationContainer>
         );
     }
 }

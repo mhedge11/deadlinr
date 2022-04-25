@@ -76,86 +76,86 @@ const Login = (props) => {
     }
 
     return (
-            <View style={styles.container}>
-                <View
-                    style={styles.image}
-                >
+        <View style={styles.container}>
+            <View style={styles.image}>
                 <Text
                     style={{
-                        color: "white",
+                        color: 'white',
                         fontSize: 40,
                         fontWeight: '600',
                         marginLeft: '10%',
                         marginTop: '50%',
                     }}
-                >Deadlinr</Text>
-                </View>
-                <View style={styles.inputView}>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            marginLeft: '2%',
-                            fontWeight: '500',
-                        }}
-                    >
-                        Email or Username
-                    </Text>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder='Enter email or username'
-                        placeholderTextColor='grey'
-                        onChangeText={(login) => setLogin(login)}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <Text
-                    style={{
-                            fontSize: 18,
-                        marginLeft: '2%',
-                            fontWeight: '500'
-                    }}
-                    >
-                        Password
-                    </Text>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder='Enter password'
-                        secureTextEntry={true}
-                        placeholderTextColor='grey'
-                        onChangeText={(password) => setPassword(password)}
-                    />
-                </View>
-
-                <TouchableOpacity
-                    style={styles.loginButton}
-                    onPress={userPressedLogin}
                 >
-                    <Text style={{ color: 'white' }}>Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('Forgot Password')}
-                >
-                    <Text style={styles.forgot_button}>Forgot Password</Text>
-                </TouchableOpacity>
-
-                <View
-                    style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Button
-                        title='CREATE ACCOUNT'
-                        onPress={() => {
-                            /* 1. Navigate to the Details route with params */
-                            // props.navigation.navigate("RegistrationForm");
-                            props.navigation.navigate('Registration');
-                        }}
-                        color='#6b5ae8'
-                    />
-                </View>
+                    Deadlinr
+                </Text>
             </View>
+            <View style={styles.inputView}>
+                <Text
+                    style={{
+                        fontSize: 18,
+                        marginLeft: '2%',
+                        fontWeight: '500',
+                    }}
+                >
+                    Email or Username
+                </Text>
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder='Enter email or username'
+                    placeholderTextColor='grey'
+                    onChangeText={(login) => setLogin(login)}
+                />
+            </View>
+            <View style={styles.inputView}>
+                <Text
+                    style={{
+                        fontSize: 18,
+                        marginLeft: '2%',
+                        fontWeight: '500',
+                    }}
+                >
+                    Password
+                </Text>
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder='Enter password'
+                    secureTextEntry={true}
+                    placeholderTextColor='grey'
+                    onChangeText={(password) => setPassword(password)}
+                />
+            </View>
+
+            <TouchableOpacity
+                style={styles.loginButton}
+                onPress={userPressedLogin}
+            >
+                <Text style={{ color: 'white' }}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Forgot Password')}
+            >
+                <Text style={styles.forgot_button}>Forgot Password</Text>
+            </TouchableOpacity>
+
+            <View
+                style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <Button
+                    title='CREATE ACCOUNT'
+                    onPress={() => {
+                        /* 1. Navigate to the Details route with params */
+                        // props.navigation.navigate("RegistrationForm");
+                        props.navigation.navigate('Registration');
+                    }}
+                    color='#6b5ae8'
+                />
+            </View>
+        </View>
     );
 };
 
@@ -203,13 +203,11 @@ const styles = StyleSheet.create({
     },
 });
 
-
 function mapStateToProps(state) {
     return {
         user: state.user,
         dispatch: state.dispatch,
     };
 }
-
 
 export default connect(mapStateToProps, null)(Login);

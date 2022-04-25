@@ -38,7 +38,10 @@ class Home extends Component {
             });
         }
         console.log(this.state.calendars);
-        this.props.dispatch({ type: 'SET_CALENDARS', calendars: this.state.calendars });
+        this.props.dispatch({
+            type: 'SET_CALENDARS',
+            calendars: this.state.calendars,
+        });
         this.setState({
             loading: false,
         });
@@ -92,8 +95,7 @@ class Home extends Component {
         while (
             this.state.loading ||
             !this.props.user.calendars ||
-            this.state.calendars.length !==
-                this.props.user.calendars.length
+            this.state.calendars.length !== this.props.user.calendars.length
         ) {
             return <ActivityIndicator />;
         }

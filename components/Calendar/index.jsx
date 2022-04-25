@@ -291,11 +291,11 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        calendars: state.calendars
-    }
+        calendars: state.calendars,
+    };
 }
 
 export default connect(mapStateToProps)(Calendar);

@@ -5,33 +5,33 @@ import Deadlinr from './Deadlinr';
 
 const initialState = {
     user: null,
-    calendars: []
-}
+    calendars: [],
+};
 
-const reducer = (state = initialState, action) => { 
+const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_USER':
             console.log('set_user dispatched');
             return {
                 ...state,
-                user: action.user
-            }
+                user: action.user,
+            };
         case 'SET_CALENDARS':
             return {
                 ...state,
-                calednars: action.calednars
-            }
+                calednars: action.calednars,
+            };
         default:
             return state;
     }
-}
+};
 
 const store = createStore(reducer);
 
-export default function App() { 
-    return(
-        <Provider store={store} >
+export default function App() {
+    return (
+        <Provider store={store}>
             <Deadlinr />
         </Provider>
-    )
+    );
 }

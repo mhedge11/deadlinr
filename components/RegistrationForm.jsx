@@ -105,20 +105,20 @@ const RegistrationForm = (props) => {
     }
 
     return (
-            <View style={styles.container}>
-                <View
-                    style={styles.image}
-                >
+        <View style={styles.container}>
+            <View style={styles.image}>
                 <Text
                     style={{
-                        color: "white",
+                        color: 'white',
                         fontSize: 40,
                         fontWeight: '600',
                         marginLeft: '5%',
                         marginTop: '30%',
                     }}
-                >Create Account</Text>
-                </View>
+                >
+                    Create Account
+                </Text>
+            </View>
             <ScrollView
                 style={{
                     marginTop: '10%',
@@ -134,7 +134,9 @@ const RegistrationForm = (props) => {
                             marginLeft: '2%',
                             fontWeight: '500',
                         }}
-                    >First Name</Text>
+                    >
+                        First Name
+                    </Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter First Name'
@@ -149,7 +151,9 @@ const RegistrationForm = (props) => {
                             marginLeft: '2%',
                             fontWeight: '500',
                         }}
-                    >Last Name</Text>
+                    >
+                        Last Name
+                    </Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter Last Name'
@@ -164,7 +168,9 @@ const RegistrationForm = (props) => {
                             marginLeft: '2%',
                             fontWeight: '500',
                         }}
-                    >Username</Text>
+                    >
+                        Username
+                    </Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter Username'
@@ -179,7 +185,9 @@ const RegistrationForm = (props) => {
                             marginLeft: '2%',
                             fontWeight: '500',
                         }}
-                    >Email</Text>
+                    >
+                        Email
+                    </Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter email'
@@ -196,7 +204,9 @@ const RegistrationForm = (props) => {
                             marginLeft: '2%',
                             fontWeight: '500',
                         }}
-                    >Password</Text>
+                    >
+                        Password
+                    </Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter password'
@@ -212,7 +222,9 @@ const RegistrationForm = (props) => {
                             marginLeft: '2%',
                             fontWeight: '500',
                         }}
-                    >Confirm Password</Text>
+                    >
+                        Confirm Password
+                    </Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Confirm Password'
@@ -223,7 +235,7 @@ const RegistrationForm = (props) => {
                         }
                     />
                 </View>
-               
+
                 <TouchableOpacity
                     style={styles.registerButton}
                     onPress={handleSubmission}
@@ -233,13 +245,14 @@ const RegistrationForm = (props) => {
                             color: 'white',
                             fontSize: 18,
                             fontWeight: '600',
-                            textAlign: 'center'
+                            textAlign: 'center',
                         }}
-                    >Register
+                    >
+                        Register
                     </Text>
                 </TouchableOpacity>
-                </ScrollView>
-            </View>
+            </ScrollView>
+        </View>
     );
 };
 

@@ -9,19 +9,19 @@ import {
 } from 'react-native';
 import { Icon, Avatar } from 'react-native-elements';
 import { deleteAccount } from '../../api/user';
-import * as ImagePicker from "react-native-image-picker"
-import {launchImageLibrary as launchImageLibraryTemp } from 'react-native-image-picker'
+import * as ImagePicker from 'react-native-image-picker';
+import { launchImageLibrary as launchImageLibraryTemp } from 'react-native-image-picker';
 
 let options = {
     title: 'Select Image',
     customButtons: [
-      { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
+        { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
     ],
     storageOptions: {
-      skipBackup: true,
-      path: 'images',
+        skipBackup: true,
+        path: 'images',
     },
-  };
+};
 
 export default class Profile extends React.Component {
     constructor(props) {
@@ -30,80 +30,87 @@ export default class Profile extends React.Component {
             loading: false,
             filepath: {
                 data: '',
-                uri: ''
-              },
-              fileData: '',
-              fileUri: ''
+                uri: '',
+            },
+            fileData: '',
+            fileUri: '',
         };
         this.showDeleteAccountDialog.bind(this);
     }
 
     chooseImage = () => {
         let options = {
-          title: 'Select Image',
-          customButtons: [
-            { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
-          ],
-          storageOptions: {
-            skipBackup: true,
-            path: 'images',
-          },
+            title: 'Select Image',
+            customButtons: [
+                {
+                    name: 'customOptionKey',
+                    title: 'Choose Photo from Custom Option',
+                },
+            ],
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
         };
         launchImageLibraryTemp(options, (response) => {
-          console.log('Response = ', response);
-    
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-            alert(response.customButton);
-          } else {
-            const source = { uri: response.uri };
-    
-            // You can also display the image using data:
-            // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-            // alert(JSON.stringify(response));s
-            console.log('response', JSON.stringify(response));
-            this.setState({
-              filePath: response,
-              fileData: response.data,
-              fileUri: response.uri
-            });
-          }
+            console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log(
+                    'User tapped custom button: ',
+                    response.customButton
+                );
+                alert(response.customButton);
+            } else {
+                const source = { uri: response.uri };
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+                // alert(JSON.stringify(response));s
+                console.log('response', JSON.stringify(response));
+                this.setState({
+                    filePath: response,
+                    fileData: response.data,
+                    fileUri: response.uri,
+                });
+            }
         });
-      }
-    
+    };
 
     launchImageLibrary = () => {
         let options = {
-          storageOptions: {
-            skipBackup: true,
-            path: 'images',
-          },
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
         };
         ImagePicker.launchImageLibrary(options, (response) => {
-          console.log('Response = ', response);
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-            alert(response.customButton);
-          } else {
-            const source = { uri: response.uri };
-            console.log('response', JSON.stringify(response));
-            this.setState({
-              filePath: response,
-              fileData: response.data,
-              fileUri: response.uri
-            });
-          }
+            console.log('Response = ', response);
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log(
+                    'User tapped custom button: ',
+                    response.customButton
+                );
+                alert(response.customButton);
+            } else {
+                const source = { uri: response.uri };
+                console.log('response', JSON.stringify(response));
+                this.setState({
+                    filePath: response,
+                    fileData: response.data,
+                    fileUri: response.uri,
+                });
+            }
         });
-    
-      }
+    };
 
     showDeleteAccountDialog = () => {
         if (!this.props.user) {
@@ -207,29 +214,29 @@ export default class Profile extends React.Component {
                     {'    '}Hey {firstName}!
                 </Text>
                 <Avatar
-                        activeOpacity={0.9}
-                        avatarStyle={{}}
-                        containerStyle={{
-                            backgroundColor: '#BDBDBD',
-                            marginRight: 0,
-                            shadowColor: '#171717',
-                            shadowOffset: { width: -1, height: 4 },
-                            shadowOpacity: 0.5,
-                            shadowRadius: 4,
-                            alignSelf: 'flex-end'
-                        }}
-                        onLongPress={() => alert('onLongPress')}
-                        onPress={() => this.chooseImage()}
-                        overlayContainerStyle={{}}
-                        placeholderStyle={{}}
-                        rounded
-                        size='large'
-                        source={{
-                            uri: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png',
-                        }}
-                        title='P'
-                        titleStyle={{}}
-                    />
+                    activeOpacity={0.9}
+                    avatarStyle={{}}
+                    containerStyle={{
+                        backgroundColor: '#BDBDBD',
+                        marginRight: 0,
+                        shadowColor: '#171717',
+                        shadowOffset: { width: -1, height: 4 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 4,
+                        alignSelf: 'flex-end',
+                    }}
+                    onLongPress={() => alert('onLongPress')}
+                    onPress={() => this.chooseImage()}
+                    overlayContainerStyle={{}}
+                    placeholderStyle={{}}
+                    rounded
+                    size='large'
+                    source={{
+                        uri: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png',
+                    }}
+                    title='P'
+                    titleStyle={{}}
+                />
                 <View
                     style={{
                         marginTop: '30%',
