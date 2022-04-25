@@ -5,13 +5,13 @@ import Deadlinr from './Deadlinr';
 
 const initialState = {
     user: null,
-    calednars: []
+    calendars: []
 }
 
 const reducer = (state = initialState, action) => { 
     switch (action.type) {
         case 'SET_USER':
-            // console.log('set_user dispatched');
+            console.log('set_user dispatched');
             return {
                 ...state,
                 user: action.user

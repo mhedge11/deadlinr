@@ -47,7 +47,7 @@ class Deadlinr extends React.Component {
                         <Stack.Navigator>
                             <Stack.Screen name='Login' options={{ headerShown: false }}>
                                 {(props) => (
-                                    <Login {...props} user={user}   />
+                                    <Login {...props}    />
                                 )}
                             </Stack.Screen>
                             <Stack.Screen
@@ -57,7 +57,7 @@ class Deadlinr extends React.Component {
                                 {(props) => (
                                     <RegistrationScreen
                                         {...props}
-                                        user={user}
+                                        
                                          
                                     />
                                 )}
@@ -69,7 +69,7 @@ class Deadlinr extends React.Component {
                                 {(props) => (
                                     <ForgotPassword
                                         {...props}
-                                        user={user}
+                                        
                                          
                                     />
                                 )}
@@ -81,7 +81,7 @@ class Deadlinr extends React.Component {
                                 {(props) => (
                                     <ResetPassword
                                         {...props}
-                                        user={user}
+                                        
                                     />
                                 )}
                             </Stack.Screen>
@@ -97,7 +97,6 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <Home
                                     {...props}
-                                    calendars={calendars}
                                 />
                             )}
                         </Stack.Screen>
@@ -109,7 +108,7 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <ChangePassword
                                     {...props}
-                                    user={user}
+                                    
                                      
                                 />
                             )}
@@ -118,8 +117,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <Profile
                                     {...props}
-                                    calendars={calendars}
-                                    user={user}
+                                    
+                                    
                                      
                                 />
                             )}
@@ -128,8 +127,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <Calendar
                                     {...props}
-                                    calendars={calendars}
-                                    user={user}
+                                    
+                                    
                                      
                                 />
                             )}
@@ -141,8 +140,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <CalendarScreen
                                     {...props}
-                                    calendars={calendars}
-                                    user={user}
+                                    
+                                    
                                      
                                 />
                             )}
@@ -151,8 +150,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <Search
                                     {...props}
-                                    calendars={calendars}
-                                    user={user}
+                                    
+                                    
                                      
                                 />
                             )}
@@ -164,8 +163,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <ChooseCalendar
                                     {...props}
-                                    calendars={calendars}
-                                    user={user}
+                                    
+                                    
                                      
                                 />
                             )}
@@ -177,8 +176,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <CreateCalendar
                                     {...props}
-                                calendars={calendars}
-                                user={user}
+                                
+                                
                                      
                                 />
                             )}
@@ -187,13 +186,13 @@ class Deadlinr extends React.Component {
                             name='Calendar View'
                             options={{ headerShown: false }}
                         >
-                            {(props) => <CalendarView {...props} user={user} />}
+                            {(props) => <CalendarView {...props}  />}
                         </Stack.Screen>
                         <Stack.Screen
                             name='Join Calendar'
                             options={{ headerShown: false }}
                         >
-                            {(props) => <JoinCalendar {...props} user={user} />}
+                            {(props) => <JoinCalendar {...props}  />}
                         </Stack.Screen>
                         <Stack.Screen
                             name='Create Deadline'
@@ -202,8 +201,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <CreateDeadline
                                     {...props}
-                                    calendars={calendars}
-                                    user={user}
+                                    
+                                    
                                      
                                 />
                             )}
@@ -215,8 +214,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <ViewDeadline
                                     {...props}
-                                    calendars={calendars}
-                                    user={user}
+                                    
+                                    
                                      
                                 />
                             )}
@@ -228,8 +227,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <ThreadsScreen
                                     {...props}
-                                    user={user}
-                                    calendars={calendars}
+                                    
+                                    
                                 />
                             )}
                         </Stack.Screen>
@@ -241,8 +240,8 @@ class Deadlinr extends React.Component {
                             {(props) => (
                                 <IndividualThreadScreen
                                     {...props}
-                                    user={user}
-                                    calendars={calendars}
+                                    
+                                    
                                 />
                             )}
                         </Stack.Screen>
@@ -250,19 +249,19 @@ class Deadlinr extends React.Component {
                             name='CreateThread'
                             options={{ headerShown: false }}
                         >
-                            {(props) => <CreateThread {...props} user={user} />}
+                            {(props) => <CreateThread {...props}  />}
                         </Stack.Screen>
                         <Stack.Screen
                             name='CreateReplyToThread'
                             options={{ headerShown: false }}
                         >
-                            {(props) => <CreateReplyToThread {...props} user={user} />}
+                            {(props) => <CreateReplyToThread {...props}  />}
                         </Stack.Screen>
                         <Stack.Screen
                             name='CreateReplyToReply'
                             options={{ headerShown: false }}
                         >
-                            {(props) => <CreateReplyToReply {...props} user={user} />}
+                            {(props) => <CreateReplyToReply {...props}  />}
                         </Stack.Screen>
                     </Stack.Navigator>
                     <StatusBar />

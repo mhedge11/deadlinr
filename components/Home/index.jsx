@@ -37,19 +37,14 @@ class Home extends Component {
                 });
             });
         }
+        console.log(this.state.calendars);
+        this.props.dispatch({ type: 'SET_CALENDARS', calendars: this.state.calendars });
         this.setState({
             loading: false,
         });
     };
 
     componentDidMount() {
-        const token = this.props.user.token;
-        getUser(token).then((user) => {
-            dispatch({ type: 'SET_USER', user: {
-                ...user,
-                token,
-            }});
-        });
         this.getAllCalendars();
     }
 

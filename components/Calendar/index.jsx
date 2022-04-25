@@ -10,10 +10,12 @@ import {
 import { Icon } from 'react-native-elements';
 import moment from 'moment';
 import CalendarStrip from 'react-native-calendar-strip';
+import { connect } from 'react-redux';
 
-export default class Calendar extends React.Component {
+class Calendar extends React.Component {
     constructor(props) {
         super(props);
+        console.log(props);
         this.state = {
             selectedDate: moment(),
             today: moment(),
@@ -77,15 +79,6 @@ export default class Calendar extends React.Component {
     renderTasks = () => {
         let elems = [];
         let tasks = [];
-
-        this.props.courses.forEach((course) => {
-            course.tasks.forEach((task) =>
-                tasks.push({
-                    title: course.title,
-                    ...task,
-                })
-            );
-        });
 
         this.props.calendars.forEach((c) => {
             c.tasks.forEach((task) =>
@@ -297,3 +290,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
 });
+
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        calendars: state.calendars
+    }
+}
+
+export default connect(mapStateToProps)(Calendar);

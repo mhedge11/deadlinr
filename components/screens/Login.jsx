@@ -58,8 +58,8 @@ const Login = (props) => {
 
         const getUserByToken = await getUser(data.token);
 
-        console.log('here');
-        props.dispatch({ type: 'SET_USER', user: { ...getUserByToken.user, token: data.token } });
+        getUserByToken.user.token = data.token;
+        props.dispatch({ type: 'SET_USER', user: getUserByToken.user });
     };
 
     if (loading) {
