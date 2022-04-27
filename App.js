@@ -29,6 +29,7 @@ import CreateThread from './components/Threads/CreateThread';
 import CreateReplyToThread from './components/Threads/CreateReplyToThread';
 import CreateReplyToReply from './components/Threads/CreateReplyToReply';
 import EditProfile from './components/screens/EditProfile';
+import SuggestedFriends from './components/Profile/SuggestedFriends';
 
 const Stack = createNativeStackNavigator();
 
@@ -96,6 +97,16 @@ export default function App() {
                         <Home
                             {...props}
                             courses={courses}
+                            calendars={calendars}
+                            user={user}
+                            setUser={setUser}
+                        />
+                    )}
+                </Stack.Screen>
+                <Stack.Screen name='Suggested Friends' options={{ headerShown: false }}>
+                    {(props) => (
+                        <SuggestedFriends
+                            {...props}
                             calendars={calendars}
                             user={user}
                             setUser={setUser}
