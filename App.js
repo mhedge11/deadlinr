@@ -28,6 +28,7 @@ import IndividualThreadScreen from './components/Threads/IndividualThreadScreen'
 import CreateThread from './components/Threads/CreateThread';
 import CreateReplyToThread from './components/Threads/CreateReplyToThread';
 import CreateReplyToReply from './components/Threads/CreateReplyToReply';
+import EditProfile from './components/screens/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -112,6 +113,14 @@ export default function App() {
                             user={user}
                             setUser={setUser}
                         />
+                    )}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Edit Profile'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => (
+                        <EditProfile {...props} user={user} setUser={setUser} />
                     )}
                 </Stack.Screen>
                 <Stack.Screen name='Profile' options={{ headerShown: false }}>

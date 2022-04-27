@@ -98,7 +98,7 @@ export default class Profile extends React.Component {
         }
 
         const navigation = this.props.navigation;
-        const { firstName, lastName, uid } = this.props.user.user;
+        const { firstName, lastName, username, uid } = this.props.user.user;
         return (
             <View style={styles.container}>
                 <Text
@@ -129,7 +129,9 @@ export default class Profile extends React.Component {
                 >
                     <View style={{}}>
                         <TouchableOpacity
-                            onPress={() => this.showLogoutConfirmation()}
+                            onPress={() => {
+                                navigation.navigate('Edit Profile');
+                            }}
                         >
                             <Text
                                 style={{
@@ -139,7 +141,7 @@ export default class Profile extends React.Component {
                                     padding: '5%',
                                 }}
                             >
-                                Log Out
+                                Edit Profile
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -156,6 +158,20 @@ export default class Profile extends React.Component {
                                 }}
                             >
                                 Change Password
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.showLogoutConfirmation()}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: '20rem',
+                                    color: 'black',
+                                    fontWeight: '600',
+                                    padding: '5%',
+                                }}
+                            >
+                                Log Out
                             </Text>
                         </TouchableOpacity>
                     </View>

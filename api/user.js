@@ -335,3 +335,47 @@ export const fetchUser = async ({ uid }) => {
         return null;
     }
 };
+
+// Edit user profile
+
+export const editProfile = async ({
+    token,
+    firstName,
+    lastName,
+    username,
+    email,
+    bio,
+}) => {
+    const route = API_URL + '/user/me';
+    try {
+        const res = await fetch(route, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                firstName,
+                lastName,
+                username,
+                email,
+                bio,
+            }),
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                console.error(err);
+                return false;
+            });
+        return res;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
