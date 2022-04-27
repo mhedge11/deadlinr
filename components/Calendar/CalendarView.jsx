@@ -11,7 +11,7 @@ import {
     StyleSheet,
     ScrollView,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, ButtonGroup } from 'react-native-elements';
 import {
     joinCalendar,
     leaveCalendar,
@@ -32,6 +32,8 @@ export default class CalendarView extends React.Component {
             members: this.props.route.params.members,
             deadlines: [],
             refreshing: false,
+            selectedFilter: 0,
+            reverseSort: false
         };
     }
 
@@ -43,6 +45,57 @@ export default class CalendarView extends React.Component {
 
     componentDidMount() {
         this.fetchDeadlines();
+    }
+
+    sortByDeadline = (a, b) => {
+        if (a.dueDate < b.dueDate) { 
+            return this.state.reverseSort ? 1 : -1;
+        } else if (a.dueDate > b.dueDate) {
+            return this.state.reverseSort ? -1 : 1;
+        } else {
+            return 0;
+        }
+    }
+
+    sortByDifficulty = (a, b) => { 
+        if (a.averageDifficulty < b.averageDifficulty) { 
+            return this.state.reverseSort ? 1 : -1;
+        } else if (a.averageDifficulty > b.averageDifficulty) {
+            return this.state.reverseSort ? -1 : 1;
+        } else {
+            return 0;
+        }
+    }
+
+    sortByCompletionTime = (a, b) => { 
+        if (a.averageCompletionTime < b.averageCompletionTime) { 
+            return this.state.reverseSort ? 1 : -1;
+        } else if (a.averageCompletionTime > b.averageCompletionTime) {
+            return this.state.reverseSort ? -1 : 1;
+        } else {
+            return 0;
+        }
+    }
+
+    sortDeadlines = () => {
+        const { selectedFilter, deadlines, reverseSort } = this.state;
+
+        console.log(deadlines);
+        this.setState({
+            reverseSort: !reverseSort
+        })
+        if (selectedFilter == 0) {
+            deadlines.sort(this.sortByDeadline);
+        } else if (selectedFilter == 1) {
+            deadlines.sort(this.sortByCompletionTime);
+        } else if (selectedFilter == 2) {
+            deadlines.sort(this.sortByDifficulty);
+        }
+        console.log(deadlines);
+        this.setState({
+            deadlines
+        })
+
     }
 
     fetchDeadlines = async () => {
@@ -62,6 +115,12 @@ export default class CalendarView extends React.Component {
                     deadlines: [...this.state.deadlines, item.deadline],
                 });
             });
+
+            const deadlines = this.state.deadlines;
+            deadlines.sort(this.sortByDeadline);
+            this.setState({
+                deadlines
+            })
         } catch (e) {
             console.error(e);
         }
@@ -494,7 +553,47 @@ export default class CalendarView extends React.Component {
                         </View>
                     </View>
                 </View>
+                <View
+                    style={{
+                        marginTop: '10%'
+                    }}
+                >
+                    <ButtonGroup
+                        onPress={(idx) => {
+                            this.setState({
+                                reverseSort: false
+                            })
+                            const deadlines = this.state.deadlines;
+                            if (idx == 0) {
+                                deadlines.sort(this.sortByDeadline);
+                            } else if (idx == 1) {
+                                deadlines.sort(this.sortByCompletionTime);
+                            } else if (idx == 2) { 
+                                deadlines.sort(this.sortByDifficulty);
+                            }
+                            this.setState({
+                                selectedFilter: idx,
+                                deadlines
+                            })
+                        }}
+                        selectedIndex={this.state.selectedFilter}
+                        buttons={['Due Date', 'Time', 'Difficulty']}
+                    />
 
+                    <TouchableOpacity
+                        style={{
+                            flexDirection: 'row',
+                            alignSelf: 'center',
+                        }}
+                        onPress={() => {
+                            this.sortDeadlines();
+                        }}
+                    >
+                        <Icon name='arrow-up' type='font-awesome' />
+                        <Icon name='arrow-down' type='font-awesome'/>
+                    </TouchableOpacity>
+
+                </View>
                 <FlatList
                     style={{
                         marginTop: '10%',
