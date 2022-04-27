@@ -31,7 +31,6 @@ const Stack = createNativeStackNavigator();
 class Deadlinr extends React.Component {
     constructor(props) {
         super(props);
-        console.log(props);
         this.state = {};
     }
 
