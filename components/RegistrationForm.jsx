@@ -109,71 +109,139 @@ const RegistrationForm = (props) => {
     return (
         <KeyboardAwareScrollView style={{ marginVertical: 50 }}>
             <View style={styles.container}>
-                <Image
+                <View
                     style={styles.image}
-                    source={require('../assets/student_on_phone.jpg')}
-                />
-
+                >
+                <Text
+                    style={{
+                        color: "white",
+                        fontSize: 40,
+                        fontWeight: '600',
+                        marginLeft: '5%',
+                        marginTop: '30%',
+                    }}
+                >Create Account</Text>
+                </View>
+            <ScrollView
+                style={{
+                    marginTop: '10%',
+                    paddingLeft: '5%',
+                    paddingRight: '5%',
+                    marginBottom: '15%',
+                }}
+            >
                 <View style={styles.inputView}>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            marginLeft: '2%',
+                            fontWeight: '500',
+                        }}
+                    >First Name</Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter First Name'
-                        placeholderTextColor='black'
+                        placeholderTextColor='grey'
                         onChangeText={(firstName) => setFirstName(firstName)}
                     />
                 </View>
                 <View style={styles.inputView}>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            marginLeft: '2%',
+                            fontWeight: '500',
+                        }}
+                    >Last Name</Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter Last Name'
-                        placeholderTextColor='black'
+                        placeholderTextColor='grey'
                         onChangeText={(lastName) => setLastName(lastName)}
                     />
                 </View>
                 <View style={styles.inputView}>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            marginLeft: '2%',
+                            fontWeight: '500',
+                        }}
+                    >Username</Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter Username'
-                        placeholderTextColor='black'
+                        placeholderTextColor='grey'
                         onChangeText={(username) => setUsername(username)}
                     />
                 </View>
                 <View style={styles.inputView}>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            marginLeft: '2%',
+                            fontWeight: '500',
+                        }}
+                    >Email</Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter email'
-                        placeholderTextColor='black'
+                        placeholderTextColor='grey'
                         onChangeText={(email) => setEmail(email)}
 
                         // onChangeText={handleEmail}
                     />
                 </View>
                 <View style={styles.inputView}>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            marginLeft: '2%',
+                            fontWeight: '500',
+                        }}
+                    >Password</Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter password'
                         secureTextEntry={true}
-                        placeholderTextColor='black'
+                        placeholderTextColor='grey'
                         onChangeText={(password) => setPassword(password)}
                     />
                 </View>
                 <View style={styles.inputView}>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            marginLeft: '2%',
+                            fontWeight: '500',
+                        }}
+                    >Confirm Password</Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Confirm Password'
                         secureTextEntry={true}
-                        placeholderTextColor='black'
+                        placeholderTextColor='grey'
                         onChangeText={(confirmPassword) =>
                             setConfirmPassword(confirmPassword)
                         }
                     />
                 </View>
+               
                 <TouchableOpacity
                     style={styles.registerButton}
                     onPress={handleSubmission}
                 >
-                    <Text>REGISTER</Text>
+                    <Text
+                        style={{
+                            color: 'white',
+                            fontSize: 18,
+                            fontWeight: '600',
+                            textAlign: 'center'
+                        }}
+                    >Register
+                    </Text>
                 </TouchableOpacity>
+                </ScrollView>
             </View>
         </KeyboardAwareScrollView>
     );
@@ -182,37 +250,35 @@ const RegistrationForm = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: 'white',
     },
     image: {
-        marginBottom: 40,
-        width: '70%',
-        height: undefined,
-        aspectRatio: 1,
-        borderRadius: 20,
+        width: '100%',
+        height: '20%',
+        backgroundColor: '#6b5ae8',
     },
     inputView: {
-        backgroundColor: 'grey',
-        borderRadius: 30,
-        width: '70%',
-        height: 45,
-        marginBottom: 20,
-        alignItems: 'center',
+        backgroundColor: 'white',
+        width: '100%',
+        marginTop: '7%',
     },
     TextInput: {
-        height: 50,
-        flex: 1,
-        padding: 10,
-        width: '90%',
+        marginTop: '5%',
+        fontSize: 18,
+        borderRadius: 8,
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        padding: '2%',
     },
     registerButton: {
         width: '80%',
         borderRadius: 25,
         height: 50,
+        marginTop: '5%',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red',
+        backgroundColor: '#6b5ae8',
+        alignSelf: 'center',
     },
 });
 

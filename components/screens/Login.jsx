@@ -81,26 +81,52 @@ const Login = (props) => {
     }
 
     return (
-        <DismissKeyboard>
-            <SafeAreaView style={styles.container}>
-                <Image
+            <View style={styles.container}>
+                <View
                     style={styles.image}
-                    source={require('../../assets/phone.jpg')}
-                />
+                >
+                <Text
+                    style={{
+                        color: "white",
+                        fontSize: 40,
+                        fontWeight: '600',
+                        marginLeft: '10%',
+                        marginTop: '50%',
+                    }}
+                >Deadlinr</Text>
+                </View>
                 <View style={styles.inputView}>
+                    <Text
+                        style={{
+                            fontSize: 18,
+                            marginLeft: '2%',
+                            fontWeight: '500',
+                        }}
+                    >
+                        Email or Username
+                    </Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter email or username'
-                        placeholderTextColor='black'
+                        placeholderTextColor='grey'
                         onChangeText={(login) => setLogin(login)}
                     />
                 </View>
                 <View style={styles.inputView}>
+                    <Text
+                    style={{
+                            fontSize: 18,
+                        marginLeft: '2%',
+                            fontWeight: '500'
+                    }}
+                    >
+                        Password
+                    </Text>
                     <TextInput
                         style={styles.TextInput}
                         placeholder='Enter password'
                         secureTextEntry={true}
-                        placeholderTextColor='black'
+                        placeholderTextColor='grey'
                         onChangeText={(password) => setPassword(password)}
                     />
                 </View>
@@ -131,10 +157,10 @@ const Login = (props) => {
                             // props.navigation.navigate("RegistrationForm");
                             props.navigation.navigate('Registration');
                         }}
+                        color='#6b5ae8'
                     />
                 </View>
-            </SafeAreaView>
-        </DismissKeyboard>
+            </View>
     );
 };
 
@@ -146,40 +172,39 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     image: {
-        marginTop: 10,
+        marginTop: 0,
         marginBottom: 40,
-        width: '70%',
-        height: undefined,
-        aspectRatio: 1,
-        borderRadius: 20,
+        width: '100%',
+        height: '40%',
+        backgroundColor: '#6b5ae8',
+        justifyContent: 'center',
     },
     inputView: {
-        backgroundColor: 'grey',
-        borderRadius: 30,
+        backgroundColor: 'white',
         width: '60%',
-        height: 45,
-        marginBottom: 20,
-        alignItems: 'center',
+        marginTop: '7%',
     },
     TextInput: {
-        height: 50,
-        flex: 1,
-        padding: 10,
-        width: '90%',
-        // marginLeft: 20,
+        marginTop: '5%',
+        fontSize: 18,
+        borderRadius: 8,
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        padding: '2%',
     },
     forgot_button: {
         height: 30,
         marginTop: 15,
     },
     loginButton: {
+        marginTop: '10%',
         width: '80%',
         borderRadius: 25,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
         // marginTop: 40,
-        backgroundColor: 'blue',
+        backgroundColor: '#6b5ae8',
     },
 });
 
