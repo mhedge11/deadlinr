@@ -340,6 +340,35 @@ const ViewDeadline = (props) => {
                     })
                 )}
             </View>
+            {
+                true && 
+                <View
+                    style={{
+                            padding: '5%',
+                            paddingRight: '15%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                    }}
+                >
+                        <Text
+                            style={{
+                                fontSize: 22,
+                                fontWeight: '320'
+                            }}
+                        >Is this a valid deadline ?</Text>
+                        <TouchableOpacity>
+                            <Icon name='check' type='fontawesome' />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={{
+                            fontSize: 25
+                            }}>
+                                &#x2717;
+                            </Text>
+                        </TouchableOpacity>
+                </View>
+            }
             <View
                 style={{
                     padding: '5%',
