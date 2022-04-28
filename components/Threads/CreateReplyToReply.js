@@ -26,7 +26,7 @@ const CreateReplyToReply = (props) => {
 
     const createReplyToReply = async () => {
         if (!props.user) return Alert.alert('An error occured');
-        if (threadName.trim() === '') return;
+        // if (threadName.trim() === '') return;
 
         setLoading(true);
 
