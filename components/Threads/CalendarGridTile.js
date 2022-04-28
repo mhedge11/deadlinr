@@ -1,19 +1,6 @@
 import { Pressable, View, Text, StyleSheet } from 'react-native';
-import ThreadGridTile from './ThreadGridTile';
 
 function CalendarGridTile({ route, navigation, calendar, onPress }) {
-    // function renderCalendarItem(itemData) {
-    //     function pressHandler() {
-    //         navigation.navigate("Thread Grid Tile", {
-    //             calendarId: route.params.calendarId,
-    //         });
-    //     }
-    //     return (
-    //         <ThreadGridTile calendar={itemData.item} onPress={pressHandler} />
-    //     );
-    // }
-
-    // const calendarId = route.params.calendarId;
     return (
         <View style={styles.gridItem}>
             <Pressable
