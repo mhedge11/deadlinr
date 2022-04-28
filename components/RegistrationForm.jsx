@@ -109,138 +109,153 @@ const RegistrationForm = (props) => {
     return (
         <KeyboardAwareScrollView style={{ marginVertical: 50 }}>
             <View style={styles.container}>
-                <View
-                    style={styles.image}
-                >
-                <Text
-                    style={{
-                        color: "white",
-                        fontSize: 40,
-                        fontWeight: '600',
-                        marginLeft: '5%',
-                        marginTop: '30%',
-                    }}
-                >Create Account</Text>
-                </View>
-            <ScrollView
-                style={{
-                    marginTop: '10%',
-                    paddingLeft: '5%',
-                    paddingRight: '5%',
-                    marginBottom: '15%',
-                }}
-            >
-                <View style={styles.inputView}>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            marginLeft: '2%',
-                            fontWeight: '500',
-                        }}
-                    >First Name</Text>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder='Enter First Name'
-                        placeholderTextColor='grey'
-                        onChangeText={(firstName) => setFirstName(firstName)}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            marginLeft: '2%',
-                            fontWeight: '500',
-                        }}
-                    >Last Name</Text>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder='Enter Last Name'
-                        placeholderTextColor='grey'
-                        onChangeText={(lastName) => setLastName(lastName)}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            marginLeft: '2%',
-                            fontWeight: '500',
-                        }}
-                    >Username</Text>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder='Enter Username'
-                        placeholderTextColor='grey'
-                        onChangeText={(username) => setUsername(username)}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            marginLeft: '2%',
-                            fontWeight: '500',
-                        }}
-                    >Email</Text>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder='Enter email'
-                        placeholderTextColor='grey'
-                        onChangeText={(email) => setEmail(email)}
-
-                        // onChangeText={handleEmail}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            marginLeft: '2%',
-                            fontWeight: '500',
-                        }}
-                    >Password</Text>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder='Enter password'
-                        secureTextEntry={true}
-                        placeholderTextColor='grey'
-                        onChangeText={(password) => setPassword(password)}
-                    />
-                </View>
-                <View style={styles.inputView}>
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            marginLeft: '2%',
-                            fontWeight: '500',
-                        }}
-                    >Confirm Password</Text>
-                    <TextInput
-                        style={styles.TextInput}
-                        placeholder='Confirm Password'
-                        secureTextEntry={true}
-                        placeholderTextColor='grey'
-                        onChangeText={(confirmPassword) =>
-                            setConfirmPassword(confirmPassword)
-                        }
-                    />
-                </View>
-               
-                <TouchableOpacity
-                    style={styles.registerButton}
-                    onPress={handleSubmission}
-                >
+                <View style={styles.image}>
                     <Text
                         style={{
                             color: 'white',
-                            fontSize: 18,
+                            fontSize: 40,
                             fontWeight: '600',
-                            textAlign: 'center'
+                            marginLeft: '5%',
+                            marginTop: '30%',
                         }}
-                    >Register
+                    >
+                        Create Account
                     </Text>
-                </TouchableOpacity>
+                </View>
+                <ScrollView
+                    style={{
+                        marginTop: '10%',
+                        paddingLeft: '5%',
+                        paddingRight: '5%',
+                        marginBottom: '15%',
+                    }}
+                >
+                    <View style={styles.inputView}>
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                marginLeft: '2%',
+                                fontWeight: '500',
+                            }}
+                        >
+                            First Name
+                        </Text>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder='Enter First Name'
+                            placeholderTextColor='grey'
+                            onChangeText={(firstName) =>
+                                setFirstName(firstName)
+                            }
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                marginLeft: '2%',
+                                fontWeight: '500',
+                            }}
+                        >
+                            Last Name
+                        </Text>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder='Enter Last Name'
+                            placeholderTextColor='grey'
+                            onChangeText={(lastName) => setLastName(lastName)}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                marginLeft: '2%',
+                                fontWeight: '500',
+                            }}
+                        >
+                            Username
+                        </Text>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder='Enter Username'
+                            placeholderTextColor='grey'
+                            onChangeText={(username) => setUsername(username)}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                marginLeft: '2%',
+                                fontWeight: '500',
+                            }}
+                        >
+                            Email
+                        </Text>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder='Enter email'
+                            placeholderTextColor='grey'
+                            onChangeText={(email) => setEmail(email)}
+
+                            // onChangeText={handleEmail}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                marginLeft: '2%',
+                                fontWeight: '500',
+                            }}
+                        >
+                            Password
+                        </Text>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder='Enter password'
+                            secureTextEntry={true}
+                            placeholderTextColor='grey'
+                            onChangeText={(password) => setPassword(password)}
+                        />
+                    </View>
+                    <View style={styles.inputView}>
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                marginLeft: '2%',
+                                fontWeight: '500',
+                            }}
+                        >
+                            Confirm Password
+                        </Text>
+                        <TextInput
+                            style={styles.TextInput}
+                            placeholder='Confirm Password'
+                            secureTextEntry={true}
+                            placeholderTextColor='grey'
+                            onChangeText={(confirmPassword) =>
+                                setConfirmPassword(confirmPassword)
+                            }
+                        />
+                    </View>
+
+                    <TouchableOpacity
+                        style={styles.registerButton}
+                        onPress={handleSubmission}
+                    >
+                        <Text
+                            style={{
+                                color: 'white',
+                                fontSize: 18,
+                                fontWeight: '600',
+                                textAlign: 'center',
+                            }}
+                        >
+                            Register
+                        </Text>
+                    </TouchableOpacity>
                 </ScrollView>
             </View>
         </KeyboardAwareScrollView>
