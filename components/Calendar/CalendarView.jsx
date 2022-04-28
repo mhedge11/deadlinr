@@ -28,12 +28,15 @@ export default class CalendarView extends React.Component {
             isMember: this.props.route.params.members.includes(
                 this.props.user.user._id
             ),
+            isAdmin: this.props.route.params.administrators.includes(
+                this.props.user.user._id
+            ),
             loading: false,
             members: this.props.route.params.members,
             deadlines: [],
             refreshing: false,
             selectedFilter: 0,
-            reverseSort: false
+            reverseSort: false,
         };
     }
 
@@ -48,42 +51,42 @@ export default class CalendarView extends React.Component {
     }
 
     sortByDeadline = (a, b) => {
-        if (a.dueDate < b.dueDate) { 
+        if (a.dueDate < b.dueDate) {
             return this.state.reverseSort ? 1 : -1;
         } else if (a.dueDate > b.dueDate) {
             return this.state.reverseSort ? -1 : 1;
         } else {
             return 0;
         }
-    }
+    };
 
-    sortByDifficulty = (a, b) => { 
-        if (a.averageDifficulty < b.averageDifficulty) { 
+    sortByDifficulty = (a, b) => {
+        if (a.averageDifficulty < b.averageDifficulty) {
             return this.state.reverseSort ? 1 : -1;
         } else if (a.averageDifficulty > b.averageDifficulty) {
             return this.state.reverseSort ? -1 : 1;
         } else {
             return 0;
         }
-    }
+    };
 
-    sortByCompletionTime = (a, b) => { 
-        if (a.averageCompletionTime < b.averageCompletionTime) { 
+    sortByCompletionTime = (a, b) => {
+        if (a.averageCompletionTime < b.averageCompletionTime) {
             return this.state.reverseSort ? 1 : -1;
         } else if (a.averageCompletionTime > b.averageCompletionTime) {
             return this.state.reverseSort ? -1 : 1;
         } else {
             return 0;
         }
-    }
+    };
 
     sortDeadlines = () => {
         const { selectedFilter, deadlines, reverseSort } = this.state;
 
         console.log(deadlines);
         this.setState({
-            reverseSort: !reverseSort
-        })
+            reverseSort: !reverseSort,
+        });
         if (selectedFilter == 0) {
             deadlines.sort(this.sortByDeadline);
         } else if (selectedFilter == 1) {
@@ -93,10 +96,9 @@ export default class CalendarView extends React.Component {
         }
         console.log(deadlines);
         this.setState({
-            deadlines
-        })
-
-    }
+            deadlines,
+        });
+    };
 
     fetchDeadlines = async () => {
         const c = await getCalendar({ cid: this.props.route.params._id });
@@ -119,8 +121,8 @@ export default class CalendarView extends React.Component {
             const deadlines = this.state.deadlines;
             deadlines.sort(this.sortByDeadline);
             this.setState({
-                deadlines
-            })
+                deadlines,
+            });
         } catch (e) {
             console.error(e);
         }
@@ -458,25 +460,66 @@ export default class CalendarView extends React.Component {
                             {title}
                         </Text>
                     </View>
-                    <TouchableOpacity
-                        style={{}}
-                        onPress={() => {
-                            this.alterMemberStatus();
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            width: '100%',
+                            justifyContent: 'space-between',
                         }}
                     >
-                        <Text
-                            style={{
-                                color: this.state.isMember ? 'red' : 'green',
-                                fontSize: '20rem',
-                                fontWeight: '300',
-                                marginTop: '4%',
-                            }}
-                        >
-                            {this.state.isMember
-                                ? 'Leave Calendar'
-                                : 'Join Calendar'}
-                        </Text>
-                    </TouchableOpacity>
+                        <View>
+                            <TouchableOpacity
+                                style={{}}
+                                onPress={() => {
+                                    this.alterMemberStatus();
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: this.state.isMember
+                                            ? 'red'
+                                            : 'green',
+                                        fontSize: '20rem',
+                                        fontWeight: '300',
+                                        marginTop: '4%',
+                                    }}
+                                >
+                                    {this.state.isMember
+                                        ? 'Leave Calendar'
+                                        : 'Join Calendar'}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ marginLeft: 30 }}>
+                            <TouchableOpacity
+                                style={{}}
+                                onPress={() => {
+                                    this.props.navigation.navigate(
+                                        'Administrator',
+                                        {
+                                            calendarID:
+                                                this.props.route.params._id,
+                                            members:
+                                                this.props.route.params.members,
+                                        }
+                                    );
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: 'green',
+                                        fontSize: '20rem',
+                                        fontWeight: '300',
+                                        marginTop: '4%',
+                                    }}
+                                >
+                                    {this.state.isAdmin
+                                        ? 'Administrator'
+                                        : 'Administrator'}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
 
                 <View
@@ -555,26 +598,26 @@ export default class CalendarView extends React.Component {
                 </View>
                 <View
                     style={{
-                        marginTop: '10%'
+                        marginTop: '10%',
                     }}
                 >
                     <ButtonGroup
                         onPress={(idx) => {
                             this.setState({
-                                reverseSort: false
-                            })
+                                reverseSort: false,
+                            });
                             const deadlines = this.state.deadlines;
                             if (idx == 0) {
                                 deadlines.sort(this.sortByDeadline);
                             } else if (idx == 1) {
                                 deadlines.sort(this.sortByCompletionTime);
-                            } else if (idx == 2) { 
+                            } else if (idx == 2) {
                                 deadlines.sort(this.sortByDifficulty);
                             }
                             this.setState({
                                 selectedFilter: idx,
-                                deadlines
-                            })
+                                deadlines,
+                            });
                         }}
                         selectedIndex={this.state.selectedFilter}
                         buttons={['Due Date', 'Time', 'Difficulty']}
@@ -590,9 +633,8 @@ export default class CalendarView extends React.Component {
                         }}
                     >
                         <Icon name='arrow-up' type='font-awesome' />
-                        <Icon name='arrow-down' type='font-awesome'/>
+                        <Icon name='arrow-down' type='font-awesome' />
                     </TouchableOpacity>
-
                 </View>
                 <FlatList
                     style={{
