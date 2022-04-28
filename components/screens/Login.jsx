@@ -36,29 +36,31 @@ const Login = (props) => {
     const navigation = props.navigation;
 
     const userPressedLogin = async () => {
-        let loginReturn;
-        if (login.includes('@')) {
-            loginReturn = emailValidation(login);
-        } else {
-            loginReturn = usernameValidation(login);
-        }
+        // let loginReturn;
+        // if (login.includes('@')) {
+        //     loginReturn = emailValidation(login);
+        // } else {
+        //     loginReturn = usernameValidation(login);
+        // }
         // let emailReturn = emailValidation(email);
-        let passwordReturn = passwordValidation(password);
+        // let passwordReturn = passwordValidation(password);
 
-        if (loginReturn !== '' || passwordReturn !== '') {
-            if (loginReturn !== '') return alert(loginReturn);
-            if (passwordReturn !== '') return alert(passwordReturn);
-            loginReturn = '';
-            passwordReturn = '';
-            return;
-        }
+        // if (loginReturn !== '' || passwordReturn !== '') {
+        //     if (loginReturn !== '') return alert(loginReturn);
+        //     if (passwordReturn !== '') return alert(passwordReturn);
+        //     loginReturn = '';
+        //     passwordReturn = '';
+        //     return;
+        // }
         // Would sent to database at this point
+        setLogin('mkhedge22@gmail.com');
+        setPassword('123456Am');
         const data = await loginUser(login, password);
-        if (data === null) {
-            return alert(
-                'Error in Email/Username or in Password. Please Fix and try again'
-            );
-        }
+        // if (data === null) {
+        //     return alert(
+        //         'Error in Email/Username or in Password. Please Fix and try again'
+        //     );
+        // }
 
         const getUserByToken = await getUser(data.token);
         props.setUser({

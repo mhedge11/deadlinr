@@ -1,7 +1,6 @@
 import { Pressable, View, Text, StyleSheet } from 'react-native';
 
 function IndvidualThreadGridTile({ individual }) {
-    // console.log(individualThread);
     return (
         <View style={styles.gridItem}>
             <Pressable
