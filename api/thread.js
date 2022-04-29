@@ -107,7 +107,7 @@ export const createReplyToThread = async ({ tid, threadBody, token }) => {
 
 // Create a reply to reply
 export const createReplyToReply = async ({ tid, rid, threadBody, token }) => {
-    const route = API_URL + '/thread/' + tid + '/' + '/reply';
+    const route = API_URL + '/thread/' + tid + '/reply';
 
     try {
         let result = await fetch(route, {

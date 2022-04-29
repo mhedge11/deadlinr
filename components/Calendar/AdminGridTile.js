@@ -1,6 +1,6 @@
 import { Pressable, View, Text, StyleSheet } from 'react-native';
 
-function CalendarGridTile({ route, navigation, calendar, onPress }) {
+function AdminGridTile({ route, navigation, calendar, onPress }) {
     return (
         <View style={styles.gridItem}>
             <Pressable
@@ -16,20 +16,22 @@ function CalendarGridTile({ route, navigation, calendar, onPress }) {
                         { backgroundColor: 'orange' },
                     ]}
                 >
-                    <Text style={styles.title}>{calendar.title}</Text>
+                    <Text style={styles.title}>
+                        {calendar.firstName} {calendar.lastName}
+                    </Text>
                 </View>
             </Pressable>
         </View>
     );
 }
 
-export default CalendarGridTile;
+export default AdminGridTile;
 
 const styles = StyleSheet.create({
     gridItem: {
         flex: 1,
         margin: 16,
-        height: 150,
+        height: 70,
         borderRadius: 8,
         elevation: 4,
         backgroundColor: 'white',

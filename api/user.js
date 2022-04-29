@@ -380,11 +380,15 @@ export const editProfile = async ({
     }
 };
 
-export const getWeekDeadlines = async ({ token }) => { 
-    const route = API_URL + '/user/week';
-    try { 
-        let result = fetch(route, {
-            method: 'GET',
+export const checkContacts = async ({
+    token,
+    phoneNumbers
+}) => { 
+    const route = API_URL + '/user/contacts';
+
+    try {
+        const result = await fetch(route, {
+            method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -406,6 +410,34 @@ export const getWeekDeadlines = async ({ token }) => {
         console.error(err);
         return [];
     }
+}
 
 
+ export const getWeekDeadlines = async ({ token }) => { 
+    const route = API_URL + '/user/week';
+    try { 
+        let result = fetch(route, {
+            method: 'GET',
+            body: JSON.stringify({
+                phoneNumbers
+            })
+        })
+            .then(async (res) => {
+                // console.log(res.status);
+                if (res.ok) {
+                    const data = await res.json();
+                    return data.items;
+                }
+                return [];
+            })
+            .catch((err) => {
+                console.error(err);
+                return [];
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
 }
