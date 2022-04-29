@@ -10,33 +10,25 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     Alert,
+    Keyboard,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Icon } from 'react-native-elements';
 import { createThread as createThreadAPI } from '../../api/thread';
 
 const CreateThread = (props) => {
-    // console.log(props);
     const [bcolor, setBorderColor] = useState('transparent');
     const [loading, setLoading] = useState(false);
 
     const [threadName, setThreadName] = useState('');
     const [threadBody, setThreadBody] = useState('');
     const [cid, setcid] = useState(props.route.params.calendarId);
-    // const cid = calId;
-    // setcid(calId);
-    // console.log(cid);
-    // setcid(route.params.calendarId);
-    const [errMsg, setMsg] = useState('');
 
-    // Need to put this in variable and then not reset it unless
-    // Something changes
-    // So put it into a function and only run when necessary
-    // setcid('6241d84925e0bb632f32ddf5');
+    const [errMsg, setMsg] = useState('');
 
     const createThread = async () => {
         if (!props.user) return Alert.alert('An error occured');
         if (threadName.trim() === '') return;
-        console.log('cid : ' + cid);
         setLoading(true);
         const res = await createThreadAPI({
             threadName,
@@ -47,16 +39,7 @@ const CreateThread = (props) => {
         setLoading(false);
         if (res !== false) {
             setMsg('');
-            // props.setCalendars([
-            //     ...props.calendars,
-            //     {
-            //         id: res.id,
-            //         isPrivate: privateCalendar,
-            //         title: calendarName,
-            //         tasks: [],
-            //         members: [],
-            //     },
-            // ]);
+
             props.navigation.goBack();
             return;
         } else {
@@ -78,144 +61,128 @@ const CreateThread = (props) => {
     }
 
     return (
-        // <View>
-        //     <Text>On Page</Text>
-        // </View>
-        <SafeAreaView
-            style={{
-                flex: 1,
-            }}
-        >
-            <View
+        <KeyboardAwareScrollView style={{ marginVertical: 50 }}>
+            <SafeAreaView
                 style={{
-                    padding: '5%',
-                    flexDirection: 'row',
+                    flex: 1,
                 }}
             >
-                <TouchableOpacity
-                    style={{ justifyContent: 'center' }}
-                    // onPress={() => navigation.navigate.goBack()}
-                    onPress={() => props.navigation.goBack()}
-                >
-                    <Icon
-                        name='chevron-left'
-                        type='font-awesome'
-                        color='black'
-                    />
-                </TouchableOpacity>
-                <Text
-                    style={{
-                        fontSize: '32rem',
-                        fontWeight: 'bold',
-                        marginLeft: '5%',
-                    }}
-                >
-                    Create Thread
-                </Text>
-            </View>
-
-            <View
-                style={{
-                    padding: '5%',
-                }}
-            >
-                <Text style={styles.label}>Name</Text>
-                <TextInput
-                    style={{
-                        ...styles.input,
-                        borderColor: bcolor,
-                        borderWidth: 2,
-                    }}
-                    onBlur={() => {
-                        if (threadName.length === 0) {
-                            setBorderColor('red');
-                        } else setBorderColor('transparent');
-                    }}
-                    placeholder='Thread Name'
-                    value={threadName}
-                    onChangeText={(v) => setThreadName(v)}
-                />
-                {bcolor === 'red' && (
-                    <Text style={{ color: 'red' }}>
-                        Thread name cannot be empty.
-                    </Text>
-                )}
-            </View>
-
-            <View
-                style={{
-                    padding: '5%',
-                }}
-            >
-                <Text style={styles.label}>Message</Text>
-                <TextInput
-                    style={{
-                        ...styles.input,
-                        borderColor: bcolor,
-                        borderWidth: 2,
-                    }}
-                    onBlur={() => {
-                        if (threadBody.length === 0) {
-                            setBorderColor('red');
-                        } else setBorderColor('transparent');
-                    }}
-                    placeholder='Thread Body'
-                    value={threadBody}
-                    onChangeText={(v) => setThreadBody(v)}
-                />
-                {bcolor === 'red' && (
-                    <Text style={{ color: 'red' }}>
-                        Thread message body cannot be empty.
-                    </Text>
-                )}
-            </View>
-
-            {/* <View
-                style={{
-                    padding: '5%',
-                }}
-            >
-                <Text style={styles.label}>Private</Text>
-                <Switch
-                    style={{
-                        marginTop: '3%',
-                    }}
-                    value={privateCalendar}
-                    onValueChange={() => setPrivate(!privateCalendar)}
-                    trackColor={{ false: 'white', true: '#2776f5' }}
-                />
-            </View> */}
-
-            <View>
-                <Button
-                    title='Make it so'
-                    onPress={() => createThread()}
-                    // onPress={() => {}}
-                    disabled={
-                        threadName.length === 0 || threadBody.length === 0
-                    }
-                />
-            </View>
-
-            {errMsg.length > 0 && (
                 <View
                     style={{
-                        padding: '15%',
-                        bottom: 0,
+                        padding: '5%',
+                        flexDirection: 'row',
                     }}
                 >
+                    <TouchableOpacity
+                        style={{ justifyContent: 'center' }}
+                        onPress={() => props.navigation.goBack()}
+                    >
+                        <Icon
+                            name='chevron-left'
+                            type='font-awesome'
+                            color='black'
+                        />
+                    </TouchableOpacity>
                     <Text
                         style={{
-                            color: 'red',
-                            fontSize: '20rem',
-                            fontWeight: '500',
+                            fontSize: '32rem',
+                            fontWeight: 'bold',
+                            marginLeft: '5%',
                         }}
                     >
-                        {errMsg}
+                        Create Thread
                     </Text>
                 </View>
-            )}
-        </SafeAreaView>
+
+                <View
+                    style={{
+                        padding: '5%',
+                    }}
+                >
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        style={{
+                            ...styles.input,
+                            borderColor: bcolor,
+                            borderWidth: 2,
+                        }}
+                        onBlur={() => {
+                            if (threadName.length === 0) {
+                                setBorderColor('red');
+                            } else setBorderColor('transparent');
+                        }}
+                        placeholder='Thread Name'
+                        value={threadName}
+                        onChangeText={(v) => setThreadName(v)}
+                        clearButtonMode='always'
+                    />
+                    {bcolor === 'red' && (
+                        <Text style={{ color: 'red' }}>
+                            Thread name cannot be empty.
+                        </Text>
+                    )}
+                </View>
+
+                <View
+                    style={{
+                        padding: '5%',
+                    }}
+                >
+                    <Text style={styles.label}>Message</Text>
+                    <TextInput
+                        style={{
+                            ...styles.input,
+                            borderColor: bcolor,
+                            borderWidth: 2,
+                        }}
+                        onBlur={() => {
+                            if (threadBody.length === 0) {
+                                setBorderColor('red');
+                            } else setBorderColor('transparent');
+                        }}
+                        placeholder='Thread Body'
+                        value={threadBody}
+                        onChangeText={(v) => setThreadBody(v)}
+                        multiline
+                        clearButtonMode='always'
+                    />
+                    {bcolor === 'red' && (
+                        <Text style={{ color: 'red' }}>
+                            Thread message body cannot be empty.
+                        </Text>
+                    )}
+                </View>
+
+                <View>
+                    <Button
+                        title='Make it so'
+                        onPress={() => createThread()}
+                        disabled={
+                            threadName.length === 0 || threadBody.length === 0
+                        }
+                    />
+                </View>
+
+                {errMsg.length > 0 && (
+                    <View
+                        style={{
+                            padding: '15%',
+                            bottom: 0,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                color: 'red',
+                                fontSize: '20rem',
+                                fontWeight: '500',
+                            }}
+                        >
+                            {errMsg}
+                        </Text>
+                    </View>
+                )}
+            </SafeAreaView>
+        </KeyboardAwareScrollView>
     );
 };
 
