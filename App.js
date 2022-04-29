@@ -13,6 +13,7 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_USER':
             console.log('set_user dispatched');
+            console.log(action.user.token);
             return {
                 ...state,
                 user: action.user,
@@ -20,7 +21,7 @@ const reducer = (state = initialState, action) => {
         case 'SET_CALENDARS':
             return {
                 ...state,
-                calednars: action.calednars,
+                calendars: action.calendars,
             };
         default:
             return state;

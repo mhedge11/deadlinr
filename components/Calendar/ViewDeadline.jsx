@@ -24,8 +24,10 @@ import {
     voteDeadline as voteDeadlineAPI
 } from '../../api/deadline';
 
+import { connect } from 'react-redux';
+
 const ViewDeadline = (props) => {
-    const canEdit = props.route.params.deadline.owner === props.user.user._id;
+    const canEdit = props.route.params.deadline.owner === props.user._id;
     const [editMode, setEditMode] = React.useState(false);
 
     const [deadline, setDeadline] = React.useState(props.route.params.deadline);
@@ -43,11 +45,11 @@ const ViewDeadline = (props) => {
     const [newGroup, setNewGroup] = React.useState('');
 
     React.useEffect(() => {
-        if (deadline.difficulty[props.user.user._id] !== undefined) {
-            setSelectedDiff(deadline.difficulty[props.user.user._id]);
+        if (deadline.difficulty[props.user._id] !== undefined) {
+            setSelectedDiff(deadline.difficulty[props.user._id]);
         }
-        if (deadline.completionTime[props.user.user._id] !== undefined) {
-            setTimeToComplete(deadline.completionTime[props.user.user._id]);
+        if (deadline.completionTime[props.user._id] !== undefined) {
+            setTimeToComplete(deadline.completionTime[props.user._id]);
         }
         fetchDeadline();
     }, []);
@@ -178,7 +180,7 @@ const ViewDeadline = (props) => {
                 onPress={() => {
                     setSelectedDiff(diff);
                 }}
-                disabled={deadline.usersVoted.includes(props.user.user._id)}
+                disabled={deadline.usersVoted.includes(props.user._id)}
             >
                 <Text
                     style={{
@@ -250,7 +252,7 @@ const ViewDeadline = (props) => {
                 <Button
                     title='Delete Deadline'
                     color='red'
-                    disabled={props.user.user._id !== deadline.owner}
+                    disabled={props.user._id !== deadline.owner}
                     onPress={() => {
                         Alert.alert(
                             'Delete Deadline',
@@ -625,7 +627,7 @@ const ViewDeadline = (props) => {
                             maximumTrackTintColor='white'
                             step={1}
                             disabled={deadline.usersVoted.includes(
-                                props.user.user._id
+                                props.user._id
                             )}
                         />
                         <Text
@@ -653,10 +655,17 @@ const ViewDeadline = (props) => {
                 onPress={() => {
                     completeDeadline();
                 }}
-                disabled={deadline.usersFinished.includes(props.user.user._id)}
+                disabled={deadline.usersFinished.includes(props.user._id)}
             />
         </ScrollView>
     );
 };
 
-export default ViewDeadline;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(ViewDeadline);

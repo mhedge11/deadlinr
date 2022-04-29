@@ -29,6 +29,8 @@ import {
 } from '../../api/calendar';
 import Slider from '@react-native-community/slider';
 
+import { connect } from 'react-redux';
+
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -350,4 +352,11 @@ const Administrator = (props) => {
     );
 };
 
-export default Administrator;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(Administrator);

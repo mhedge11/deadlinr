@@ -12,6 +12,8 @@ import { Icon } from 'react-native-elements';
 import { passwordValidation } from '../../validation/passwordValidation';
 import { changePassword as changePasswordAPI } from '../../api/user';
 
+import { connect } from 'react-redux';
+
 const ChangePassword = (props) => {
     const [oldPass, setOldPass] = React.useState('');
     const [newPass, setNewPass] = React.useState('');
@@ -185,4 +187,11 @@ const ChangePassword = (props) => {
     );
 };
 
-export default ChangePassword;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(ChangePassword);

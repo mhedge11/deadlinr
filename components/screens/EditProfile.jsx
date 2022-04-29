@@ -17,6 +17,7 @@ import { editProfile as editProfileAPI } from '../../api/user';
 import { emailValidation } from '../../validation/emailValidation';
 import { nameValidation } from '../../validation/nameValidation';
 import { usernameValidation } from '../../validation/usernameValidation';
+import { getUser } from '../../api/user';
 
 import { connect } from 'react-redux';
 
@@ -35,6 +36,7 @@ const EditProfile = (props) => {
 
     const editProfile = async () => {
         // make API Call here
+        // console.log(props.user);
         emailReturn = '';
         firstNameReturn = '';
         lastNameReturn = '';
@@ -74,10 +76,13 @@ const EditProfile = (props) => {
             lastName,
             email,
             username,
+            bio
         });
 
         setLoading(false);
         if (res === true) {
+            const user = await getUser(props.user.token);
+            props.dispatch({ type: 'SET_USER', user: { ...user.user, token: props.user.token } });
             props.navigation.goBack();
 
             return Alert.alert('User successfully updated');

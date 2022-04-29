@@ -30,6 +30,7 @@ import * as Notifications from 'expo-notifications';
 import { updatePushToken } from './api/user';
 import EditProfile from './components/screens/EditProfile';
 import FriendProfile from './components/Profile/FriendProfile';
+import Administrator from './components/Calendar/Administrator';
 
 import SuggestedFriends from './components/Profile/SuggestedFriends';
 
@@ -96,7 +97,7 @@ class Deadlinr extends React.Component {
     
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
         this.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-          console.log(response);
+          // console.log(response);
         });
         updatePushToken({
             token: this.props.user.token,
@@ -119,7 +120,7 @@ class Deadlinr extends React.Component {
     
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
         this.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-          console.log(response);
+          // console.log(response);
         });
         updatePushToken({
             token: this.props.user.token,
@@ -289,6 +290,12 @@ class Deadlinr extends React.Component {
                         options={{ headerShown: false }}
                     >
                         {(props) => <FriendProfile {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Administrator'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <Administrator {...props} />}
                     </Stack.Screen>
                 </Stack.Navigator>
                 <StatusBar />

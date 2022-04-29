@@ -18,6 +18,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { createDeadline as createDeadlineAPI } from '../../api/deadline';
 import { findSimilar } from '../../api/deadline';
 
+import { connect } from 'react-redux';
+
 const CreateDeadline = (props) => {
     const [deadlineName, setDeadlineName] = React.useState('');
     const [description, setDescription] = React.useState('');
@@ -42,7 +44,7 @@ const CreateDeadline = (props) => {
             },
             token: props.user['token'],
         });
-        console.log(res);
+       // console.log(res);
         if (res.length > 0) {
             setModalVisible(true);
             setSimilarDeadlines(res);
@@ -65,7 +67,7 @@ const CreateDeadline = (props) => {
             title: deadlineName,
             dueDate,
             description,
-            owner: props.user.user._id,
+            owner: props.user._id,
             groups: [group],
             calendar: props.route.params.calendarID,
             votesRemaining: props.route.params.members.length,
@@ -320,4 +322,11 @@ const styles = StyleSheet.create({
       }
 });
 
-export default CreateDeadline;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(CreateDeadline);

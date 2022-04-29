@@ -25,6 +25,16 @@ class Profile extends React.Component {
         this.showDeleteAccountDialog.bind(this);
     }
 
+    componentDidMount = async () => { 
+       // console.log(this.props.user);
+        const user = await getUser(this.props.user.token);
+       // console.log(user);
+        this.props.dispatch({
+            type: 'SET_USER',
+            user: { ...user.user, token: this.props.user.token }
+        });
+    }
+
     chooseImage = async () => { 
         let result = await ImagePicker.launchImageLibraryAsync({
             base64: true,
@@ -45,7 +55,7 @@ class Profile extends React.Component {
 
             const user = await getUser(this.props.user.token);
             this.props.dispatch({ type: 'SET_USER',
-                user: user.user
+                user: { ...user.user, token: this.props.user.token }
             })
         }
     }
@@ -136,7 +146,7 @@ class Profile extends React.Component {
         }
 
         const navigation = this.props.navigation;
-        const { firstName, lastName, uid, picture } = this.props.user;
+        const { firstName, lastName, uid, picture, bio } = this.props.user;
         return (
             <View style={styles.container}>
                 <Text
@@ -187,6 +197,14 @@ class Profile extends React.Component {
                         justifyContent: 'space-around',
                     }}
                 >
+                    <Text
+                        style={{
+                            paddingLeft: '5%',
+                            color: 'grey',
+                            fontWeight: '500',
+                            fontSize: 20
+                        }}
+                    >{bio}</Text>
                     <View style={{}}>
                         <TouchableOpacity
                             onPress={() => {

@@ -13,6 +13,9 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { createCalendar as createCalendarAPI } from '../../api/calendar';
+import { connect } from 'react-redux';
+
+import { getUser } from '../../api/user';
 
 const CreateCalendar = (props) => {
     const [privateCalendar, setPrivate] = React.useState(false);
@@ -36,14 +39,12 @@ const CreateCalendar = (props) => {
         setLoading(false);
         if (res !== false) {
             setMsg('');
-            props.setUser({
-                token: props.user.token,
-                user: {
-                    ...props.user.user,
-                    calendars: [...props.user.user.calendars, res.id],
-                },
-            });
-
+            const res = await getUser(props.user.token);
+            props.dispatch({
+                type: 'SET_USER', user: {
+                    ...res.user,
+                    token: props.user.token
+                }});
             props.navigation.goBack();
             return;
         } else {
@@ -187,4 +188,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateCalendar;
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    };
+}
+
+export default connect(mapStateToProps)(CreateCalendar);

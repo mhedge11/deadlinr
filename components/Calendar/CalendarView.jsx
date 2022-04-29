@@ -19,8 +19,9 @@ import {
     getCalendar,
 } from '../../api/calendar';
 import { getDeadline } from '../../api/deadline';
+import { connect } from 'react-redux';
 
-export default class CalendarView extends React.Component {
+class CalendarView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -29,7 +30,7 @@ export default class CalendarView extends React.Component {
                 this.props.user._id
             ),
             isAdmin: this.props.route.params.administrators.includes(
-                this.props.user.user._id
+                this.props.user._id
             ),
             loading: false,
             members: this.props.route.params.members,
@@ -83,7 +84,7 @@ export default class CalendarView extends React.Component {
     sortDeadlines = () => {
         const { selectedFilter, deadlines, reverseSort } = this.state;
 
-        console.log(deadlines);
+      //  console.log(deadlines);
         this.setState({
             reverseSort: !reverseSort,
         });
@@ -94,7 +95,7 @@ export default class CalendarView extends React.Component {
         } else if (selectedFilter == 2) {
             deadlines.sort(this.sortByDifficulty);
         }
-        console.log(deadlines);
+       // console.log(deadlines);
         this.setState({
             deadlines,
         });
@@ -707,3 +708,12 @@ const styles = StyleSheet.create({
         height: 0,
     },
 });
+
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(CalendarView);

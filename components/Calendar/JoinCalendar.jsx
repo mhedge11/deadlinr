@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { searchForUser } from '../../api/user';
 import { inviteToCalendar } from '../../api/calendar';
-
+import { connect } from 'react-redux';
 /*
 This is user search
 to invite people to use one of your calendars
@@ -122,4 +122,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default JoinCalendar;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(JoinCalendar);

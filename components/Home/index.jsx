@@ -37,7 +37,7 @@ class Home extends Component {
                 });
             });
         }
-        console.log(this.state.calendars);
+        //console.log(this.state.calendars);
         this.props.dispatch({
             type: 'SET_CALENDARS',
             calendars: this.state.calendars,

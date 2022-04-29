@@ -12,7 +12,6 @@ import {
 import { Icon, Card } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import { getCalendar } from '../../api/calendar';
-import { getUser } from '../../api/user';
 import { connect } from 'react-redux';
 
 const ChooseCalendar = (props) => {
@@ -31,10 +30,9 @@ const ChooseCalendar = (props) => {
 
     const fetchCalendars = async () => {
         setCalendars([]);
-
+       // console.log(props.user);
         try {
-            const user = await getUser(props.user.token);
-            user.user.calendars.forEach(async (c) => {
+            props.user.calendars.forEach(async (c) => {
                 const item = await getCalendar({ cid: c });
                 setCalendars((c) => [...c, item]);
             });

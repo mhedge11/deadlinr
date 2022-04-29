@@ -12,6 +12,7 @@ export const getUser = async (token) => {
             },
         })
             .then(async (res) => {
+               // console.log(res.status);
                 if (!res.ok) {
                     return null;
                 }
@@ -395,6 +396,7 @@ export const updatePushToken = async ({ token, pushToken }) => {
             }),
         })
             .then(async (res) => { 
+               // console.log(res.status);
                 if (res.ok) { 
                     console.log('succesfully registered for push notif')
                 } else {
@@ -437,7 +439,7 @@ export const uploadPicture = async ({ token, image }) => {
                 console.error(err);
                 return false;
             });
-        return res;
+        return result;
     } catch (err) {
         console.error(err);
         return false;
@@ -463,7 +465,7 @@ export const checkContacts = async ({
             })
         })
             .then(async (res) => { 
-                console.log(res.status);
+               // console.log(res.status);
                 if (res.ok) {
                     const data = await res.json();
                     return data.items;
@@ -474,7 +476,7 @@ export const checkContacts = async ({
                 console.error(err);
                 return [];
             })
-        return res;
+        return result;
     } catch (err) {
         console.error(err);
         return [];
@@ -497,7 +499,7 @@ export const checkContacts = async ({
                 // console.log(res.status);
                 if (res.ok) {
                     const data = await res.json();
-                    return data.items;
+                    return data;
                 }
                 return [];
             })

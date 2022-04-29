@@ -17,7 +17,7 @@ class Calendar extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
+       // console.log(props);
         this.state = {
             selectedDate: moment(),
             today: moment(),
@@ -26,6 +26,7 @@ class Calendar extends React.Component {
     }
 
     componentDidMount() { 
+        
         getWeekDeadlines({
             token: this.props.user.token
         })

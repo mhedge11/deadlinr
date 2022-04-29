@@ -258,7 +258,7 @@ export const voteDeadline = async ({ did, token }) => {
             },
         })
             .then(async (res) => {
-                console.log(res.status);
+                // (res.status);
                 if (res.ok) {
                     return true;
                 }
