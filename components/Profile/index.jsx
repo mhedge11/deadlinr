@@ -74,7 +74,10 @@ class Profile extends React.Component {
                             loading: false,
                         });
                         if (res === 'success') {
-                            this.props.setUser(null);
+                            this.props.dispatch({
+                                type: 'SET_USER',
+                                user: null
+                            });
                             return Alert.alert('User successfully deleted!');
                         } else {
                             return Alert.alert(
@@ -102,7 +105,10 @@ class Profile extends React.Component {
                 {
                     text: 'Yes',
                     onPress: () => {
-                        this.props.setUser(null);
+                        this.props.dispatch({
+                            type: 'SET_USER',
+                            user: null
+                        });
                     },
                 },
                 ,

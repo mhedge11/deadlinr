@@ -244,18 +244,8 @@ const RegistrationForm = (props) => {
                     style={styles.registerButton}
                     onPress={handleSubmission}
                 >
-        <KeyboardAwareScrollView style={{ marginVertical: 50 }}>
-            <View style={styles.container}>
-                <View style={styles.image}>
-                    <Text
-                        style={{
-                            color: 'white',
-                            fontSize: 40,
-                            fontWeight: '600',
-                            textAlign: 'center',
-                        }}
-                    >
-                        Register
+                    <Text>
+                    Register
                     </Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -300,10 +290,10 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-  return (
-    user: state.user,
-    dispatch: state.dispatch
-  )
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
 }
 
 export default connect(mapStateToProps)(RegistrationForm);
