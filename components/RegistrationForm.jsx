@@ -88,11 +88,14 @@ const RegistrationForm = (props) => {
             alert('Error creating user');
             return;
         }
-  
-        props.setUser({
-            user: data,
-            token: data.token,
-        });
+
+        props.dispatch({
+            type: 'SET_USER',
+            user: {
+                ...data,
+                token: data.token
+            }
+        })
     };
 
     if (loading) {

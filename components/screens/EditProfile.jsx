@@ -18,12 +18,14 @@ import { emailValidation } from '../../validation/emailValidation';
 import { nameValidation } from '../../validation/nameValidation';
 import { usernameValidation } from '../../validation/usernameValidation';
 
+import { connect } from 'react-redux';
+
 const EditProfile = (props) => {
-    const [firstName, setFirstName] = React.useState(props.user.user.firstName);
-    const [lastName, setLastName] = React.useState(props.user.user.lastName);
-    const [username, setUsername] = React.useState(props.user.user.username);
-    const [email, setEmail] = React.useState(props.user.user.email);
-    const [bio, setBio] = React.useState(props.user.user.bio);
+    const [firstName, setFirstName] = React.useState(props.user.firstName);
+    const [lastName, setLastName] = React.useState(props.user.lastName);
+    const [username, setUsername] = React.useState(props.user.username);
+    const [email, setEmail] = React.useState(props.user.email);
+    const [bio, setBio] = React.useState(props.user.bio);
 
     const [loading, setLoading] = React.useState(false);
 
@@ -73,9 +75,11 @@ const EditProfile = (props) => {
             email,
             username,
         });
+
         setLoading(false);
         if (res === true) {
             props.navigation.goBack();
+
             return Alert.alert('User successfully updated');
         } else return Alert.alert('An error occured. Please try again');
     };
@@ -244,4 +248,11 @@ const EditProfile = (props) => {
     );
 };
 
-export default EditProfile;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(EditProfile);

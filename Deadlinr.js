@@ -28,6 +28,10 @@ import { connect } from 'react-redux';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { updatePushToken } from './api/user';
+import EditProfile from './components/screens/EditProfile';
+import FriendProfile from './components/Profile/FriendProfile';
+
+import SuggestedFriends from './components/Profile/SuggestedFriends';
 
 const Stack = createNativeStackNavigator();
 Notifications.setNotificationHandler({
@@ -267,6 +271,24 @@ class Deadlinr extends React.Component {
                         options={{ headerShown: false }}
                     >
                         {(props) => <CreateReplyToReply {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Edit Profile'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <EditProfile {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='Suggested Friends'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <SuggestedFriends {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='FriendProfile'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <FriendProfile {...props} />}
                     </Stack.Screen>
                 </Stack.Navigator>
                 <StatusBar />

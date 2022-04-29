@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator
 import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import { checkContacts } from '../../api/user';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
-export default function SuggestedFriends(props) { 
+function SuggestedFriends(props) { 
 
     const navigation = props.navigation;
     const [contacts, setContacts] = React.useState([]);
@@ -58,14 +58,6 @@ export default function SuggestedFriends(props) {
                     phoneNumbers: phoneNums
                 });
                 setLoading(false);
-                res.push({
-                    firstName: 'firstName',
-                    lastName: 'lastName',
-                    username: 'username',
-                    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis est leo. Nulla posuere tortor sed tincidunt porttitor. Cras feugiat.',
-                    calendars: [],
-                    picture: ''
-                })
                 setContacts(res);
             }
         })();
@@ -131,10 +123,10 @@ const styles = StyleSheet.create({
     },
 });
 
-/*function mapStateToProps(state) { 
+function mapStateToProps(state) { 
     return {
         user: state.user
     }
 }
 
-export default connect(mapStateToProps)(SuggestedFriends);*/
+export default connect(mapStateToProps)(SuggestedFriends);

@@ -348,6 +348,11 @@ export const editProfile = async ({
     try {
         const res = await fetch(route, {
             method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: "Bearer " + token
+            },
           body: JSON.stringify({
           firstName,
                 lastName,
