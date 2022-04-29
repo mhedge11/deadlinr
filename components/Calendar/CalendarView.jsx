@@ -26,7 +26,7 @@ export default class CalendarView extends React.Component {
         this.state = {
             privateCalendar: this.props.route.params.isPrivate,
             isMember: this.props.route.params.members.includes(
-                this.props.user.user._id
+                this.props.user._id
             ),
             isAdmin: this.props.route.params.administrators.includes(
                 this.props.user.user._id

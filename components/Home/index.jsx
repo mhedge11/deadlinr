@@ -13,11 +13,13 @@ import Navigator from '../Navigator';
 import { getUser } from '../../api/user';
 import { getCalendar } from '../../api/calendar';
 
-export default class Home extends Component {
+import { connect, dispatch } from 'react-redux';
+
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            courses: props.courses,
+            courses: props.calendars,
             calendars: [],
             loading: true,
         };
@@ -27,27 +29,25 @@ export default class Home extends Component {
         this.setState({
             loading: true,
         });
-        if (this.props.user.user.calendars) {
-            this.props.user.user.calendars.forEach(async (c) => {
+        if (this.props.user.calendars) {
+            this.props.user.calendars.forEach(async (c) => {
                 const data = await getCalendar({ cid: c });
                 this.setState({
                     calendars: [...this.state.calendars, data],
                 });
             });
         }
+        console.log(this.state.calendars);
+        this.props.dispatch({
+            type: 'SET_CALENDARS',
+            calendars: this.state.calendars,
+        });
         this.setState({
             loading: false,
         });
     };
 
     componentDidMount() {
-        const token = this.props.user.token;
-        getUser(token).then((user) => {
-            this.props.setUser({
-                ...user,
-                token,
-            });
-        });
         this.getAllCalendars();
     }
 
@@ -94,9 +94,8 @@ export default class Home extends Component {
     renderCourses = () => {
         while (
             this.state.loading ||
-            !this.props.user.user.calendars ||
-            this.state.calendars.length !==
-                this.props.user.user.calendars.length
+            !this.props.user.calendars ||
+            this.state.calendars.length !== this.props.user.calendars.length
         ) {
             return <ActivityIndicator />;
         }
@@ -123,7 +122,7 @@ export default class Home extends Component {
                                 color: '#787878',
                             }}
                         >
-                            Hello {this.props.user.user.firstName}
+                            Hello {this.props.user.firstName}
                         </Text>
                         <Text
                             style={{
@@ -152,14 +151,12 @@ export default class Home extends Component {
                             shadowOpacity: 0.5,
                             shadowRadius: 4,
                         }}
-                        onLongPress={() => alert('onLongPress')}
-                        onPress={() => alert('onPress')}
                         overlayContainerStyle={{}}
                         placeholderStyle={{}}
                         rounded
                         size='large'
                         source={{
-                            uri: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png',
+                            uri: this.props.user.picture,
                         }}
                         title='P'
                         titleStyle={{}}
@@ -276,3 +273,11 @@ const styles = StyleSheet.create({
         marginTop: '10%',
     },
 });
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+    };
+}
+
+export default connect(mapStateToProps)(Home);

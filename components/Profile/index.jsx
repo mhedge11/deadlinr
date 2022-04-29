@@ -7,10 +7,16 @@ import {
     Alert,
     ActivityIndicator,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, Avatar } from 'react-native-elements';
 import { deleteAccount } from '../../api/user';
+import { connect } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import { getUser } from '../../api/user';
 
-export default class Profile extends React.Component {
+import { uploadPicture } from '../../api/user';
+
+class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,6 +24,32 @@ export default class Profile extends React.Component {
         };
         this.showDeleteAccountDialog.bind(this);
     }
+
+    chooseImage = async () => { 
+        let result = await ImagePicker.launchImageLibraryAsync({
+            base64: true,
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.25,
+        });
+        if (!result.cancelled) {
+            const res = await uploadPicture({
+                token: this.props.user.token,
+                image: result.base64
+            });
+
+            if (res === false) { 
+                return Alert.alert('An error occured');
+            }
+
+            const user = await getUser(this.props.user.token);
+            this.props.dispatch({ type: 'SET_USER',
+                user: user.user
+            })
+        }
+    }
+
     showDeleteAccountDialog = () => {
         if (!this.props.user) {
             return alert('An error occured');
@@ -98,7 +130,7 @@ export default class Profile extends React.Component {
         }
 
         const navigation = this.props.navigation;
-        const { firstName, lastName, username, uid } = this.props.user.user;
+        const { firstName, lastName, uid, picture } = this.props.user;
         return (
             <View style={styles.container}>
                 <Text
@@ -119,7 +151,29 @@ export default class Profile extends React.Component {
                     </TouchableOpacity>
                     {'    '}Hey {firstName}!
                 </Text>
-
+                <Avatar
+                    activeOpacity={0.9}
+                    avatarStyle={{}}
+                    containerStyle={{
+                        backgroundColor: '#BDBDBD',
+                        marginRight: 0,
+                        shadowColor: '#171717',
+                        shadowOffset: { width: -1, height: 4 },
+                        shadowOpacity: 0.5,
+                        shadowRadius: 4,
+                        alignSelf: 'flex-end',
+                    }}
+                    onPress={() => this.chooseImage()}
+                    overlayContainerStyle={{}}
+                    placeholderStyle={{}}
+                    rounded
+                    size='large'
+                    source={{
+                        uri: picture
+                    }}
+                    title='P'
+                    titleStyle={{}}
+                />
                 <View
                     style={{
                         marginTop: '30%',
@@ -222,3 +276,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
 });
+
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(Profile)

@@ -336,8 +336,6 @@ export const fetchUser = async ({ uid }) => {
     }
 };
 
-// Edit user profile
-
 export const editProfile = async ({
     token,
     firstName,
@@ -350,17 +348,78 @@ export const editProfile = async ({
     try {
         const res = await fetch(route, {
             method: 'PATCH',
+          body: JSON.stringify({
+          firstName,
+                lastName,
+                username,
+                email,
+                bio,
+            }),
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                console.error(err);
+                return false;
+            });
+        return res;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
+    
+
+export const updatePushToken = async ({ token, pushToken }) => { 
+    const route = API_URL + '/user/pushToken';
+
+    try {
+        fetch(route, {
+            method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token,
             },
             body: JSON.stringify({
-                firstName,
-                lastName,
-                username,
-                email,
-                bio,
+                pushToken
+            }),
+        })
+            .then(async (res) => { 
+                if (res.ok) { 
+                    console.log('succesfully registered for push notif')
+                } else {
+                    console.log('registered for push notif failed');
+                }
+            }) 
+            .catch(err => { 
+                console.error(err);
+                console.log('registered for push notif failed');
+            })
+    } catch (err) { 
+        console.error(err);
+        console.log('registered for push notif failed');
+    }
+
+}
+
+export const uploadPicture = async ({ token, image }) => { 
+    const route = API_URL + '/user/picture';
+
+    try { 
+        const result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                data: image
             }),
         })
             .then(async (res) => {
@@ -394,33 +453,40 @@ export const checkContacts = async ({
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token,
             },
-
+            body: JSON.stringify({
+                phoneNumbers
+            })
         })
-            .then(async (res) => {
+            .then(async (res) => { 
+                console.log(res.status);
                 if (res.ok) {
                     const data = await res.json();
-                    return data;
+                    return data.items;
                 }
-            })
-            .catch(err => {
                 return [];
-            });
-        return result;
-    } catch (err) { 
+            })
+            .catch(err => { 
+                console.error(err);
+                return [];
+            })
+        return res;
+    } catch (err) {
         console.error(err);
         return [];
     }
 }
-
 
  export const getWeekDeadlines = async ({ token }) => { 
     const route = API_URL + '/user/week';
     try { 
         let result = fetch(route, {
             method: 'GET',
-            body: JSON.stringify({
-                phoneNumbers
-            })
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+          
         })
             .then(async (res) => {
                 // console.log(res.status);

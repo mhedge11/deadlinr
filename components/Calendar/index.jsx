@@ -10,12 +10,14 @@ import {
 import { Icon } from 'react-native-elements';
 import moment from 'moment';
 import CalendarStrip from 'react-native-calendar-strip';
-
+import { connect } from 'react-redux';
 import { getWeekDeadlines } from '../../api/user';
 
-export default class Calendar extends React.Component {
+class Calendar extends React.Component {
+
     constructor(props) {
         super(props);
+        console.log(props);
         this.state = {
             selectedDate: moment(),
             today: moment(),
@@ -98,7 +100,6 @@ export default class Calendar extends React.Component {
 
     renderTasks = () => {
         let elems = [];
-
         let res = this.state.weeklyDeadlines.filter(
             (task) => {
                 const dueDate = new Date(Date.parse(task.dueDate));
@@ -304,3 +305,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
 });
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        calendars: state.calendars,
+    };
+}
+
+export default connect(mapStateToProps)(Calendar);

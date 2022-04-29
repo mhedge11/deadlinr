@@ -13,6 +13,7 @@ import { Icon, Card } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import { getCalendar } from '../../api/calendar';
 import { getUser } from '../../api/user';
+import { connect } from 'react-redux';
 
 const ChooseCalendar = (props) => {
     const [calendars, setCalendars] = React.useState([]);
@@ -211,4 +212,11 @@ const ChooseCalendar = (props) => {
     );
 };
 
-export default ChooseCalendar;
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        calendars: state.calendars,
+    };
+}
+
+export default connect(mapStateToProps)(ChooseCalendar);
