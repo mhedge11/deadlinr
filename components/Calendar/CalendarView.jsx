@@ -501,6 +501,9 @@ export default class CalendarView extends React.Component {
                                                 this.props.route.params._id,
                                             members:
                                                 this.props.route.params.members,
+                                            threshold:
+                                                this.props.route.params
+                                                    .threshold,
                                         }
                                     );
                                 }}
