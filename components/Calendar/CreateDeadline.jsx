@@ -8,11 +8,15 @@ import {
     TextInput,
     SafeAreaView,
     ActivityIndicator,
+    Modal,
+    Pressable,
+    ScrollView
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { createDeadline as createDeadlineAPI } from '../../api/deadline';
+import { findSimilar } from '../../api/deadline';
 
 const CreateDeadline = (props) => {
     const [deadlineName, setDeadlineName] = React.useState('');
@@ -23,9 +27,39 @@ const CreateDeadline = (props) => {
     const [msg, setMsg] = React.useState('');
     const [group, setGroup] = React.useState('');
 
+    const [shownSimilar, setShownSimilar] = React.useState(false);
+    const [modalVisible, setModalVisible] = React.useState(false);
+    const [similarDeadlines, setSimilarDeadlines] = React.useState([]);
+
+
+    const showSimilarDeadlines = async () => { 
+        setLoading(true);
+        const res = await findSimilar({
+            cid: props.route.params.calendarID,
+            deadlineData: {
+                title: deadlineName,
+                dueDate,
+            },
+            token: props.user['token'],
+        });
+        console.log(res);
+        if (res.length > 0) {
+            setModalVisible(true);
+            setSimilarDeadlines(res);
+        }
+        setLoading(false);
+        setShownSimilar(true);
+    }
+
     const createDeadline = async () => {
         if (!props.user) return Alert.alert('An error occured');
         if (deadlineName.trim() === '') return;
+        setDeadlineName(deadlineName.trim());
+        if (!shownSimilar) {    
+            showSimilarDeadlines();
+            return;
+        }
+
         setLoading(true);
         const res = await createDeadlineAPI({
             title: deadlineName,
@@ -175,6 +209,54 @@ const CreateDeadline = (props) => {
             {msg !== '' && (
                 <Text style={{ color: 'red', fontSize: 18 }}>{msg}</Text>
             )}
+         <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          // Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Looks like there are similar deadlines!</Text>
+                        
+                    <ScrollView>
+                            {
+                                similarDeadlines.map(d => { 
+                                    return (
+                                        <View
+                                            style={{
+                                                marginTop: '20%',
+                                            }}
+                                        >
+                                            <Text
+                                                style={{
+                                                    fontWeight: '600',
+                                                    fontSize: 25
+                                                }}
+                                            >{d.title}</Text>
+                                            <Text
+                                                style={{
+                                                    fontWeight: '400',
+                                                    fontSize: 20
+                                                }}
+                                            >Due: {d.dueDate.slice(0, 10)}</Text>
+                                        </View>
+                                    )
+                                })
+                            }        
+                    </ScrollView>
+                <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+                >
+                <Text style={styles.textStyle}>Close</Text>
+                </Pressable>
+          </View>
+        </View>
+      </Modal>
         </SafeAreaView>
     );
 };
@@ -193,6 +275,49 @@ const styles = StyleSheet.create({
         color: 'black',
         marginLeft: '1%',
     },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+      },
+      modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
+      button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        backgroundColor: "#2196F3",
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        // marginBottom: 15,
+          textAlign: "center",
+          fontSize: 28,
+          fontWeight: '200'
+      }
 });
 
 export default CreateDeadline;
