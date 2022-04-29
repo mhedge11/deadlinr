@@ -12,6 +12,7 @@ import {
     ScrollView,
     RefreshControl,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Icon } from 'react-native-elements';
 import { getCalendar } from '../../api/calendar';
 
@@ -27,10 +28,15 @@ const wait = (timeout) => {
 };
 
 function IndividualThreadScreen(props) {
+    const navigation = useNavigation();
     const threadId = props.route.params.threadId;
     const threadArray = props.route.params.threadArray;
     const threadReplies = props.route.params.threadReplies;
-    const threadObject = props.route.params.threadObject;
+    // const threadObject = props.route.params.threadObject;
+    const [threadObject, setThreadObject] = useState(
+        props.route.params.threadObject
+    );
+
     const calId = props.route.params.calId;
     // console.log(calId);
 
@@ -46,10 +52,7 @@ function IndividualThreadScreen(props) {
         props.route.params.threadObject.author
     );
     const [threadBody, setThreadBody] = React.useState('');
-
-    // React.useEffect(() => {
-    //     fetchIndividualThread();
-    // }, []);
+    const [rid, setRid] = React.useState(0);
 
     const [refreshing, setRefreshing] = React.useState(false);
 
@@ -59,12 +62,17 @@ function IndividualThreadScreen(props) {
         setRefreshing(false);
     };
     React.useEffect(() => {
-        fetchIndividualThread();
-    }, [props]);
+        const refreshPage = navigation.addListener('focus', () => {
+            fetchIndividualThread();
+        });
+        return refreshPage;
+    }, [navigation]);
 
     const fetchIndividualThread = async () => {
         setUserName('');
         try {
+            const newThread = await getThread({ tid: threadObject._id });
+            setThreadObject(newThread);
             let orig = { uid: threadObject.author._id };
             const data = await fetchUser(orig);
             setUserName(data.username);
@@ -73,65 +81,10 @@ function IndividualThreadScreen(props) {
         }
     };
 
-    // const [individualThreads, setIndividualThreads] =
-    //     React.useState(fetchThreads);
-
-    // const [refreshing, setRefreshing] = React.useState(false);
-
-    // // const onRefresh = async () => {
-    // //     setRefreshing(true);
-    // //     await fetchThreads();
-    // //     setRefreshing(false);
-    // // };
-    // const onRefresh = async () => {
-    //     setRefreshing(true);
-    //     await fetchThreads();
-    //     // setRefreshing(false);
-    //     wait(300).then(() => setRefreshing(false));
-    // };
-    // React.useEffect(() => {
-    //     fetchThreads();
-    // }, []);
-
-    // const fetchThreads = async () => {
-    //     // setIndividualThreads([]);
-    //     setThreadObject();
-    //     try {
-    //         const threadsInCalendar = await getCalendar({ cid: calId });
-    //         // console.log(threadsInCalendar);
-
-    //         // const item = await getThread({});
-    //         // threadsInCalendar.threads.
-    //         threadsInCalendar.threads.forEach(async (c) => {
-    //             // console.log(threadObject);
-    //             if (c === props.route.params.threadObject._id) {
-    //                 // console.log(threadObject);
-    //                 const item = await getThread({ tid: c });
-    //                 const clone = structuredClone(item);
-    //                 setThreadObject(...item);
-    //                 // console.log(threadObject.author._id);
-    //             }
-    //             // if (item !== null) {
-    //             //     setIndividualThreads((c) => [...c, item]);
-    //             // }
-    //             // if (c === threadId) {
-    //             //     const item = await getThread({ tid: c });
-    //             //     setIndividualThreads(item);
-    //             // }
-    //             // const item = await getThread({ tid: c });
-    //             // if (item !== null) {
-    //             //     setThreads((c) => [...c, item]);
-    //             // }
-    //         });
-    //         // console.log(item);
-    //     } catch (e) {
-    //         console.error(e);
-    //     }
-    // };
-
     function Comment({ authorId, node }) {
         setUserId(authorId);
         setThreadBody(node.body);
+        setRid(node.id);
         if (!node.replies) {
             return (
                 <View>
@@ -188,8 +141,9 @@ function IndividualThreadScreen(props) {
                     <TouchableOpacity
                         style={styles.replyButton1}
                         onPress={() => {
-                            props.navigation.navigate('CreateReplyToThread', {
+                            props.navigation.navigate('CreateReplyToReply', {
                                 tid: threadObject._id,
+                                rid: node.id,
                                 threadBody: node.body,
                             });
                         }}
@@ -233,7 +187,6 @@ function IndividualThreadScreen(props) {
                         />
                     </TouchableOpacity>
                 </View>
-                {/* <ScrollView> */}
                 <View styles={styles.headline}>
                     <View
                         style={{
@@ -309,7 +262,6 @@ function IndividualThreadScreen(props) {
                         </View>
                     </ScrollView>
                 </View>
-                {/* </ScrollView> */}
             </SafeAreaView>
         </>
     );
