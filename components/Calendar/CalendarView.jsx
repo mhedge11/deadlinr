@@ -203,6 +203,7 @@ export default class CalendarView extends React.Component {
             usersFinished,
             votesRemaining,
             groups,
+            approved
         } = deadline.item;
 
         let diffColor = '';
@@ -267,7 +268,28 @@ export default class CalendarView extends React.Component {
                             {dueDate.slice(0, 10)}
                         </Text>
                     </View>
-
+                    {
+                        approved ?
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    color: 'green',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                Approved
+                            </Text>
+                            :
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    color: 'red',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                Not yet approved
+                            </Text>
+                    }
                     <View
                         style={{
                             marginTop: '5%',
