@@ -9,108 +9,46 @@ import {
 } from 'react-native';
 import { Icon, Avatar } from 'react-native-elements';
 import { deleteAccount } from '../../api/user';
-import * as ImagePicker from 'react-native-image-picker';
-import { launchImageLibrary as launchImageLibraryTemp } from 'react-native-image-picker';
+import { connect } from 'react-redux';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import { getUser } from '../../api/user';
 
-let options = {
-    title: 'Select Image',
-    customButtons: [
-        { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
-    ],
-    storageOptions: {
-        skipBackup: true,
-        path: 'images',
-    },
-};
+import { uploadPicture } from '../../api/user';
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            filepath: {
-                data: '',
-                uri: '',
-            },
-            fileData: '',
-            fileUri: '',
         };
         this.showDeleteAccountDialog.bind(this);
     }
 
-    chooseImage = () => {
-        let options = {
-            title: 'Select Image',
-            customButtons: [
-                {
-                    name: 'customOptionKey',
-                    title: 'Choose Photo from Custom Option',
-                },
-            ],
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
-        launchImageLibraryTemp(options, (response) => {
-            console.log('Response = ', response);
-
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log(
-                    'User tapped custom button: ',
-                    response.customButton
-                );
-                alert(response.customButton);
-            } else {
-                const source = { uri: response.uri };
-
-                // You can also display the image using data:
-                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-                // alert(JSON.stringify(response));s
-                console.log('response', JSON.stringify(response));
-                this.setState({
-                    filePath: response,
-                    fileData: response.data,
-                    fileUri: response.uri,
-                });
-            }
+    chooseImage = async () => { 
+        let result = await ImagePicker.launchImageLibraryAsync({
+            base64: true,
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 0.25,
         });
-    };
+        if (!result.cancelled) {
+            const res = await uploadPicture({
+                token: this.props.user.token,
+                image: result.base64
+            });
 
-    launchImageLibrary = () => {
-        let options = {
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
-        ImagePicker.launchImageLibrary(options, (response) => {
-            console.log('Response = ', response);
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log(
-                    'User tapped custom button: ',
-                    response.customButton
-                );
-                alert(response.customButton);
-            } else {
-                const source = { uri: response.uri };
-                console.log('response', JSON.stringify(response));
-                this.setState({
-                    filePath: response,
-                    fileData: response.data,
-                    fileUri: response.uri,
-                });
+            if (res === false) { 
+                return Alert.alert('An error occured');
             }
-        });
-    };
+
+            const user = await getUser(this.props.user.token);
+            this.props.dispatch({ type: 'SET_USER',
+                user: user.user
+            })
+        }
+    }
 
     showDeleteAccountDialog = () => {
         if (!this.props.user) {
@@ -192,7 +130,7 @@ export default class Profile extends React.Component {
         }
 
         const navigation = this.props.navigation;
-        const { firstName, lastName, uid } = this.props.user;
+        const { firstName, lastName, uid, picture } = this.props.user;
         return (
             <View style={styles.container}>
                 <Text
@@ -225,14 +163,13 @@ export default class Profile extends React.Component {
                         shadowRadius: 4,
                         alignSelf: 'flex-end',
                     }}
-                    onLongPress={() => alert('onLongPress')}
                     onPress={() => this.chooseImage()}
                     overlayContainerStyle={{}}
                     placeholderStyle={{}}
                     rounded
                     size='large'
                     source={{
-                        uri: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png',
+                        uri: picture
                     }}
                     title='P'
                     titleStyle={{}}
@@ -307,3 +244,12 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
 });
+
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(Profile)

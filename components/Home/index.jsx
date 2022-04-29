@@ -151,14 +151,12 @@ class Home extends Component {
                             shadowOpacity: 0.5,
                             shadowRadius: 4,
                         }}
-                        onLongPress={() => alert('onLongPress')}
-                        onPress={() => alert('onPress')}
                         overlayContainerStyle={{}}
                         placeholderStyle={{}}
                         rounded
                         size='large'
                         source={{
-                            uri: 'https://www.allthetests.com/quiz22/picture/pic_1171831236_1.png',
+                            uri: this.props.user.picture,
                         }}
                         title='P'
                         titleStyle={{}}

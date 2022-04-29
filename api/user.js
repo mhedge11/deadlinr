@@ -369,3 +369,34 @@ export const updatePushToken = async ({ token, pushToken }) => {
     }
 
 }
+
+export const uploadPicture = async ({ token, image }) => { 
+    const route = API_URL + '/user/picture';
+
+    try { 
+        let res = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                data: image
+            }),
+        })
+            .then(async (res) => { 
+                console.log(res.status);
+                if (res.ok) return true;
+                return false;
+            })
+            .catch(err => { 
+                console.error(err);
+                return false;
+            })
+        return res;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}
