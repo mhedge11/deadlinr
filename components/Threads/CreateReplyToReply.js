@@ -41,6 +41,7 @@ const CreateReplyToReply = (props) => {
         setLoading(false);
         if (res !== false) {
             setMsg('');
+            props.navigation.goBack();
 
             return;
         } else {
