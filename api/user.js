@@ -363,7 +363,7 @@ export const editProfile = async ({
                 bio,
             }),
         })
-            .then((res) => {
+            .then(async (res) => {
                 if (res.ok) {
                     return true;
                 }
@@ -379,3 +379,65 @@ export const editProfile = async ({
         return false;
     }
 };
+
+export const checkContacts = async ({
+    token,
+    phoneNumbers
+}) => { 
+    const route = API_URL + '/user/contacts';
+
+    try {
+        const result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    return data;
+                }
+            })
+            .catch(err => {
+                return [];
+            });
+        return result;
+    } catch (err) { 
+        console.error(err);
+        return [];
+    }
+}
+
+
+ export const getWeekDeadlines = async ({ token }) => { 
+    const route = API_URL + '/user/week';
+    try { 
+        let result = fetch(route, {
+            method: 'GET',
+            body: JSON.stringify({
+                phoneNumbers
+            })
+        })
+            .then(async (res) => {
+                // console.log(res.status);
+                if (res.ok) {
+                    const data = await res.json();
+                    return data.items;
+                }
+                return [];
+            })
+            .catch((err) => {
+                console.error(err);
+                return [];
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+}
