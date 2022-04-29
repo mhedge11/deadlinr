@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
-
+import { checkContacts } from '../../api/user';
+// import { connect } from 'react-redux';
 
 export default function SuggestedFriends(props) { 
 
     const [contacts, setContacts] = React.useState([]);
+
+    const [loading, setLoading] = React.useState(true);
 
     const renderItems = () => { 
         let elems = [];
@@ -21,7 +24,7 @@ export default function SuggestedFriends(props) {
                             fontWeight: '400'
                         }}
                     >
-                        {c}
+                        asd
                     </Text>
                 </View>);
         });
@@ -29,7 +32,7 @@ export default function SuggestedFriends(props) {
         return elems;
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         (async () => {
             const { status } = await Contacts.requestPermissionsAsync();
             if (status === 'granted') {
@@ -42,7 +45,12 @@ export default function SuggestedFriends(props) {
                         if (num.number.length <= 13) phoneNums.push(num.number);
                     })
                 })
-                setContacts(phoneNums);
+                const res = await checkContacts({
+                    token: props.user.token,
+                    phoneNumbers: phoneNums
+                });
+                setLoading(false);
+                setContacts(res);
             }
         })();
     }, []);
@@ -69,9 +77,28 @@ export default function SuggestedFriends(props) {
                 { ' ' } Suggested Friends
             </Text>
 
-            <ScrollView>
-                { renderItems() }
-            </ScrollView>
+            
+            {
+                loading ? 
+                    <ActivityIndicator />
+                    :
+                    contacts.length > 0 ?
+                    <ScrollView>
+                        { renderItems() }
+                    </ScrollView>
+                    :
+                    <Text
+                        style={{
+                            marginTop: '25%',
+                            color: 'grey',
+                            fontSize: 20,
+
+                        }}
+                    >
+                        Looks like none of your contacts use Deadlinr. How about you recommend them?
+                    </Text>
+            }
+
         </View>
     );
 }
@@ -87,3 +114,11 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
 });
+
+/*function mapStateToProps(state) { 
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(SuggestedFriends);*/

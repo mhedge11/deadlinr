@@ -379,3 +379,41 @@ export const editProfile = async ({
         return false;
     }
 };
+
+export const checkContacts = async ({
+    token,
+    phoneNumbers
+}) => { 
+    const route = API_URL + '/user/contacts';
+
+    try {
+        const result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                phoneNumbers
+            })
+        })
+            .then(async (res) => {
+                // console.log(res.status);
+                if (res.ok) {
+                    const data = await res.json();
+                    return data.items;
+                }
+                return [];
+            })
+            .catch((err) => {
+                console.error(err);
+                return [];
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+}
