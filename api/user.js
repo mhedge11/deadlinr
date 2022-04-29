@@ -363,7 +363,7 @@ export const editProfile = async ({
                 bio,
             }),
         })
-            .then((res) => {
+            .then(async (res) => {
                 if (res.ok) {
                     return true;
                 }
@@ -379,3 +379,33 @@ export const editProfile = async ({
         return false;
     }
 };
+
+export const getWeekDeadlines = async ({ token }) => { 
+    const route = API_URL + '/user/week';
+    try { 
+        let result = fetch(route, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    return data;
+                }
+            })
+            .catch(err => {
+                return [];
+            });
+        return result;
+    } catch (err) { 
+        console.error(err);
+        return [];
+    }
+
+
+}
