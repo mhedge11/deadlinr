@@ -7,6 +7,7 @@ import { checkContacts } from '../../api/user';
 
 export default function SuggestedFriends(props) { 
 
+    const navigation = props.navigation;
     const [contacts, setContacts] = React.useState([]);
 
     const [loading, setLoading] = React.useState(true);
@@ -14,19 +15,26 @@ export default function SuggestedFriends(props) {
     const renderItems = () => { 
         let elems = [];
         contacts.forEach(c => {
+            const { username } = c;
             elems.push(
-                <View style={{
+                <TouchableOpacity style={{
                     marginTop: '10%'
-                }}>
+                }}
+                    onPress={() => { 
+                        navigation.navigate('FriendProfile', {
+                            user: c
+                        })
+                    }}
+                >
                     <Text
                         style={{
                             fontSize: 27,
                             fontWeight: '400'
                         }}
                     >
-                        asd
+                        {username}
                     </Text>
-                </View>);
+                </TouchableOpacity>);
         });
 
         return elems;
@@ -50,12 +58,20 @@ export default function SuggestedFriends(props) {
                     phoneNumbers: phoneNums
                 });
                 setLoading(false);
+                res.push({
+                    firstName: 'firstName',
+                    lastName: 'lastName',
+                    username: 'username',
+                    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis est leo. Nulla posuere tortor sed tincidunt porttitor. Cras feugiat.',
+                    calendars: [],
+                    picture: ''
+                })
                 setContacts(res);
             }
         })();
     }, []);
 
-    const navigation = props.navigation;
+
     return (
         <View style={styles.container}>
             <Text

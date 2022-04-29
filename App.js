@@ -30,6 +30,7 @@ import CreateReplyToThread from './components/Threads/CreateReplyToThread';
 import CreateReplyToReply from './components/Threads/CreateReplyToReply';
 import EditProfile from './components/screens/EditProfile';
 import SuggestedFriends from './components/Profile/SuggestedFriends';
+import FriendProfile from './components/Profile/FriendProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -307,6 +308,12 @@ export default function App() {
                     options={{ headerShown: false }}
                 >
                     {(props) => <CreateReplyToReply {...props} user={user} />}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='FriendProfile'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => <FriendProfile {...props} user={user} />}
                 </Stack.Screen>
             </Stack.Navigator>
             <StatusBar />
