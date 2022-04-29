@@ -38,7 +38,7 @@ const CreateReplyToThread = (props) => {
         setLoading(false);
         if (res !== false) {
             setMsg('');
-
+            props.navigation.goBack();
             return;
         } else {
             setMsg('An error occured. Please try again later.');
