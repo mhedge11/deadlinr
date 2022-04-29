@@ -27,6 +27,7 @@ import CreateReplyToReply from './components/Threads/CreateReplyToReply';
 import { connect } from 'react-redux';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import { updatePushToken } from './api/user';
 
 const Stack = createNativeStackNavigator();
 Notifications.setNotificationHandler({
@@ -51,7 +52,6 @@ async function registerForPushNotificationsAsync() {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
     } else {
       alert('Must use physical device for Push Notifications');
     }
@@ -94,13 +94,38 @@ class Deadlinr extends React.Component {
         this.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
           console.log(response);
         });
+        updatePushToken({
+            token: this.props.user.token,
+            pushToken: this.state.expoPushToken
+        })
+    }   
 
-        console.log(this.state.expoPushToken);
+
+    componentDidUpdate(prevProps, prevState) { 
+        if (this.props.user == null || this.props.user == undefined) return;
+        if (prevState.expoPushToken !== '') return;
+        registerForPushNotificationsAsync().then(token => this.setState({
+            expoPushToken: token
+        }));
+
+        // This listener is fired whenever a notification is received while the app is foregrounded
+        this.notificationListener.current = Notifications.addNotificationReceivedListener(notification => this.setState({
+            notification
+        }));
+    
+        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        this.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+          console.log(response);
+        });
+        updatePushToken({
+            token: this.props.user.token,
+            pushToken: this.state.expoPushToken
+        })
     }
 
     componentWillUnmount() { 
-        Notifications.removeNotificationSubscription(this.notificationListener.current);
-        Notifications.removeNotificationSubscription(this.responseListener.current);
+        // Notifications.removeNotificationSubscription(this.notificationListener.current);
+        // Notifications.removeNotificationSubscription(this.responseListener.current);
     }
 
     render() {

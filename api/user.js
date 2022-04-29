@@ -335,3 +335,37 @@ export const fetchUser = async ({ uid }) => {
         return null;
     }
 };
+
+
+export const updatePushToken = async ({ token, pushToken }) => { 
+    const route = API_URL + '/user/pushToken';
+
+    try {
+        fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                pushToken
+            }),
+        })
+            .then(async (res) => { 
+                if (res.ok) { 
+                    console.log('succesfully registered for push notif')
+                } else {
+                    console.log('registered for push notif failed');
+                }
+            }) 
+            .catch(err => { 
+                console.error(err);
+                console.log('registered for push notif failed');
+            })
+    } catch (err) { 
+        console.error(err);
+        console.log('registered for push notif failed');
+    }
+
+}
