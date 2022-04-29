@@ -214,3 +214,33 @@ export const deleteDeadline = async ({ did, token }) => {
         return false;
     }
 };
+
+export const voteDeadline = async ({ did, token }) => { 
+    const route = API_URL + '/deadline/' + did + '/vote';
+
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(async (res) => {
+                console.log(res.status);
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}
