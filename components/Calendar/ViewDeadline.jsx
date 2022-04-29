@@ -21,6 +21,7 @@ import {
     editDeadline as editDeadlineAPI,
     toggleComplete,
     deleteDeadline as deleteDeadlineAPI,
+    voteDeadline as voteDeadlineAPI
 } from '../../api/deadline';
 
 const ViewDeadline = (props) => {
@@ -67,7 +68,7 @@ const ViewDeadline = (props) => {
         setLoading(false);
     };
 
-    const voteDeadline = async () => {
+    const rateDeadlineAPI = async () => {
         setLoading(true);
         const res = await rateDeadline({
             did: deadline._id,
@@ -83,6 +84,8 @@ const ViewDeadline = (props) => {
             return Alert.alert('An error occured');
         }
     };
+
+
 
     const editDeadline = async () => {
         setLoading(true);
@@ -116,6 +119,20 @@ const ViewDeadline = (props) => {
     const completeDeadline = async () => {
         setLoading(true);
         const res = await toggleComplete({
+            did: deadline._id,
+            token: props.user.token,
+        });
+        if (res !== false) {
+            fetchDeadline();
+        } else {
+            setLoading(false);
+            return Alert.alert('An error occured');
+        }
+    };
+
+    const voteDeadline = async () => {
+        setLoading(true);
+        const res = await voteDeadlineAPI({
             did: deadline._id,
             token: props.user.token,
         });
@@ -341,7 +358,7 @@ const ViewDeadline = (props) => {
                 )}
             </View>
             {
-                true && 
+                !deadline.approved && 
                 <View
                     style={{
                             padding: '5%',
@@ -357,16 +374,14 @@ const ViewDeadline = (props) => {
                                 fontWeight: '320'
                             }}
                         >Is this a valid deadline ?</Text>
-                        <TouchableOpacity>
-                            <Icon name='check' type='fontawesome' />
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={{
-                            fontSize: 25
-                            }}>
-                                &#x2717;
-                            </Text>
-                        </TouchableOpacity>
+                        <Button
+                            title='Vote deadline'
+                            fontSize={20}
+                            onPress={() => {
+                                voteDeadline();
+                            }}
+                            
+                        />
                 </View>
             }
             <View
@@ -630,7 +645,7 @@ const ViewDeadline = (props) => {
                 title='Vote deadline'
                 fontSize={20}
                 onPress={() => {
-                    voteDeadline();
+                    rateDeadlineAPI();
                 }}
             />
             <Button
