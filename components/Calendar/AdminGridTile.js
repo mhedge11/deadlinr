@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     gridItem: {
         flex: 1,
         margin: 16,
-        height: 150,
+        height: 70,
         borderRadius: 8,
         elevation: 4,
         backgroundColor: 'white',

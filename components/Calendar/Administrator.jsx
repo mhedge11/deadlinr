@@ -22,15 +22,24 @@ import { nameValidation } from '../../validation/nameValidation';
 import { usernameValidation } from '../../validation/usernameValidation';
 import { getCalendar } from '../../api/calendar';
 import AdminGridTile from './AdminGridTile';
+import {
+    addAdmin as addAdminAPI,
+    removeAdmin as removeAdminAPI,
+    changeThreshold as changeThresholdAPI,
+} from '../../api/calendar';
+import Slider from '@react-native-community/slider';
+
+const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const Administrator = (props) => {
-    // const [admins, setAdmins] = React.useState(props.route.params.calendarID);
-    // const [adminObjects, setAdminObjects] = React.useState;
-    // const [calendarMembers, setCalendarMembers] = React.useState(
-    //     props.route.params.members
-    // );
-
     const [calendarMembers, setCalendarMembers] = React.useState([]);
+    const [calendarAdmins, setCalendarAdmins] = React.useState([]);
+    const [sliderValue, setSliderValue] = React.useState(0);
+    // const [memberId, setMemberId] = React.useState([]);
+    // const [adminId, setAdminId] = React.useState([]);
+
     const [firstName, setFirstName] = React.useState(props.user.user.firstName);
     const [lastName, setLastName] = React.useState(props.user.user.lastName);
     const [username, setUsername] = React.useState(props.user.user.username);
@@ -43,22 +52,19 @@ const Administrator = (props) => {
 
     const [showErrorMessage, setShowErrorMessage] = React.useState(false);
 
-    useEffect(() => {
-        // initialFetch();
-        members();
-    }, []);
+    const [refreshing, setRefreshing] = React.useState(false);
 
-    // const initialFetch = async () => {
-    //     const calendar = await getCalendar({
-    //         cid: props.route.params.calendarID,
-    //     });
-    //     const adminIDs = calendar.administrators;
-    //     console.log(adminIDs);
-    //     adminIDs.forEach((id) => {
-    //         console.log(id);
-    //     });
-    //     console.log(calendar.administrators);
-    // };
+    const onRefresh = async () => {
+        setRefreshing(true);
+        await fetchThreads();
+        // setRefreshing(false);
+        wait(300).then(() => setRefreshing(false));
+    };
+
+    useEffect(() => {
+        members();
+        admins();
+    }, []);
 
     const members = async () => {
         setCalendarMembers([]);
@@ -66,29 +72,143 @@ const Administrator = (props) => {
             const calendar = await getCalendar({
                 cid: props.route.params.calendarID,
             });
-            const members = calendar.members;
-            members.forEach(async (c) => {
+            const memberList = calendar.members;
+            memberList.forEach(async (c) => {
                 const item = await fetchUserAPI({ uid: c });
-                // console.log(item);
                 if (item !== null) {
                     setCalendarMembers((c) => [...c, item]);
                 }
-                // setCalendarMembers((person.firstName) => [...calendarMembers, person]
-                // // Will fetch the members
-                console.log(calendarMembers.Object);
             });
         } catch (e) {
             console.error(e);
         }
     };
 
+    const admins = async () => {
+        setCalendarAdmins([]);
+        try {
+            const calendar = await getCalendar({
+                cid: props.route.params.calendarID,
+            });
+            const adminList = calendar.administrators;
+            adminList.forEach(async (c) => {
+                const item = await fetchUserAPI({ uid: c });
+                if (item !== null) {
+                    setCalendarAdmins((c) => [...c, item]);
+                }
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    const updateThresholdValue = async () => {
+        setLoading(true);
+
+        const res = await changeThresholdAPI({
+            cid: props.route.params.calendarID,
+            token: props.user.token,
+            threshold: sliderValue,
+        });
+        setLoading(false);
+        if (res === true) {
+        } else {
+            return Alert.alert('An error occured with slider');
+        }
+    };
+
+    const addMemberToAdmins = async (memberId) => {
+        setLoading(true);
+        console.log(memberId);
+
+        const res = await addAdminAPI({
+            cid: props.route.params.calendarID,
+            token: props.user.token,
+            uid: memberId,
+        });
+        setLoading(false);
+        if (res === true) {
+            members();
+            admins();
+        } else {
+            return Alert.alert('An error occured');
+        }
+    };
+
+    const removeMemberFromAdmins = async (memberId) => {
+        setLoading(true);
+        console.log(memberId);
+        const res = await removeAdminAPI({
+            cid: props.route.params.calendarID,
+            token: props.user.token,
+            uid: memberId,
+        });
+        setLoading(false);
+        if (res === true) {
+            members();
+            admins();
+        } else {
+            return Alert.alert('An error occured');
+        }
+    };
+
     function renderMemberItem(itemData) {
-        function pressHandler() {}
+        function pressHandler() {
+            Alert.alert(
+                'Add member as Administrator',
+                'Are you sure you want add the member as an admistrator?',
+                [
+                    {
+                        text: 'Cancel',
+                        onPress: () => {},
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            setLoading(true);
+                            // setMemberId(itemData.item.id);
+                            addMemberToAdmins(itemData.item._id);
+                        },
+                    },
+                ],
+                { cancelable: false }
+            );
+        }
         return (
             <AdminGridTile calendar={itemData.item} onPress={pressHandler} />
         );
     }
 
+    function renderAdminItem(itemData) {
+        function pressHandler() {
+            Alert.alert(
+                'Remove Administrator',
+                'Are you sure you want to remove this administrator?',
+                [
+                    {
+                        text: 'Cancel',
+                        onPress: () => {},
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'OK',
+                        onPress: () => {
+                            setLoading(true);
+                            // setAdminId(itemData.item.id);
+                            removeMemberFromAdmins(itemData.item._id);
+                        },
+                    },
+                ],
+                { cancelable: false }
+            );
+        }
+        return (
+            <AdminGridTile calendar={itemData.item} onPress={pressHandler} />
+        );
+    }
+
+    console.log(sliderValue);
     return (
         <View
             style={{
@@ -119,7 +239,7 @@ const Administrator = (props) => {
                         marginLeft: '5%',
                     }}
                 >
-                    Administration
+                    Calendar Settings
                 </Text>
             </View>
             <View>
@@ -135,6 +255,18 @@ const Administrator = (props) => {
                     >
                         Current Administrators
                     </Text>
+
+                    <FlatList
+                        data={calendarAdmins}
+                        keyExtractor={(item) => item.id}
+                        renderItem={renderAdminItem}
+                        // refreshControl={
+                        //     <RefreshControl
+                        //         refreshing={refreshing}
+                        //         onRefresh={() => onRefresh()}
+                        //     />
+                        // }
+                    />
 
                     <Text
                         style={{
@@ -158,11 +290,34 @@ const Administrator = (props) => {
 
                     <View
                         style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                        }}
+                    >
+                        <Slider
+                            style={{
+                                width: 250,
+                                height: 40,
+                            }}
+                            minimumValue={0}
+                            maximumValue={1}
+                            minimumTrackTintColor='#FFFFFF'
+                            maximumTrackTintColor='#000000'
+                            onValueChange={(value) =>
+                                setSliderValue(Math.round(value * 100) / 100)
+                            }
+                            onSlidingComplete={updateThresholdValue}
+                            step={0.05}
+                        />
+                    </View>
+
+                    {/* <View
+                        style={{
                             marginTop: '10%',
                         }}
                     >
                         <Button title='Submit' onPress={() => {}} />
-                    </View>
+                    </View> */}
                 </View>
             </View>
             {loading && <ActivityIndicator />}

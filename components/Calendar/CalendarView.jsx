@@ -513,9 +513,7 @@ export default class CalendarView extends React.Component {
                                         marginTop: '4%',
                                     }}
                                 >
-                                    {this.state.isAdmin
-                                        ? 'Administrator'
-                                        : 'Administrator'}
+                                    {this.state.isAdmin ? 'Settings' : ''}
                                 </Text>
                             </TouchableOpacity>
                         </View>

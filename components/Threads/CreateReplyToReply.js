@@ -21,6 +21,7 @@ const CreateReplyToReply = (props) => {
     const [threadName, setThreadName] = useState('');
     const [threadBody, setThreadBody] = useState('');
     const [tid, setTid] = useState(props.route.params.tid);
+    const [rid, setRid] = useState(props.route.params.rid);
 
     const [errMsg, setMsg] = useState('');
 
@@ -30,6 +31,7 @@ const CreateReplyToReply = (props) => {
 
         setLoading(true);
 
+        // return console.log(rid);
         const res = await createReplyToReplyOfThreadAPI({
             tid,
             rid,

@@ -92,6 +92,103 @@ export const updatePrivacy = async ({ cid, token }) => {
     }
 };
 
+export const changeThreshold = async ({ cid, token, threshold }) => {
+    const route = API_URL + '/calendar/' + cid;
+
+    try {
+        let result = await fetch(route, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                threshold: threshold,
+            }),
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                console.error(err);
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};
+
+export const addAdmin = async ({ cid, token, uid }) => {
+    const route = API_URL + '/calendar/' + cid + '/admin/add';
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                uid: uid,
+            }),
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                console.error(err);
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+};
+
+export const removeAdmin = async ({ cid, token, uid }) => {
+    const route = API_URL + '/calendar/' + cid + '/admin/remove';
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                uid: uid,
+            }),
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                console.error(err);
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return err;
+    }
+};
+
 export const joinCalendar = async ({ cid, token }) => {
     const route = API_URL + '/calendar/' + cid + '/join';
     try {

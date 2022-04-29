@@ -96,7 +96,7 @@ function IndividualThreadScreen(props) {
                         <Text>{node.body}</Text>
                     </Text>
 
-                    <TouchableOpacity
+                    {/* <TouchableOpacity
                         style={styles.replyButton2}
                         onPress={() => {
                             props.navigation.navigate('CreateReplyToReply', {
@@ -107,7 +107,7 @@ function IndividualThreadScreen(props) {
                         }}
                     >
                         <Text style={{ color: 'white' }}>Reply</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             );
         }
@@ -143,7 +143,7 @@ function IndividualThreadScreen(props) {
                         onPress={() => {
                             props.navigation.navigate('CreateReplyToReply', {
                                 tid: threadObject._id,
-                                rid: node.id,
+                                rid: node._id,
                                 threadBody: node.body,
                             });
                         }}
