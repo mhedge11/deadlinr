@@ -34,17 +34,12 @@ const wait = (timeout) => {
 };
 
 const Administrator = (props) => {
+    // console.log(props);
     const [calendarMembers, setCalendarMembers] = React.useState([]);
     const [calendarAdmins, setCalendarAdmins] = React.useState([]);
-    const [sliderValue, setSliderValue] = React.useState(0);
-    // const [memberId, setMemberId] = React.useState([]);
-    // const [adminId, setAdminId] = React.useState([]);
-
-    const [firstName, setFirstName] = React.useState(props.user.user.firstName);
-    const [lastName, setLastName] = React.useState(props.user.user.lastName);
-    const [username, setUsername] = React.useState(props.user.user.username);
-    const [email, setEmail] = React.useState(props.user.user.email);
-    const [bio, setBio] = React.useState(props.user.user.bio);
+    const [sliderValue, setSliderValue] = React.useState(
+        props.route.params.threshold
+    );
 
     const [loading, setLoading] = React.useState(false);
 
@@ -90,6 +85,7 @@ const Administrator = (props) => {
             const calendar = await getCalendar({
                 cid: props.route.params.calendarID,
             });
+            // console.log(calendar);
             const adminList = calendar.administrators;
             adminList.forEach(async (c) => {
                 const item = await fetchUserAPI({ uid: c });
@@ -119,7 +115,7 @@ const Administrator = (props) => {
 
     const addMemberToAdmins = async (memberId) => {
         setLoading(true);
-        console.log(memberId);
+        // console.log(memberId);
 
         const res = await addAdminAPI({
             cid: props.route.params.calendarID,
@@ -137,7 +133,7 @@ const Administrator = (props) => {
 
     const removeMemberFromAdmins = async (memberId) => {
         setLoading(true);
-        console.log(memberId);
+        // console.log(memberId);
         const res = await removeAdminAPI({
             cid: props.route.params.calendarID,
             token: props.user.token,
@@ -196,6 +192,10 @@ const Administrator = (props) => {
                         onPress: () => {
                             setLoading(true);
                             // setAdminId(itemData.item.id);
+                            if (calendarAdmins.length <= 1) {
+                                Alert.alert('Cannot remove administrator');
+                                return;
+                            }
                             removeMemberFromAdmins(itemData.item._id);
                         },
                     },
@@ -208,7 +208,7 @@ const Administrator = (props) => {
         );
     }
 
-    console.log(sliderValue);
+    // console.log(sliderValue);
     return (
         <View
             style={{
@@ -248,6 +248,54 @@ const Administrator = (props) => {
                         marginTop: '10%',
                     }}
                 >
+                    <View
+                        style={{
+                            padding: 10,
+                            marginBottom: 20,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: '18rem',
+                            }}
+                        >
+                            Current Threshold: {(sliderValue * 100).toFixed(2)}%
+                        </Text>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                padding: 10,
+                                // marginBottom: 20,
+                            }}
+                        >
+                            <Slider
+                                style={{
+                                    width: 250,
+                                    height: 40,
+                                }}
+                                minimumValue={0}
+                                maximumValue={1}
+                                minimumTrackTintColor='#FFFFFF'
+                                maximumTrackTintColor='#000000'
+                                onValueChange={(value) =>
+                                    setSliderValue(
+                                        Math.round(value * 100) / 100
+                                    )
+                                }
+                                onSlidingComplete={updateThresholdValue}
+                                step={0.05}
+                            />
+                        </View>
+                    </View>
+                    {/* <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <Text>{sliderValue * 100}%</Text>
+                    </View> */}
                     <Text
                         style={{
                             fontSize: '18rem',
@@ -288,29 +336,6 @@ const Administrator = (props) => {
                         // }
                     />
 
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                        }}
-                    >
-                        <Slider
-                            style={{
-                                width: 250,
-                                height: 40,
-                            }}
-                            minimumValue={0}
-                            maximumValue={1}
-                            minimumTrackTintColor='#FFFFFF'
-                            maximumTrackTintColor='#000000'
-                            onValueChange={(value) =>
-                                setSliderValue(Math.round(value * 100) / 100)
-                            }
-                            onSlidingComplete={updateThresholdValue}
-                            step={0.05}
-                        />
-                    </View>
-
                     {/* <View
                         style={{
                             marginTop: '10%',
@@ -320,7 +345,7 @@ const Administrator = (props) => {
                     </View> */}
                 </View>
             </View>
-            {loading && <ActivityIndicator />}
+            {/* {loading && <ActivityIndicator />} */}
         </View>
     );
 };
