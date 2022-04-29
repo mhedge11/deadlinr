@@ -42,8 +42,8 @@ const Login = (props) => {
         let passwordReturn = passwordValidation(password);
 
         if (loginReturn !== '' || passwordReturn !== '') {
-            if (loginReturn !== '') return alert(loginReturn);
-            if (passwordReturn !== '') return alert(passwordReturn);
+            if (loginReturn !== '') alert(loginReturn);
+            if (passwordReturn !== '') alert(passwordReturn);
             loginReturn = '';
             passwordReturn = '';
             return;
@@ -51,15 +51,17 @@ const Login = (props) => {
         // Would sent to database at this point
         const data = await loginUser(login, password);
         if (data === null) {
-            return alert(
+            alert(
                 'Error in Email/Username or in Password. Please Fix and try again'
             );
+            return;
         }
 
         const getUserByToken = await getUser(data.token);
 
         getUserByToken.user.token = data.token;
         props.dispatch({ type: 'SET_USER', user: getUserByToken.user });
+
     };
 
     if (loading) {

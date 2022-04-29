@@ -183,7 +183,9 @@ class Profile extends React.Component {
                 >
                     <View style={{}}>
                         <TouchableOpacity
-                            onPress={() => this.showLogoutConfirmation()}
+                            onPress={() => {
+                                navigation.navigate('Suggested Friends');
+                            }}
                         >
                             <Text
                                 style={{
@@ -193,7 +195,23 @@ class Profile extends React.Component {
                                     padding: '5%',
                                 }}
                             >
-                                Log Out
+                                Suggested Friends
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('Edit Profile');
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: '20rem',
+                                    color: 'black',
+                                    fontWeight: '600',
+                                    padding: '5%',
+                                }}
+                            >
+                                Edit Profile
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -210,6 +228,20 @@ class Profile extends React.Component {
                                 }}
                             >
                                 Change Password
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.showLogoutConfirmation()}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: '20rem',
+                                    color: 'black',
+                                    fontWeight: '600',
+                                    padding: '5%',
+                                }}
+                            >
+                                Log Out
                             </Text>
                         </TouchableOpacity>
                     </View>

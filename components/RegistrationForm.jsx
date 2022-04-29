@@ -12,13 +12,17 @@ import {
     Image,
     Alert,
     ActivityIndicator,
+    KeyboardAvoidingView,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { emailValidation } from '../validation/emailValidation';
 import { nameValidation } from '../validation/nameValidation';
 import { passwordValidation } from '../validation/passwordValidation';
 import { usernameValidation } from '../validation/usernameValidation';
 import { createUser } from '../api/user';
+
+import { connect } from 'react-redux';
 
 const RegistrationForm = (props) => {
     const [email, setEmail] = useState('');
@@ -84,7 +88,7 @@ const RegistrationForm = (props) => {
             alert('Error creating user');
             return;
         }
-
+  
         props.setUser({
             user: data,
             token: data.token,
@@ -240,10 +244,13 @@ const RegistrationForm = (props) => {
                     style={styles.registerButton}
                     onPress={handleSubmission}
                 >
+        <KeyboardAwareScrollView style={{ marginVertical: 50 }}>
+            <View style={styles.container}>
+                <View style={styles.image}>
                     <Text
                         style={{
                             color: 'white',
-                            fontSize: 18,
+                            fontSize: 40,
                             fontWeight: '600',
                             textAlign: 'center',
                         }}
@@ -253,6 +260,7 @@ const RegistrationForm = (props) => {
                 </TouchableOpacity>
             </ScrollView>
         </View>
+
     );
 };
 
@@ -291,4 +299,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RegistrationForm;
+function mapStateToProps(state) {
+  return (
+    user: state.user,
+    dispatch: state.dispatch
+  )
+}
+
+export default connect(mapStateToProps)(RegistrationForm);

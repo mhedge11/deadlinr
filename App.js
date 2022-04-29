@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import React from 'react';
 import Deadlinr from './Deadlinr';
 
+
 const initialState = {
     user: null,
     calendars: [],
@@ -33,5 +34,5 @@ export default function App() {
         <Provider store={store}>
             <Deadlinr />
         </Provider>
-    );
+      );
 }

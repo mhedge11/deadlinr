@@ -11,24 +11,46 @@ import { Icon } from 'react-native-elements';
 import moment from 'moment';
 import CalendarStrip from 'react-native-calendar-strip';
 import { connect } from 'react-redux';
+import { getWeekDeadlines } from '../../api/user';
 
 class Calendar extends React.Component {
+
     constructor(props) {
         super(props);
         console.log(props);
         this.state = {
             selectedDate: moment(),
             today: moment(),
-            tasks: [],
+            weeklyDeadlines: [],
         };
     }
 
+    componentDidMount() { 
+        getWeekDeadlines({
+            token: this.props.user.token
+        })
+            .then(data => { 
+                this.setState({
+                    weeklyDeadlines: data
+                });
+            })
+    }
+
+    getDarkColor = () => {
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += Math.floor(Math.random() * 10);
+        }
+        return color;
+    }
+
     renderTask = (task) => {
-        let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+        let randomColor = this.getDarkColor();
+        const dueDate = new Date(Date.parse(task.dueDate));
         return (
             <View
                 style={{
-                    backgroundColor: '#' + randomColor,
+                    backgroundColor: randomColor,
                     padding: '4%',
                     borderRadius: 20,
                     shadowColor: '#171717',
@@ -64,13 +86,13 @@ class Calendar extends React.Component {
                     }}
                 >
                     Due at{' '}
-                    {task.dueDate.date() +
+                    {dueDate.getDate() +
                         ' ' +
-                        this.intToMonth(task.dueDate.month()) +
+                        this.intToMonth(dueDate.getMonth()) +
                         ' ' +
-                        task.dueDate.hour() +
+                        (dueDate.getHours() >= 10 ? dueDate.getHours() : '0' + dueDate.getHours()) +
                         ':' +
-                        task.dueDate.minute()}
+                        (dueDate.getMinutes() >= 10 ? dueDate.getMinutes() : '0' + dueDate.getMinutes())}
                 </Text>
             </View>
         );
@@ -78,21 +100,12 @@ class Calendar extends React.Component {
 
     renderTasks = () => {
         let elems = [];
-        let tasks = [];
-
-        this.props.calendars.forEach((c) => {
-            c.tasks.forEach((task) =>
-                tasks.push({
-                    title: c.title,
-                    ...task,
-                })
-            );
-        });
-
-        let res = tasks.filter(
-            (task) =>
-                task.dueDate.date() === this.state.selectedDate.date() &&
-                task.dueDate.month() == this.state.selectedDate.month()
+        let res = this.state.weeklyDeadlines.filter(
+            (task) => {
+                const dueDate = new Date(Date.parse(task.dueDate));
+                return dueDate.getDate() === this.state.selectedDate.date() &&
+                    dueDate.getMonth() == this.state.selectedDate.month()
+            }
         );
 
         if (res.length == 0) {
@@ -231,6 +244,8 @@ class Calendar extends React.Component {
                                 selectedDate: newDate,
                             })
                         }
+                        minDate={new Date()}
+                        maxDate={moment(moment(), "DD-MM-YYYY").add(7, 'days')}
                         scrollable
                         headerText=''
                         iconStyle={

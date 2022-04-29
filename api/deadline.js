@@ -214,3 +214,63 @@ export const deleteDeadline = async ({ did, token }) => {
         return false;
     }
 };
+
+export const findSimilar = async ({ cid, deadlineData, token }) => { 
+    const route = API_URL + '/deadline/similar';
+    try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                deadlineData,
+                cid
+            })
+        })
+            .then(async (res) => { 
+                if (res.ok) { 
+                    const data = await res.json();
+                    return data.items;
+                }
+                return [];
+            })
+            .catch((err) => { 
+                return [];
+            })
+        return result;
+    } catch (err) { 
+        console.error(err);
+        return [];
+    }
+}
+export const voteDeadline = async ({ did, token }) => { 
+    const route = API_URL + '/deadline/' + did + '/vote';
+     try {
+        let result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+        })
+            .then(async (res) => {
+                console.log(res.status);
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                return false;
+            });
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}

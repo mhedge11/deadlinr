@@ -11,7 +11,7 @@ import {
     StyleSheet,
     ScrollView,
 } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Icon, ButtonGroup } from 'react-native-elements';
 import {
     joinCalendar,
     leaveCalendar,
@@ -28,10 +28,15 @@ export default class CalendarView extends React.Component {
             isMember: this.props.route.params.members.includes(
                 this.props.user._id
             ),
+            isAdmin: this.props.route.params.administrators.includes(
+                this.props.user.user._id
+            ),
             loading: false,
             members: this.props.route.params.members,
             deadlines: [],
             refreshing: false,
+            selectedFilter: 0,
+            reverseSort: false,
         };
     }
 
@@ -44,6 +49,56 @@ export default class CalendarView extends React.Component {
     componentDidMount() {
         this.fetchDeadlines();
     }
+
+    sortByDeadline = (a, b) => {
+        if (a.dueDate < b.dueDate) {
+            return this.state.reverseSort ? 1 : -1;
+        } else if (a.dueDate > b.dueDate) {
+            return this.state.reverseSort ? -1 : 1;
+        } else {
+            return 0;
+        }
+    };
+
+    sortByDifficulty = (a, b) => {
+        if (a.averageDifficulty < b.averageDifficulty) {
+            return this.state.reverseSort ? 1 : -1;
+        } else if (a.averageDifficulty > b.averageDifficulty) {
+            return this.state.reverseSort ? -1 : 1;
+        } else {
+            return 0;
+        }
+    };
+
+    sortByCompletionTime = (a, b) => {
+        if (a.averageCompletionTime < b.averageCompletionTime) {
+            return this.state.reverseSort ? 1 : -1;
+        } else if (a.averageCompletionTime > b.averageCompletionTime) {
+            return this.state.reverseSort ? -1 : 1;
+        } else {
+            return 0;
+        }
+    };
+
+    sortDeadlines = () => {
+        const { selectedFilter, deadlines, reverseSort } = this.state;
+
+        console.log(deadlines);
+        this.setState({
+            reverseSort: !reverseSort,
+        });
+        if (selectedFilter == 0) {
+            deadlines.sort(this.sortByDeadline);
+        } else if (selectedFilter == 1) {
+            deadlines.sort(this.sortByCompletionTime);
+        } else if (selectedFilter == 2) {
+            deadlines.sort(this.sortByDifficulty);
+        }
+        console.log(deadlines);
+        this.setState({
+            deadlines,
+        });
+    };
 
     fetchDeadlines = async () => {
         const c = await getCalendar({ cid: this.props.route.params._id });
@@ -61,6 +116,12 @@ export default class CalendarView extends React.Component {
                 this.setState({
                     deadlines: [...this.state.deadlines, item.deadline],
                 });
+            });
+
+            const deadlines = this.state.deadlines;
+            deadlines.sort(this.sortByDeadline);
+            this.setState({
+                deadlines,
             });
         } catch (e) {
             console.error(e);
@@ -142,6 +203,7 @@ export default class CalendarView extends React.Component {
             usersFinished,
             votesRemaining,
             groups,
+            approved
         } = deadline.item;
 
         let diffColor = '';
@@ -206,7 +268,28 @@ export default class CalendarView extends React.Component {
                             {dueDate.slice(0, 10)}
                         </Text>
                     </View>
-
+                    {
+                        approved ?
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    color: 'green',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                Approved
+                            </Text>
+                            :
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    color: 'red',
+                                    fontWeight: '600'
+                                }}
+                            >
+                                Not yet approved
+                            </Text>
+                    }
                     <View
                         style={{
                             marginTop: '5%',
@@ -399,25 +482,67 @@ export default class CalendarView extends React.Component {
                             {title}
                         </Text>
                     </View>
-                    <TouchableOpacity
-                        style={{}}
-                        onPress={() => {
-                            this.alterMemberStatus();
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            width: '100%',
+                            justifyContent: 'space-between',
                         }}
                     >
-                        <Text
-                            style={{
-                                color: this.state.isMember ? 'red' : 'green',
-                                fontSize: '20rem',
-                                fontWeight: '300',
-                                marginTop: '4%',
-                            }}
-                        >
-                            {this.state.isMember
-                                ? 'Leave Calendar'
-                                : 'Join Calendar'}
-                        </Text>
-                    </TouchableOpacity>
+                        <View>
+                            <TouchableOpacity
+                                style={{}}
+                                onPress={() => {
+                                    this.alterMemberStatus();
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: this.state.isMember
+                                            ? 'red'
+                                            : 'green',
+                                        fontSize: '20rem',
+                                        fontWeight: '300',
+                                        marginTop: '4%',
+                                    }}
+                                >
+                                    {this.state.isMember
+                                        ? 'Leave Calendar'
+                                        : 'Join Calendar'}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{ marginLeft: 30 }}>
+                            <TouchableOpacity
+                                style={{}}
+                                onPress={() => {
+                                    this.props.navigation.navigate(
+                                        'Administrator',
+                                        {
+                                            calendarID:
+                                                this.props.route.params._id,
+                                            members:
+                                                this.props.route.params.members,
+                                            threshold:
+                                                this.props.route.params
+                                                    .threshold,
+                                        }
+                                    );
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        color: 'green',
+                                        fontSize: '20rem',
+                                        fontWeight: '300',
+                                        marginTop: '4%',
+                                    }}
+                                >
+                                    {this.state.isAdmin ? 'Settings' : ''}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
                 </View>
 
                 <View
@@ -494,7 +619,46 @@ export default class CalendarView extends React.Component {
                         </View>
                     </View>
                 </View>
+                <View
+                    style={{
+                        marginTop: '10%',
+                    }}
+                >
+                    <ButtonGroup
+                        onPress={(idx) => {
+                            this.setState({
+                                reverseSort: false,
+                            });
+                            const deadlines = this.state.deadlines;
+                            if (idx == 0) {
+                                deadlines.sort(this.sortByDeadline);
+                            } else if (idx == 1) {
+                                deadlines.sort(this.sortByCompletionTime);
+                            } else if (idx == 2) {
+                                deadlines.sort(this.sortByDifficulty);
+                            }
+                            this.setState({
+                                selectedFilter: idx,
+                                deadlines,
+                            });
+                        }}
+                        selectedIndex={this.state.selectedFilter}
+                        buttons={['Due Date', 'Time', 'Difficulty']}
+                    />
 
+                    <TouchableOpacity
+                        style={{
+                            flexDirection: 'row',
+                            alignSelf: 'center',
+                        }}
+                        onPress={() => {
+                            this.sortDeadlines();
+                        }}
+                    >
+                        <Icon name='arrow-up' type='font-awesome' />
+                        <Icon name='arrow-down' type='font-awesome' />
+                    </TouchableOpacity>
+                </View>
                 <FlatList
                     style={{
                         marginTop: '10%',
