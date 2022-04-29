@@ -130,6 +130,22 @@ export default class Profile extends React.Component {
                     <View style={{}}>
                         <TouchableOpacity
                             onPress={() => {
+                                navigation.navigate('Suggested Friends');
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: '20rem',
+                                    color: 'black',
+                                    fontWeight: '600',
+                                    padding: '5%',
+                                }}
+                            >
+                                Suggested Friends
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
                                 navigation.navigate('Edit Profile');
                             }}
                         >
