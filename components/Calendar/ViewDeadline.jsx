@@ -361,17 +361,16 @@ const ViewDeadline = (props) => {
                 !deadline.approved && 
                 <View
                     style={{
-                            padding: '5%',
-                            paddingRight: '15%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            width: '100%',
+                        padding: '5%',
+                        paddingRight: '15%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: '100%',
                     }}
                 >
                         <Text
                             style={{
-                                fontSize: 22,
-                                fontWeight: '320'
+                                fontSize: 25,
                             }}
                         >Is this a valid deadline ?</Text>
                         <Button

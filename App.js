@@ -29,6 +29,7 @@ import CreateThread from './components/Threads/CreateThread';
 import CreateReplyToThread from './components/Threads/CreateReplyToThread';
 import CreateReplyToReply from './components/Threads/CreateReplyToReply';
 import EditProfile from './components/screens/EditProfile';
+import Administrator from './components/Calendar/Administrator';
 
 const Stack = createNativeStackNavigator();
 
@@ -202,6 +203,19 @@ export default function App() {
                     options={{ headerShown: false }}
                 >
                     {(props) => <CalendarView {...props} user={user} />}
+                </Stack.Screen>
+                <Stack.Screen
+                    name='Administrator'
+                    options={{ headerShown: false }}
+                >
+                    {(props) => (
+                        <Administrator
+                            {...props}
+                            user={user}
+                            setUser={setUser}
+                            calendars={calendars}
+                        />
+                    )}
                 </Stack.Screen>
                 <Stack.Screen
                     name='Join Calendar'
