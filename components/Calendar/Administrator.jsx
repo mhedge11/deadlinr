@@ -268,6 +268,7 @@ const Administrator = (props) => {
                                 flexDirection: 'row',
                                 justifyContent: 'center',
                                 padding: 10,
+                                // backgroundColor: 'white',
                                 // marginBottom: 20,
                             }}
                         >
@@ -279,8 +280,9 @@ const Administrator = (props) => {
                                 minimumValue={0}
                                 maximumValue={1}
                                 value={sliderValue}
-                                minimumTrackTintColor='#FFFFFF'
-                                maximumTrackTintColor='#000000'
+                                minimumTrackTintColor='#6b5ae8'
+                                maximumTrackTintColor='#6b5ae8'
+                                thumbTintColor='#6b5ae8'
                                 onValueChange={(value) =>
                                     setSliderValue(
                                         Math.round(value * 100) / 100
