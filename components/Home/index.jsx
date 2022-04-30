@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     Button,
     ActivityIndicator,
+    RefreshControl,
 } from 'react-native';
 import React, { Component } from 'react';
 import { Avatar } from 'react-native-elements';
@@ -24,13 +25,15 @@ class Home extends Component {
             courses: props.calendars,
             calendars: [],
             loading: true,
-            upcomingTasks: 0
+            upcomingTasks: 0,
+            refreshing: false,
         };
     }
 
     getAllCalendars = () => {
         this.setState({
             loading: true,
+            calendars: [],
         });
         if (this.props.user.calendars) {
             this.props.user.calendars.forEach(async (c) => {
@@ -51,22 +54,29 @@ class Home extends Component {
     };
 
     componentDidMount = async () => {
+        // this.props.navigation.addListener('focus', (payload) => {
+        //     this.getDarkColor();
+        // });
         const user = await getUser(this.props.user.token);
         this.props.dispatch({
-            type: 'SET_USER', user: {
+            type: 'SET_USER',
+            user: {
                 ...user.user,
-                token: this.props.user.token
-        }
-     })
+                token: this.props.user.token,
+            },
+        });
 
         this.getAllCalendars();
-        getWeekDeadlines({ token: this.props.user.token })
-            .then(res => { 
-                this.setState({
-                    upcomingTasks: res.length
-                })
-            })
-    }
+        getWeekDeadlines({ token: this.props.user.token }).then((res) => {
+            this.setState({
+                upcomingTasks: res.length,
+            });
+        });
+    };
+
+    // componentWillUnmount() {
+    //     this.getDarkColor();
+    // }
 
     getDarkColor = () => {
         var color = '#';
@@ -74,6 +84,21 @@ class Home extends Component {
             color += Math.floor(Math.random() * 10);
         }
         return color;
+    };
+
+    onRefresh = async () => {
+        // setRefreshing(true);
+        // this.setState({
+        //     calendar: [],
+        // });
+        this.setState({
+            refreshing: true,
+        });
+        this.getAllCalendars();
+        this.setState({
+            refreshing: false,
+        });
+        // setRefreshing(false);
     };
 
     renderCourseCard = (calendar) => {
@@ -109,9 +134,7 @@ class Home extends Component {
     };
 
     renderCourses = () => {
-        while (
-            this.state.loading
-        ) {
+        while (this.state.loading) {
             return <ActivityIndicator />;
         }
         let elemes = [];
@@ -152,7 +175,7 @@ class Home extends Component {
                                     color: '#36e373',
                                 }}
                             >
-                                { this.state.upcomingTasks } upcoming tasks
+                                {this.state.upcomingTasks} upcoming tasks
                             </Text>
                         </Text>
                     </View>
@@ -174,7 +197,7 @@ class Home extends Component {
                         source={{
                             uri: picture,
                         }}
-                        title={ this.props.user.firstName[0]}
+                        title={this.props.user.firstName[0]}
                         titleStyle={{}}
                     />
                 </View>
@@ -209,6 +232,12 @@ class Home extends Component {
                         Your running calendars
                     </Text>
                     <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.refreshing}
+                                onRefresh={() => this.onRefresh()}
+                            />
+                        }
                         horizontal
                         nestedScrollEnabled
                         style={{
