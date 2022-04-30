@@ -298,53 +298,57 @@ const Administrator = (props) => {
                     >
                         <Text>{sliderValue * 100}%</Text>
                     </View> */}
-                    <Text
-                        style={{
-                            fontSize: '18rem',
-                        }}
-                    >
-                        Current Administrators
-                    </Text>
+                    <View style={{ height: '74%' }}>
+                        <View style={{ height: '40%' }}>
+                            <Text
+                                style={{
+                                    fontSize: '18rem',
+                                }}
+                            >
+                                Current Administrators
+                            </Text>
 
-                    <FlatList
-                        data={calendarAdmins}
-                        keyExtractor={(item) => item.id}
-                        renderItem={renderAdminItem}
-                        // refreshControl={
-                        //     <RefreshControl
-                        //         refreshing={refreshing}
-                        //         onRefresh={() => onRefresh()}
-                        //     />
-                        // }
-                    />
+                            <FlatList
+                                data={calendarAdmins}
+                                keyExtractor={(item) => item.id}
+                                renderItem={renderAdminItem}
+                                // refreshControl={
+                                //     <RefreshControl
+                                //         refreshing={refreshing}
+                                //         onRefresh={() => onRefresh()}
+                                //     />
+                                // }
+                            />
+                        </View>
+                        {/* <View> */}
+                        <Text
+                            style={{
+                                fontSize: '18rem',
+                            }}
+                        >
+                            Calendar Members
+                        </Text>
 
-                    <Text
-                        style={{
-                            fontSize: '18rem',
-                        }}
-                    >
-                        Calendar Members
-                    </Text>
-
-                    <FlatList
-                        data={calendarMembers}
-                        keyExtractor={(item) => item.id}
-                        renderItem={renderMemberItem}
-                        // refreshControl={
-                        //     <RefreshControl
-                        //         refreshing={refreshing}
-                        //         onRefresh={() => onRefresh()}
-                        //     />
-                        // }
-                    />
-
-                    {/* <View
+                        <FlatList
+                            data={calendarMembers}
+                            keyExtractor={(item) => item.id}
+                            renderItem={renderMemberItem}
+                            // refreshControl={
+                            //     <RefreshControl
+                            //         refreshing={refreshing}
+                            //         onRefresh={() => onRefresh()}
+                            //     />
+                            // }
+                        />
+                        {/* </View> */}
+                        {/* <View
                         style={{
                             marginTop: '10%',
                         }}
                     >
                         <Button title='Submit' onPress={() => {}} />
                     </View> */}
+                    </View>
                 </View>
             </View>
             {/* {loading && <ActivityIndicator />} */}
@@ -352,11 +356,11 @@ const Administrator = (props) => {
     );
 };
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(Administrator);
