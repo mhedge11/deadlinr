@@ -38,17 +38,39 @@ class CalendarView extends React.Component {
             refreshing: false,
             selectedFilter: 0,
             reverseSort: false,
+            threshold: null,
         };
     }
+
+    fetchThreshold = async () => {
+        try {
+            const threshold = await getCalendar({
+                cid: this.props.route.params._id,
+            });
+            this.setState({
+                threshold,
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     onRefresh = async () => {
         this.setState({ refreshing: true });
         await this.fetchDeadlines();
+        await this.fetchThreshold();
         this.setState({ refreshing: false });
     };
 
     componentDidMount() {
+        this.props.navigation.addListener('focus', (payload) => {
+            this.fetchThreshold();
+        });
         this.fetchDeadlines();
+    }
+
+    componentWillUnmount() {
+        this.fetchThreshold();
     }
 
     sortByDeadline = (a, b) => {
@@ -545,6 +567,7 @@ class CalendarView extends React.Component {
                             <TouchableOpacity
                                 style={{}}
                                 onPress={() => {
+                                    const { threshold } = this.state;
                                     this.props.navigation.navigate(
                                         'Administrator',
                                         {
@@ -552,9 +575,7 @@ class CalendarView extends React.Component {
                                                 this.props.route.params._id,
                                             members:
                                                 this.props.route.params.members,
-                                            threshold:
-                                                this.props.route.params
-                                                    .threshold,
+                                            threshold: threshold.threshold,
                                         }
                                     );
                                 }}
