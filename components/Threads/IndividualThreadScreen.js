@@ -89,11 +89,15 @@ function IndividualThreadScreen(props) {
             return (
                 <View>
                     <Text style={{ fontSize: 20, marginLeft: 40, padding: 2 }}>
-                        <Text style={{ fontWeight: 'bold' }}>
-                            {userName} {': '}
+                        <Text
+                            style={{
+                                fontWeight: 'bold',
+                            }}
+                        >
+                            {userName}
                         </Text>
-
-                        <Text>{node.body}</Text>
+                        {': '}
+                        {node.body}
                     </Text>
 
                     {/* <TouchableOpacity
@@ -245,22 +249,24 @@ function IndividualThreadScreen(props) {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <ScrollView
-                        style={{}}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={refreshing}
-                                onRefresh={() => onRefresh()}
-                            />
-                        }
-                    >
-                        <View styles={styles.container}>
-                            <Comment
-                                authorId={threadObject.author._id}
-                                node={threadObject}
-                            />
-                        </View>
-                    </ScrollView>
+                    <View>
+                        <ScrollView
+                            style={{ height: '80%' }}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={refreshing}
+                                    onRefresh={() => onRefresh()}
+                                />
+                            }
+                        >
+                            <View styles={styles.container}>
+                                <Comment
+                                    authorId={threadObject.author._id}
+                                    node={threadObject}
+                                />
+                            </View>
+                        </ScrollView>
+                    </View>
                 </View>
             </SafeAreaView>
         </>
