@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { createReplyToThread as createReplyToThreadAPI } from '../../api/thread';
+import { connect } from 'react-redux';
+import { getUser } from '../../api/user';
 
 const CreateReplyToThread = (props) => {
     const [bcolor, setBorderColor] = useState('transparent');
@@ -38,6 +40,15 @@ const CreateReplyToThread = (props) => {
         setLoading(false);
         if (res !== false) {
             setMsg('');
+            const res = await getUser(props.user.token);
+            props.dispatch({
+                type: 'SET_USER',
+                user: {
+                    ...res.user,
+                    token: props.user.token,
+                },
+            });
+
             props.navigation.goBack();
             return;
         } else {
@@ -179,4 +190,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateReplyToThread;
+// export default CreateReplyToThread;
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        dispatch: state.dispatch,
+    };
+}
+
+export default connect(mapStateToProps)(CreateReplyToThread);
