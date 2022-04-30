@@ -125,15 +125,15 @@ const styles = StyleSheet.create({
         marginLeft: 28,
         padding: 20,
         marginVertical: 8,
-        backgroundColor: 'orange',
+        backgroundColor: '#6b5ae8',
     },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(CalendarScreen);

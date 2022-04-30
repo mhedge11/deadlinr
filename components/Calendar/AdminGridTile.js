@@ -13,7 +13,7 @@ function AdminGridTile({ route, navigation, calendar, onPress }) {
                 <View
                     style={[
                         styles.innerContainer,
-                        { backgroundColor: 'orange' },
+                        { backgroundColor: '#6b5ae8' },
                     ]}
                 >
                     <Text style={styles.title}>
@@ -56,5 +56,6 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 24,
+        color: 'white',
     },
 });

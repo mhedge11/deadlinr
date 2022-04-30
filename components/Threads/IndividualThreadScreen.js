@@ -233,7 +233,7 @@ function IndividualThreadScreen(props) {
                                     alignItems: 'center',
                                     justifyContent: 'center',
 
-                                    backgroundColor: 'blue',
+                                    backgroundColor: '#6b5ae8',
                                 }}
                                 onPress={() => {
                                     props.navigation.navigate(
@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
         height: 22,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'blue',
+        backgroundColor: '#6b5ae8',
     },
     replyButton2: {
         marginLeft: 40,
@@ -335,6 +335,6 @@ const styles = StyleSheet.create({
         height: 22,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'blue',
+        backgroundColor: '#6b5ae8',
     },
 });

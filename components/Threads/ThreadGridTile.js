@@ -13,11 +13,13 @@ function ThreadGridTile({ route, navigation, thread, onPress }) {
                 <View
                     style={[
                         styles.innerContainer,
-                        { backgroundColor: 'orange' },
+                        { backgroundColor: '#6b5ae8' },
                     ]}
                 >
                     <Text style={styles.title}>{thread.title}</Text>
-                    <Text style={{ fontSize: 24 }}>{thread.body}</Text>
+                    <Text style={{ fontSize: 24, color: 'white' }}>
+                        {thread.body}
+                    </Text>
                 </View>
             </Pressable>
         </View>
@@ -55,5 +57,6 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 24,
+        color: 'white',
     },
 });
