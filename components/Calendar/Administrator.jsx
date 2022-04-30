@@ -261,7 +261,7 @@ const Administrator = (props) => {
                                 fontSize: '18rem',
                             }}
                         >
-                            Current Threshold: {(sliderValue * 100).toFixed(2)}%
+                            Current Threshold: {(sliderValue * 100).toFixed(0)}%
                         </Text>
                         <View
                             style={{
@@ -278,6 +278,7 @@ const Administrator = (props) => {
                                 }}
                                 minimumValue={0}
                                 maximumValue={1}
+                                value={sliderValue}
                                 minimumTrackTintColor='#FFFFFF'
                                 maximumTrackTintColor='#000000'
                                 onValueChange={(value) =>
