@@ -16,6 +16,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Icon } from 'react-native-elements';
 import { createThread as createThreadAPI } from '../../api/thread';
 
+import { connect } from 'react-redux';
+
 const CreateThread = (props) => {
     const [bcolor, setBorderColor] = useState('transparent');
     const [loading, setLoading] = useState(false);
@@ -202,4 +204,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateThread;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(CreateThread);

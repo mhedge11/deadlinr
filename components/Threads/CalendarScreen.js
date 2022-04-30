@@ -17,6 +17,8 @@ import CalendarGridTile from './CalendarGridTile.js';
 import { getCalendar } from '../../api/calendar';
 import { getUser } from '../../api/user';
 
+import { connect } from 'react-redux';
+
 const CalendarScreen = (props) => {
     const [calendars, setCalendars] = React.useState([]);
 
@@ -38,8 +40,7 @@ const CalendarScreen = (props) => {
     const fetchCalendars = async () => {
         setCalendars([]);
         try {
-            const user = await getUser(props.user.token);
-            user.user.calendars.forEach(async (c) => {
+            props.user.calendars.forEach(async (c) => {
                 const item = await getCalendar({ cid: c });
                 if (item !== null) {
                     setCalendars((c) => [...c, item]);
@@ -128,4 +129,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CalendarScreen;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(CalendarScreen);

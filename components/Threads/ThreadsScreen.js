@@ -19,6 +19,8 @@ import { getCalendar } from '../../api/calendar';
 import { getUser } from '../../api/user';
 import { getThread } from '../../api/thread';
 
+import { connect } from 'react-redux';
+
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -125,7 +127,7 @@ const ThreadsScreen = (props) => {
     );
 };
 
-export default ThreadsScreen;
+
 
 const styles = StyleSheet.create({
     container: {
@@ -133,3 +135,12 @@ const styles = StyleSheet.create({
         padding: 16,
     },
 });
+
+function mapStateToProps(state) {
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+ }
+
+export default connect(mapStateToProps)(ThreadsScreen);

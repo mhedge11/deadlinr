@@ -74,7 +74,7 @@ const ChangePassword = (props) => {
                 </TouchableOpacity>
                 <Text
                     style={{
-                        fontSize: '30rem',
+                        fontSize: 30,
                         fontWeight: '600',
                         marginLeft: '5%',
                     }}
@@ -90,7 +90,7 @@ const ChangePassword = (props) => {
             >
                 <Text
                     style={{
-                        fontSize: '18rem',
+                        fontSize: 18,
                     }}
                 >
                     Enter your old password
@@ -99,7 +99,7 @@ const ChangePassword = (props) => {
                     style={{
                         width: '100%',
                         marginTop: '5%',
-                        fontSize: '12rem',
+                        fontSize: 12,
                         backgroundColor: '#e0e0e0',
                         padding: '5%',
                         borderRadius: 5,
@@ -111,7 +111,7 @@ const ChangePassword = (props) => {
                 />
                 <Text
                     style={{
-                        fontSize: '18rem',
+                        fontSize: 18,
                         marginTop: '10%',
                     }}
                 >
@@ -121,7 +121,7 @@ const ChangePassword = (props) => {
                     style={{
                         width: '100%',
                         marginTop: '5%',
-                        fontSize: '12rem',
+                        fontSize: 12,
                         backgroundColor: '#e0e0e0',
                         padding: '5%',
                         borderRadius: 5,
@@ -133,7 +133,7 @@ const ChangePassword = (props) => {
                 />
                 <Text
                     style={{
-                        fontSize: '18rem',
+                        fontSize: 18,
                         marginTop: '10%',
                     }}
                 >
@@ -143,7 +143,7 @@ const ChangePassword = (props) => {
                     style={{
                         width: '100%',
                         marginTop: '5%',
-                        fontSize: '12rem',
+                        fontSize: 12,
                         backgroundColor: '#e0e0e0',
                         padding: '5%',
                         borderRadius: 5,

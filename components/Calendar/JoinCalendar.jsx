@@ -76,7 +76,7 @@ const JoinCalendar = (props) => {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={async () => {
-                            const { user } = props.user;
+                            const user = props.user;
                             if (user.calendars && user.calendars.length < 1) {
                                 alert('You have no calendars!');
                                 return;

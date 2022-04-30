@@ -13,6 +13,8 @@ import Navigator from '../Navigator';
 import { getUser } from '../../api/user';
 import { getCalendar } from '../../api/calendar';
 
+import { getWeekDeadlines } from '../../api/user';
+
 import { connect, dispatch } from 'react-redux';
 
 class Home extends Component {
@@ -22,6 +24,7 @@ class Home extends Component {
             courses: props.calendars,
             calendars: [],
             loading: true,
+            upcomingTasks: 0
         };
     }
 
@@ -47,8 +50,22 @@ class Home extends Component {
         });
     };
 
-    componentDidMount() {
+    componentDidMount = async () => {
+        const user = await getUser(this.props.user.token);
+        this.props.dispatch({
+            type: 'SET_USER', user: {
+                ...user.user,
+                token: this.props.user.token
+        }
+     })
+
         this.getAllCalendars();
+        getWeekDeadlines({ token: this.props.user.token })
+            .then(res => { 
+                this.setState({
+                    upcomingTasks: res.length
+                })
+            })
     }
 
     getDarkColor = () => {
@@ -82,7 +99,7 @@ class Home extends Component {
                     style={{
                         color: 'white',
                         fontWeight: 'bold',
-                        fontSize: '20rem',
+                        fontSize: 20,
                     }}
                 >
                     {calendar.title}
@@ -93,9 +110,7 @@ class Home extends Component {
 
     renderCourses = () => {
         while (
-            this.state.loading ||
-            !this.props.user.calendars ||
-            this.state.calendars.length !== this.props.user.calendars.length
+            this.state.loading
         ) {
             return <ActivityIndicator />;
         }
@@ -108,6 +123,7 @@ class Home extends Component {
     };
 
     render() {
+        const picture = this.props.user.picture;
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
@@ -118,7 +134,7 @@ class Home extends Component {
                     >
                         <Text
                             style={{
-                                fontSize: '15rem',
+                                fontSize: 15,
                                 color: '#787878',
                             }}
                         >
@@ -126,7 +142,7 @@ class Home extends Component {
                         </Text>
                         <Text
                             style={{
-                                fontSize: '25rem',
+                                fontSize: 25,
                                 fontWeight: '700',
                             }}
                         >
@@ -136,7 +152,7 @@ class Home extends Component {
                                     color: '#36e373',
                                 }}
                             >
-                                0 upcoming tasks
+                                { this.state.upcomingTasks } upcoming tasks
                             </Text>
                         </Text>
                     </View>
@@ -156,9 +172,9 @@ class Home extends Component {
                         rounded
                         size='large'
                         source={{
-                            uri: this.props.user.picture,
+                            uri: picture,
                         }}
-                        title='P'
+                        title={ this.props.user.firstName[0]}
                         titleStyle={{}}
                     />
                 </View>
@@ -179,7 +195,7 @@ class Home extends Component {
                 <View style={styles.courses}>
                     <Text
                         style={{
-                            fontSize: '30rem',
+                            fontSize: 30,
                             fontWeight: '700',
                         }}
                     >
@@ -215,7 +231,7 @@ class Home extends Component {
                 <View style={styles.courses}>
                     <Text
                         style={{
-                            fontSize: '30rem',
+                            fontSize: 30,
                             fontWeight: '700',
                         }}
                     >

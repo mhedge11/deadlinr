@@ -52,11 +52,13 @@ class Profile extends React.Component {
             if (res === false) { 
                 return Alert.alert('An error occured');
             }
-
-            const user = await getUser(this.props.user.token);
-            this.props.dispatch({ type: 'SET_USER',
-                user: { ...user.user, token: this.props.user.token }
-            })
+            setTimeout(async () => { 
+                console.log('here');
+                const user = await getUser(this.props.user.token);
+                this.props.dispatch({ type: 'SET_USER',
+                    user: { ...user.user, token: this.props.user.token }
+                })
+            }, 1000)
         }
     }
 
@@ -151,7 +153,7 @@ class Profile extends React.Component {
             <View style={styles.container}>
                 <Text
                     style={{
-                        fontSize: '30rem',
+                        fontSize: 30,
                         fontWeight: '700',
                     }}
                 >
@@ -213,7 +215,7 @@ class Profile extends React.Component {
                         >
                             <Text
                                 style={{
-                                    fontSize: '20rem',
+                                    fontSize: 20,
                                     color: 'black',
                                     fontWeight: '600',
                                     padding: '5%',
@@ -229,7 +231,7 @@ class Profile extends React.Component {
                         >
                             <Text
                                 style={{
-                                    fontSize: '20rem',
+                                    fontSize: 20,
                                     color: 'black',
                                     fontWeight: '600',
                                     padding: '5%',
@@ -245,7 +247,7 @@ class Profile extends React.Component {
                         >
                             <Text
                                 style={{
-                                    fontSize: '20rem',
+                                    fontSize: 20,
                                     color: 'black',
                                     fontWeight: '600',
                                     padding: '5%',
@@ -259,7 +261,7 @@ class Profile extends React.Component {
                         >
                             <Text
                                 style={{
-                                    fontSize: '20rem',
+                                    fontSize: 20,
                                     color: 'black',
                                     fontWeight: '600',
                                     padding: '5%',
@@ -274,7 +276,7 @@ class Profile extends React.Component {
                     >
                         <Text
                             style={{
-                                fontSize: '20rem',
+                                fontSize: 20,
                                 color: '#f55a42',
                                 fontWeight: '600',
                                 padding: '5%',

@@ -25,7 +25,7 @@ export default function FriendProfile(props) {
         >
             <Text
                 style={{
-                    fontSize: '30rem',
+                    fontSize: 30,
                     fontWeight: '700',
                 }}
             >

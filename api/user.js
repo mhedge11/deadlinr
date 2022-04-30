@@ -430,6 +430,7 @@ export const uploadPicture = async ({ token, image }) => {
             }),
         })
             .then(async (res) => {
+                console.log(res.status);
                 if (res.ok) {
                     return true;
                 }

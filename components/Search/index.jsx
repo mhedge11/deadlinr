@@ -16,6 +16,9 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { joinCalendar, searchForAllCalendars } from '../../api/calendar';
+import { getUser } from '../../api/user';
+
+import { connect } from 'react-redux';
 
 /*
 This is Calendar Searching
@@ -56,6 +59,13 @@ const Search = (props) => {
                 cid,
             });
             alert('You have joined this calendar');
+            const data = await getUser(props.user.token);
+            props.dispatch({
+                type: 'SET_USER', user: {
+                    ...data.user,
+                    token: props.user.token
+                }
+})
             props.navigation.goBack();
         } catch (err) {
             console.error(err);
@@ -212,4 +222,11 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Search;
+function mapStateToProps(state) { 
+    return {
+        user: state.user,
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(Search);
