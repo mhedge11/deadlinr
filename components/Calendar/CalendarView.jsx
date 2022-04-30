@@ -84,7 +84,7 @@ class CalendarView extends React.Component {
     sortDeadlines = () => {
         const { selectedFilter, deadlines, reverseSort } = this.state;
 
-      //  console.log(deadlines);
+        //  console.log(deadlines);
         this.setState({
             reverseSort: !reverseSort,
         });
@@ -95,7 +95,7 @@ class CalendarView extends React.Component {
         } else if (selectedFilter == 2) {
             deadlines.sort(this.sortByDifficulty);
         }
-       // console.log(deadlines);
+        // console.log(deadlines);
         this.setState({
             deadlines,
         });
@@ -204,7 +204,7 @@ class CalendarView extends React.Component {
             usersFinished,
             votesRemaining,
             groups,
-            approved
+            approved,
         } = deadline.item;
 
         let diffColor = '';
@@ -269,28 +269,27 @@ class CalendarView extends React.Component {
                             {dueDate.slice(0, 10)}
                         </Text>
                     </View>
-                    {
-                        approved ?
-                            <Text
-                                style={{
-                                    fontSize: 16,
-                                    color: 'green',
-                                    fontWeight: '600'
-                                }}
-                            >
-                                Approved
-                            </Text>
-                            :
-                            <Text
-                                style={{
-                                    fontSize: 16,
-                                    color: 'red',
-                                    fontWeight: '600'
-                                }}
-                            >
-                                Not yet approved
-                            </Text>
-                    }
+                    {approved ? (
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                color: 'green',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Approved
+                        </Text>
+                    ) : (
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                color: 'red',
+                                fontWeight: '600',
+                            }}
+                        >
+                            Not yet approved
+                        </Text>
+                    )}
                     <View
                         style={{
                             marginTop: '5%',
@@ -485,9 +484,38 @@ class CalendarView extends React.Component {
                     </View>
                     <View
                         style={{
+                            marginTop: 15,
+                        }}
+                    >
+                        <TouchableOpacity
+                            style={{}}
+                            onPress={() => {
+                                this.props.navigation.navigate(
+                                    'ThreadsScreen',
+                                    {
+                                        calendarId: this.props.route.params._id,
+                                        threadArray:
+                                            this.props.route.params.threads,
+                                    }
+                                );
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: '20rem',
+                                    color: '#2776f5',
+                                }}
+                            >
+                                Posts
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
                             flexDirection: 'row',
                             width: '100%',
                             justifyContent: 'space-between',
+                            marginTop: 10,
                         }}
                     >
                         <View>
@@ -709,11 +737,11 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(CalendarView);
