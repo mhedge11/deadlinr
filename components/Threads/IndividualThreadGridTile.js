@@ -13,11 +13,13 @@ function IndvidualThreadGridTile({ individual }) {
                 <View
                     style={[
                         styles.innerContainer,
-                        { backgroundColor: 'orange' },
+                        { backgroundColor: '#6b5ae8' },
                     ]}
                 >
                     <Text style={styles.title}>TITLE</Text>
-                    <Text style={{ fontSize: 24 }}>{individual}</Text>
+                    <Text style={{ fontSize: 24, color: 'white' }}>
+                        {individual}
+                    </Text>
                 </View>
             </Pressable>
         </View>
@@ -55,5 +57,6 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 24,
+        color: 'white',
     },
 });

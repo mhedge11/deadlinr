@@ -261,13 +261,14 @@ const Administrator = (props) => {
                                 fontSize: '18rem',
                             }}
                         >
-                            Current Threshold: {(sliderValue * 100).toFixed(2)}%
+                            Current Threshold: {(sliderValue * 100).toFixed(0)}%
                         </Text>
                         <View
                             style={{
                                 flexDirection: 'row',
                                 justifyContent: 'center',
                                 padding: 10,
+                                // backgroundColor: 'white',
                                 // marginBottom: 20,
                             }}
                         >
@@ -278,8 +279,10 @@ const Administrator = (props) => {
                                 }}
                                 minimumValue={0}
                                 maximumValue={1}
-                                minimumTrackTintColor='#FFFFFF'
-                                maximumTrackTintColor='#000000'
+                                value={sliderValue}
+                                minimumTrackTintColor='#6b5ae8'
+                                maximumTrackTintColor='#6b5ae8'
+                                thumbTintColor='#6b5ae8'
                                 onValueChange={(value) =>
                                     setSliderValue(
                                         Math.round(value * 100) / 100

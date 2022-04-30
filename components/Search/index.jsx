@@ -61,11 +61,12 @@ const Search = (props) => {
             alert('You have joined this calendar');
             const data = await getUser(props.user.token);
             props.dispatch({
-                type: 'SET_USER', user: {
+                type: 'SET_USER',
+                user: {
                     ...data.user,
-                    token: props.user.token
-                }
-})
+                    token: props.user.token,
+                },
+            });
             props.navigation.goBack();
         } catch (err) {
             console.error(err);
@@ -141,10 +142,17 @@ const Search = (props) => {
                                             <View
                                                 style={[
                                                     styles.textInput,
-                                                    { borderRadius: 20 },
+                                                    {
+                                                        borderRadius: 20,
+                                                    },
                                                 ]}
                                             >
-                                                <Text style={{ fontSize: 18 }}>
+                                                <Text
+                                                    style={{
+                                                        fontSize: 18,
+                                                        color: 'white',
+                                                    }}
+                                                >
                                                     {item.title}
                                                 </Text>
                                             </View>
@@ -183,7 +191,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         padding: 20,
         alignItems: 'center',
-        backgroundColor: 'grey',
+        backgroundColor: '#6b5ae8',
         width: '100%',
     },
     bar: {
@@ -222,11 +230,11 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(Search);
