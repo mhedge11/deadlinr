@@ -178,6 +178,7 @@ function IndividualThreadScreen(props) {
                     style={{
                         padding: '5%',
                         flexDirection: 'row',
+                        marginTop: 20,
                     }}
                 >
                     <TouchableOpacity
@@ -190,6 +191,15 @@ function IndividualThreadScreen(props) {
                             color='black'
                         />
                     </TouchableOpacity>
+                    <Text
+                        style={{
+                            fontSize: '30rem',
+                            fontWeight: '600',
+                            marginLeft: '5%',
+                        }}
+                    >
+                        Comments
+                    </Text>
                 </View>
                 <View styles={styles.headline}>
                     <View
@@ -251,7 +261,7 @@ function IndividualThreadScreen(props) {
                     </View>
                     <View>
                         <ScrollView
-                            style={{ height: '80%' }}
+                            style={{ height: '77%' }}
                             refreshControl={
                                 <RefreshControl
                                     refreshing={refreshing}

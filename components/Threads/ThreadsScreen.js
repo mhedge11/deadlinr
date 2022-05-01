@@ -81,13 +81,14 @@ const ThreadsScreen = (props) => {
     }
     return (
         <>
-            <StatusBar style='light' />
+            {/* <StatusBar style='light' /> */}
 
             <SafeAreaView style={styles.container}>
                 <View
                     style={{
                         padding: '5%',
                         flexDirection: 'row',
+                        marginTop: 20,
                     }}
                 >
                     <TouchableOpacity
@@ -100,6 +101,15 @@ const ThreadsScreen = (props) => {
                             color='black'
                         />
                     </TouchableOpacity>
+                    <Text
+                        style={{
+                            fontSize: '30rem',
+                            fontWeight: '600',
+                            marginLeft: '5%',
+                        }}
+                    >
+                        Posts
+                    </Text>
                 </View>
                 <View>
                     <Button

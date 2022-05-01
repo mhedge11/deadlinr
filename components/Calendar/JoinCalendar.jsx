@@ -54,7 +54,20 @@ const JoinCalendar = (props) => {
                     round
                     // clearButtonMode='always'
                 />
-                <Button title='Search' onPress={updateSearch} />
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-around',
+                    }}
+                >
+                    <Button title='Search' onPress={updateSearch} />
+                    <Button
+                        title='Close'
+                        onPress={() => {
+                            props.navigation.goBack();
+                        }}
+                    />
+                </View>
             </View>
             <View
                 style={{

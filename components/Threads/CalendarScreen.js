@@ -68,6 +68,7 @@ const CalendarScreen = (props) => {
                 style={{
                     padding: '5%',
                     flexDirection: 'row',
+                    marginTop: 20,
                 }}
             >
                 <TouchableOpacity
@@ -80,6 +81,15 @@ const CalendarScreen = (props) => {
                         color='black'
                     />
                 </TouchableOpacity>
+                <Text
+                    style={{
+                        fontSize: '30rem',
+                        fontWeight: '600',
+                        marginLeft: '5%',
+                    }}
+                >
+                    Calendars
+                </Text>
             </View>
             <FlatList
                 data={calendars}
