@@ -6,33 +6,95 @@ import {
     TouchableOpacity,
     Alert,
     ActivityIndicator,
+    ScrollView,
+    RefreshControl,
 } from 'react-native';
 import { Icon, Avatar } from 'react-native-elements';
 import { deleteAccount } from '../../api/user';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import { getUser } from '../../api/user';
+import { getCalendar } from '../../api/calendar';
 
 import { uploadPicture } from '../../api/user';
+// import { ScrollView } from 'react-native-web';
 
 class Profile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
+            userState: null,
+            refreshing: false,
+            calendars: [],
         };
         this.showDeleteAccountDialog.bind(this);
     }
 
-    componentDidMount = async () => {
-        // console.log(this.props.user);
-        const user = await getUser(this.props.user.token);
-        // console.log(user);
+    getAllCalendars = () => {
+        this.setState({
+            loading: true,
+            calendars: [],
+        });
+        if (this.props.user.calendars) {
+            this.props.user.calendars.forEach(async (c) => {
+                const data = await getCalendar({ cid: c });
+                if (data) {
+                    this.setState({
+                        calendars: [...this.state.calendars, data],
+                    });
+                }
+            });
+        }
+        //console.log(this.state.calendars);
         this.props.dispatch({
-            type: 'SET_USER',
-            user: { ...user.user, token: this.props.user.token },
+            type: 'SET_CALENDARS',
+            calendars: this.state.calendars,
+        });
+        this.setState({
+            loading: false,
         });
     };
+
+    fetchUser = async () => {
+        try {
+            const userState = await getUser(this.props.user.token);
+            this.setState({
+                userState,
+            });
+            this.props.dispatch({
+                type: 'SET_USER',
+                user: { ...user.user, token: this.props.user.token },
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    onRefresh = async () => {
+        this.setState({ refreshing: true });
+        await this.fetchUser();
+        this.getAllCalendars();
+        this.setState({ refreshing: false });
+    };
+
+    componentDidMount = async () => {
+        this.getAllCalendars();
+        this.props.navigation.addListener('focus', (payload) => {
+            this.fetchUser();
+        });
+        // console.log(this.props.user);
+        // const user = await getUser(this.props.user.token);
+        // // console.log(user);
+        // this.props.dispatch({
+        //     type: 'SET_USER',
+        //     user: { ...user.user, token: this.props.user.token },
+        // });
+    };
+
+    componentWillUnmount() {
+        this.fetchUser();
+    }
 
     chooseImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -47,12 +109,17 @@ class Profile extends React.Component {
                 token: this.props.user.token,
                 image: result.base64,
             });
-
+            this.setState({
+                userState: res,
+            });
             if (res === false) {
                 return Alert.alert('An error occured');
             }
             setTimeout(async () => {
                 console.log('here');
+                this.setState({
+                    userState: res,
+                });
                 const user = await getUser(this.props.user.token);
                 this.props.dispatch({
                     type: 'SET_USER',
@@ -192,118 +259,127 @@ class Profile extends React.Component {
                     title='P'
                     titleStyle={{}}
                 />
-                <View
-                    style={{
-                        marginTop: '30%',
-                        flex: 1,
-                        justifyContent: 'space-around',
-                    }}
+                <ScrollView
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.refreshing}
+                            onRefresh={() => this.onRefresh()}
+                        />
+                    }
                 >
-                    <Text
+                    <View
                         style={{
-                            paddingLeft: '5%',
-                            color: 'grey',
-                            fontWeight: '500',
-                            fontSize: 20,
+                            marginTop: '30%',
+                            flex: 1,
+                            justifyContent: 'space-around',
                         }}
-                    >
-                        {bio}
-                    </Text>
-                    <View style={{}}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate('Suggested Friends');
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontSize: 20,
-                                    color: 'black',
-                                    fontWeight: '600',
-                                    padding: '5%',
-                                }}
-                            >
-                                Suggested Friends
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate('Edit Profile');
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontSize: 20,
-                                    color: 'black',
-                                    fontWeight: '600',
-                                    padding: '5%',
-                                }}
-                            >
-                                Edit Profile
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate('Change Password');
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontSize: 20,
-                                    color: 'black',
-                                    fontWeight: '600',
-                                    padding: '5%',
-                                }}
-                            >
-                                Change Password
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.navigate('PhoneNumber');
-                            }}
-                        >
-                            <Text
-                                style={{
-                                    fontSize: 20,
-                                    color: 'black',
-                                    fontWeight: '600',
-                                    padding: '5%',
-                                }}
-                            >
-                                Add Phone Number
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => this.showLogoutConfirmation()}
-                        >
-                            <Text
-                                style={{
-                                    fontSize: 20,
-                                    color: 'black',
-                                    fontWeight: '600',
-                                    padding: '5%',
-                                }}
-                            >
-                                Log Out
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <TouchableOpacity
-                        onPress={() => this.showDeleteAccountDialog()}
                     >
                         <Text
                             style={{
+                                paddingLeft: '5%',
+                                color: 'grey',
+                                fontWeight: '500',
                                 fontSize: 20,
-                                color: '#f55a42',
-                                fontWeight: '600',
-                                padding: '5%',
                             }}
                         >
-                            Delete Account
+                            {bio}
                         </Text>
-                    </TouchableOpacity>
-                </View>
+                        <View style={{}}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('Suggested Friends');
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'black',
+                                        fontWeight: '600',
+                                        padding: '5%',
+                                    }}
+                                >
+                                    Suggested Friends
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('Edit Profile');
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'black',
+                                        fontWeight: '600',
+                                        padding: '5%',
+                                    }}
+                                >
+                                    Edit Profile
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('Change Password');
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'black',
+                                        fontWeight: '600',
+                                        padding: '5%',
+                                    }}
+                                >
+                                    Change Password
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('PhoneNumber');
+                                }}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'black',
+                                        fontWeight: '600',
+                                        padding: '5%',
+                                    }}
+                                >
+                                    Add Phone Number
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => this.showLogoutConfirmation()}
+                            >
+                                <Text
+                                    style={{
+                                        fontSize: 20,
+                                        color: 'black',
+                                        fontWeight: '600',
+                                        padding: '5%',
+                                    }}
+                                >
+                                    Log Out
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <TouchableOpacity
+                            onPress={() => this.showDeleteAccountDialog()}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 20,
+                                    color: '#f55a42',
+                                    fontWeight: '600',
+                                    padding: '5%',
+                                }}
+                            >
+                                Delete Account
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </View>
         );
     }
