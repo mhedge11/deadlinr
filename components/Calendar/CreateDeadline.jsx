@@ -44,13 +44,15 @@ const CreateDeadline = (props) => {
             },
             token: props.user['token'],
         });
-       // console.log(res);
+       setLoading(false);
+       setShownSimilar(true);
         if (res.length > 0) {
             setModalVisible(true);
             setSimilarDeadlines(res);
+            return true;
         }
-        setLoading(false);
-        setShownSimilar(true);
+        return false;
+
     }
 
     const createDeadline = async () => {
@@ -58,8 +60,8 @@ const CreateDeadline = (props) => {
         if (deadlineName.trim() === '') return;
         setDeadlineName(deadlineName.trim());
         if (!shownSimilar) {    
-            showSimilarDeadlines();
-            return;
+            const hasSimilar = await showSimilarDeadlines();
+            if (hasSimilar) return;
         }
 
         setLoading(true);

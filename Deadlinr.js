@@ -31,7 +31,7 @@ import { updatePushToken } from './api/user';
 import EditProfile from './components/screens/EditProfile';
 import FriendProfile from './components/Profile/FriendProfile';
 import Administrator from './components/Calendar/Administrator';
-
+import PhoneNumber from './components/Profile/PhoneNumber';
 import SuggestedFriends from './components/Profile/SuggestedFriends';
 
 const Stack = createNativeStackNavigator();
@@ -296,6 +296,12 @@ class Deadlinr extends React.Component {
                         options={{ headerShown: false }}
                     >
                         {(props) => <Administrator {...props} />}
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name='PhoneNumber'
+                        options={{ headerShown: false }}
+                    >
+                        {(props) => <PhoneNumber {...props} />}
                     </Stack.Screen>
                 </Stack.Navigator>
                 <StatusBar />

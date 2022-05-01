@@ -22,7 +22,6 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            courses: props.calendars,
             calendars: [],
             loading: true,
             upcomingTasks: 0,
@@ -38,9 +37,12 @@ class Home extends Component {
         if (this.props.user.calendars) {
             this.props.user.calendars.forEach(async (c) => {
                 const data = await getCalendar({ cid: c });
-                this.setState({
-                    calendars: [...this.state.calendars, data],
-                });
+                if (data) { 
+                    this.setState({
+                        calendars: [...this.state.calendars, data],
+                    });
+                }
+
             });
         }
         //console.log(this.state.calendars);
@@ -53,18 +55,7 @@ class Home extends Component {
         });
     };
 
-    componentDidMount = async () => {
-        // this.props.navigation.addListener('focus', (payload) => {
-        //     this.getDarkColor();
-        // });
-        const user = await getUser(this.props.user.token);
-        this.props.dispatch({
-            type: 'SET_USER',
-            user: {
-                ...user.user,
-                token: this.props.user.token,
-            },
-        });
+    componentDidMount = () => {
 
         this.getAllCalendars();
         getWeekDeadlines({ token: this.props.user.token }).then((res) => {
@@ -73,10 +64,6 @@ class Home extends Component {
             });
         });
     };
-
-    // componentWillUnmount() {
-    //     this.getDarkColor();
-    // }
 
     getDarkColor = () => {
         var color = '#';
@@ -87,10 +74,6 @@ class Home extends Component {
     };
 
     onRefresh = async () => {
-        // setRefreshing(true);
-        // this.setState({
-        //     calendar: [],
-        // });
         this.setState({
             refreshing: true,
         });
@@ -98,7 +81,6 @@ class Home extends Component {
         this.setState({
             refreshing: false,
         });
-        // setRefreshing(false);
     };
 
     renderCourseCard = (calendar) => {

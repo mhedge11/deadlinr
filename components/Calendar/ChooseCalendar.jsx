@@ -34,7 +34,9 @@ const ChooseCalendar = (props) => {
         try {
             props.user.calendars.forEach(async (c) => {
                 const item = await getCalendar({ cid: c });
-                setCalendars((c) => [...c, item]);
+                if (item) { 
+                    setCalendars((c) => [...c, item]);
+                }
             });
         } catch (e) {
             console.error(e);

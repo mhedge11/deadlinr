@@ -11,7 +11,6 @@ import { Icon, Avatar } from 'react-native-elements';
 import { deleteAccount } from '../../api/user';
 import { connect } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 import { getUser } from '../../api/user';
 
 import { uploadPicture } from '../../api/user';
@@ -254,6 +253,22 @@ class Profile extends React.Component {
                                 }}
                             >
                                 Change Password
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate('PhoneNumber');
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 20,
+                                    color: 'black',
+                                    fontWeight: '600',
+                                    padding: '5%',
+                                }}
+                            >
+                                Add Phone Number
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity

@@ -14,7 +14,6 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_USER':
             console.log('set_user dispatched');
-            console.log(action.user);
             return {
                 ...state,
                 user: action.user,

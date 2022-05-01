@@ -63,6 +63,7 @@ const ViewDeadline = (props) => {
             setDeadline(res.deadline);
             setDesc(res.deadline.description);
             setDueDate(res.deadline.dueDate);
+            console.log(res.deadline.usersVoted);
         } else {
             alert('An error occured');
         }
@@ -360,7 +361,7 @@ const ViewDeadline = (props) => {
                 )}
             </View>
             {
-                !deadline.approved && 
+                !deadline.approved && !deadline.usersVoted.includes(props.user._id) &&
                 <View
                     style={{
                         padding: '5%',
