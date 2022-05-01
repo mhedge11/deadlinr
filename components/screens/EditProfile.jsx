@@ -76,13 +76,16 @@ const EditProfile = (props) => {
             lastName,
             email,
             username,
-            bio
+            bio,
         });
 
         setLoading(false);
         if (res === true) {
             const user = await getUser(props.user.token);
-            props.dispatch({ type: 'SET_USER', user: { ...user.user, token: props.user.token } });
+            props.dispatch({
+                type: 'SET_USER',
+                user: { ...user.user, token: props.user.token },
+            });
             props.navigation.goBack();
 
             return Alert.alert('User successfully updated');
@@ -253,11 +256,11 @@ const EditProfile = (props) => {
     );
 };
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(EditProfile);

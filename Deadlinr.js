@@ -46,39 +46,40 @@ Notifications.setNotificationHandler({
 async function registerForPushNotificationsAsync() {
     let token;
     if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
+        const { status: existingStatus } =
+            await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
     } else {
-      alert('Must use physical device for Push Notifications');
+        alert('Must use physical device for Push Notifications');
     }
-  
+
     if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
+        Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
     }
-  
+
     return token;
-  }
+}
 
 class Deadlinr extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             expoPushToken: '',
-            notification: false
+            notification: false,
         };
         this.notificationListener = createRef();
         this.responseListener = createRef();
@@ -86,49 +87,64 @@ class Deadlinr extends React.Component {
 
     componentDidMount() {
         if (this.props.user == null || this.props.user == undefined) return;
-        registerForPushNotificationsAsync().then(token => this.setState({
-            expoPushToken: token
-        }));
+        registerForPushNotificationsAsync().then((token) =>
+            this.setState({
+                expoPushToken: token,
+            })
+        );
 
         // This listener is fired whenever a notification is received while the app is foregrounded
-        this.notificationListener.current = Notifications.addNotificationReceivedListener(notification => this.setState({
-            notification
-        }));
-    
+        this.notificationListener.current =
+            Notifications.addNotificationReceivedListener((notification) =>
+                this.setState({
+                    notification,
+                })
+            );
+
         // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-        this.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-          // console.log(response);
-        });
+        this.responseListener.current =
+            Notifications.addNotificationResponseReceivedListener(
+                (response) => {
+                    // console.log(response);
+                }
+            );
         updatePushToken({
             token: this.props.user.token,
-            pushToken: this.state.expoPushToken
-        })
-    }   
-
-
-    componentDidUpdate(prevProps, prevState) { 
-        if (this.props.user == null || this.props.user == undefined) return;
-        if (prevState.expoPushToken !== '') return;
-        registerForPushNotificationsAsync().then(token => this.setState({
-            expoPushToken: token
-        }));
-
-        // This listener is fired whenever a notification is received while the app is foregrounded
-        this.notificationListener.current = Notifications.addNotificationReceivedListener(notification => this.setState({
-            notification
-        }));
-    
-        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-        this.responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-          // console.log(response);
+            pushToken: this.state.expoPushToken,
         });
-        updatePushToken({
-            token: this.props.user.token,
-            pushToken: this.state.expoPushToken
-        })
     }
 
-    componentWillUnmount() { 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.user == null || this.props.user == undefined) return;
+        if (prevState.expoPushToken !== '') return;
+        registerForPushNotificationsAsync().then((token) =>
+            this.setState({
+                expoPushToken: token,
+            })
+        );
+
+        // This listener is fired whenever a notification is received while the app is foregrounded
+        this.notificationListener.current =
+            Notifications.addNotificationReceivedListener((notification) =>
+                this.setState({
+                    notification,
+                })
+            );
+
+        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        this.responseListener.current =
+            Notifications.addNotificationResponseReceivedListener(
+                (response) => {
+                    // console.log(response);
+                }
+            );
+        updatePushToken({
+            token: this.props.user.token,
+            pushToken: this.state.expoPushToken,
+        });
+    }
+
+    componentWillUnmount() {
         // Notifications.removeNotificationSubscription(this.notificationListener.current);
         // Notifications.removeNotificationSubscription(this.responseListener.current);
     }

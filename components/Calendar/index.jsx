@@ -14,10 +14,9 @@ import { connect } from 'react-redux';
 import { getWeekDeadlines } from '../../api/user';
 
 class Calendar extends React.Component {
-
     constructor(props) {
         super(props);
-       // console.log(props);
+        // console.log(props);
         this.state = {
             selectedDate: moment(),
             today: moment(),
@@ -25,16 +24,14 @@ class Calendar extends React.Component {
         };
     }
 
-    componentDidMount() { 
-        
+    componentDidMount() {
         getWeekDeadlines({
-            token: this.props.user.token
-        })
-            .then(data => { 
-                this.setState({
-                    weeklyDeadlines: data
-                });
-            })
+            token: this.props.user.token,
+        }).then((data) => {
+            this.setState({
+                weeklyDeadlines: data,
+            });
+        });
     }
 
     getDarkColor = () => {
@@ -43,7 +40,7 @@ class Calendar extends React.Component {
             color += Math.floor(Math.random() * 10);
         }
         return color;
-    }
+    };
 
     renderTask = (task) => {
         let randomColor = this.getDarkColor();
@@ -91,9 +88,13 @@ class Calendar extends React.Component {
                         ' ' +
                         this.intToMonth(dueDate.getMonth()) +
                         ' ' +
-                        (dueDate.getHours() >= 10 ? dueDate.getHours() : '0' + dueDate.getHours()) +
+                        (dueDate.getHours() >= 10
+                            ? dueDate.getHours()
+                            : '0' + dueDate.getHours()) +
                         ':' +
-                        (dueDate.getMinutes() >= 10 ? dueDate.getMinutes() : '0' + dueDate.getMinutes())}
+                        (dueDate.getMinutes() >= 10
+                            ? dueDate.getMinutes()
+                            : '0' + dueDate.getMinutes())}
                 </Text>
             </View>
         );
@@ -101,13 +102,13 @@ class Calendar extends React.Component {
 
     renderTasks = () => {
         let elems = [];
-        let res = this.state.weeklyDeadlines.filter(
-            (task) => {
-                const dueDate = new Date(Date.parse(task.dueDate));
-                return dueDate.getDate() === this.state.selectedDate.date() &&
-                    dueDate.getMonth() == this.state.selectedDate.month()
-            }
-        );
+        let res = this.state.weeklyDeadlines.filter((task) => {
+            const dueDate = new Date(Date.parse(task.dueDate));
+            return (
+                dueDate.getDate() === this.state.selectedDate.date() &&
+                dueDate.getMonth() == this.state.selectedDate.month()
+            );
+        });
 
         if (res.length == 0) {
             return (
@@ -246,7 +247,7 @@ class Calendar extends React.Component {
                             })
                         }
                         minDate={new Date()}
-                        maxDate={moment(moment(), "DD-MM-YYYY").add(7, 'days')}
+                        maxDate={moment(moment(), 'DD-MM-YYYY').add(7, 'days')}
                         scrollable
                         headerText=''
                         iconStyle={

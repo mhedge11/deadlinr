@@ -61,7 +61,6 @@ const Login = (props) => {
 
         getUserByToken.user.token = data.token;
         props.dispatch({ type: 'SET_USER', user: getUserByToken.user });
-
     };
 
     if (loading) {

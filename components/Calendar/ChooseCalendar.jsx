@@ -30,11 +30,11 @@ const ChooseCalendar = (props) => {
 
     const fetchCalendars = async () => {
         setCalendars([]);
-       // console.log(props.user);
+        // console.log(props.user);
         try {
             props.user.calendars.forEach(async (c) => {
                 const item = await getCalendar({ cid: c });
-                if (item) { 
+                if (item) {
                     setCalendars((c) => [...c, item]);
                 }
             });

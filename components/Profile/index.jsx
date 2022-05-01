@@ -24,17 +24,17 @@ class Profile extends React.Component {
         this.showDeleteAccountDialog.bind(this);
     }
 
-    componentDidMount = async () => { 
-       // console.log(this.props.user);
+    componentDidMount = async () => {
+        // console.log(this.props.user);
         const user = await getUser(this.props.user.token);
-       // console.log(user);
+        // console.log(user);
         this.props.dispatch({
             type: 'SET_USER',
-            user: { ...user.user, token: this.props.user.token }
+            user: { ...user.user, token: this.props.user.token },
         });
-    }
+    };
 
-    chooseImage = async () => { 
+    chooseImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             base64: true,
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -45,21 +45,22 @@ class Profile extends React.Component {
         if (!result.cancelled) {
             const res = await uploadPicture({
                 token: this.props.user.token,
-                image: result.base64
+                image: result.base64,
             });
 
-            if (res === false) { 
+            if (res === false) {
                 return Alert.alert('An error occured');
             }
-            setTimeout(async () => { 
+            setTimeout(async () => {
                 console.log('here');
                 const user = await getUser(this.props.user.token);
-                this.props.dispatch({ type: 'SET_USER',
-                    user: { ...user.user, token: this.props.user.token }
-                })
-            }, 1000)
+                this.props.dispatch({
+                    type: 'SET_USER',
+                    user: { ...user.user, token: this.props.user.token },
+                });
+            }, 1000);
         }
-    }
+    };
 
     showDeleteAccountDialog = () => {
         if (!this.props.user) {
@@ -87,7 +88,7 @@ class Profile extends React.Component {
                         if (res === 'success') {
                             this.props.dispatch({
                                 type: 'SET_USER',
-                                user: null
+                                user: null,
                             });
                             return Alert.alert('User successfully deleted!');
                         } else {
@@ -118,7 +119,7 @@ class Profile extends React.Component {
                     onPress: () => {
                         this.props.dispatch({
                             type: 'SET_USER',
-                            user: null
+                            user: null,
                         });
                     },
                 },
@@ -186,7 +187,7 @@ class Profile extends React.Component {
                     rounded
                     size='large'
                     source={{
-                        uri: picture
+                        uri: picture,
                     }}
                     title='P'
                     titleStyle={{}}
@@ -203,9 +204,11 @@ class Profile extends React.Component {
                             paddingLeft: '5%',
                             color: 'grey',
                             fontWeight: '500',
-                            fontSize: 20
+                            fontSize: 20,
                         }}
-                    >{bio}</Text>
+                    >
+                        {bio}
+                    </Text>
                     <View style={{}}>
                         <TouchableOpacity
                             onPress={() => {
@@ -318,11 +321,11 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
-export default connect(mapStateToProps)(Profile)
+export default connect(mapStateToProps)(Profile);

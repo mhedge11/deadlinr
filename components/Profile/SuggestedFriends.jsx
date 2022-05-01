@@ -1,68 +1,75 @@
 import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    ScrollView,
+    ActivityIndicator,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as Contacts from 'expo-contacts';
 import { checkContacts } from '../../api/user';
 import { connect } from 'react-redux';
 
-function SuggestedFriends(props) { 
-
+function SuggestedFriends(props) {
     const navigation = props.navigation;
     const [contacts, setContacts] = React.useState([]);
 
     const [loading, setLoading] = React.useState(true);
 
-    const renderItems = () => { 
+    const renderItems = () => {
         let elems = [];
-        contacts.forEach(c => {
+        contacts.forEach((c) => {
             const { username } = c;
             elems.push(
-                <TouchableOpacity style={{
-                    marginTop: '10%'
-                }}
-                    onPress={() => { 
+                <TouchableOpacity
+                    style={{
+                        marginTop: '10%',
+                    }}
+                    onPress={() => {
                         navigation.navigate('FriendProfile', {
-                            user: c
-                        })
+                            user: c,
+                        });
                     }}
                 >
                     <Text
                         style={{
                             fontSize: 27,
-                            fontWeight: '400'
+                            fontWeight: '400',
                         }}
                     >
                         {username}
                     </Text>
-                </TouchableOpacity>);
+                </TouchableOpacity>
+            );
         });
 
         return elems;
-    }
+    };
 
     useEffect(async () => {
         (async () => {
             const { status } = await Contacts.requestPermissionsAsync();
             if (status === 'granted') {
                 const { data } = await Contacts.getContactsAsync();
-                
+
                 let phoneNums = [];
 
-                data.forEach(c => { 
-                    c.phoneNumbers?.forEach(num => { 
+                data.forEach((c) => {
+                    c.phoneNumbers?.forEach((num) => {
                         if (num.number.length <= 13) phoneNums.push(num.number);
-                    })
-                })
+                    });
+                });
                 const res = await checkContacts({
                     token: props.user.token,
-                    phoneNumbers: phoneNums
+                    phoneNumbers: phoneNums,
                 });
                 setLoading(false);
                 setContacts(res);
             }
         })();
     }, []);
-
 
     return (
         <View style={styles.container}>
@@ -81,32 +88,26 @@ function SuggestedFriends(props) {
                         type='font-awesome'
                         color='black'
                     />
-                </TouchableOpacity>
-                { ' ' } Suggested Friends
+                </TouchableOpacity>{' '}
+                Suggested Friends
             </Text>
 
-            
-            {
-                loading ? 
-                    <ActivityIndicator />
-                    :
-                    contacts.length > 0 ?
-                    <ScrollView>
-                        { renderItems() }
-                    </ScrollView>
-                    :
-                    <Text
-                        style={{
-                            marginTop: '25%',
-                            color: 'grey',
-                            fontSize: 20,
-
-                        }}
-                    >
-                        Looks like none of your contacts use Deadlinr. How about you recommend them?
-                    </Text>
-            }
-
+            {loading ? (
+                <ActivityIndicator />
+            ) : contacts.length > 0 ? (
+                <ScrollView>{renderItems()}</ScrollView>
+            ) : (
+                <Text
+                    style={{
+                        marginTop: '25%',
+                        color: 'grey',
+                        fontSize: 20,
+                    }}
+                >
+                    Looks like none of your contacts use Deadlinr. How about you
+                    recommend them?
+                </Text>
+            )}
         </View>
     );
 }
@@ -123,10 +124,10 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
-        user: state.user
-    }
+        user: state.user,
+    };
 }
 
 export default connect(mapStateToProps)(SuggestedFriends);

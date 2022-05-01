@@ -41,10 +41,12 @@ const CreateCalendar = (props) => {
             setMsg('');
             const res = await getUser(props.user.token);
             props.dispatch({
-                type: 'SET_USER', user: {
+                type: 'SET_USER',
+                user: {
                     ...res.user,
-                    token: props.user.token
-                }});
+                    token: props.user.token,
+                },
+            });
             props.navigation.goBack();
             return;
         } else {
@@ -191,7 +193,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
+        dispatch: state.dispatch,
     };
 }
 

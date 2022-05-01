@@ -1,28 +1,29 @@
 import React, { useEffect } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+    View,
+    TouchableOpacity,
+    Text,
+    StyleSheet,
+    ActivityIndicator,
+} from 'react-native';
 import { Icon, Avatar } from 'react-native-elements';
 
-
 export default function FriendProfile(props) {
-
-    useEffect(async () => { 
-
+    useEffect(async () => {
         await fetchCalendards();
         // setLoading(false);
+    }, []);
 
-    }, [])
-
-    const { firstName, lastName, bio, picture, calendars } = props.route.params.user ;
+    const { firstName, lastName, bio, picture, calendars } =
+        props.route.params.user;
 
     const [loading, setLoading] = React.useState(true);
 
-    const fetchCalendards = async () => { 
+    const fetchCalendards = async () => {
         setLoading(false);
-    }
+    };
     return (
-        <View
-            style={styles.container}
-        >
+        <View style={styles.container}>
             <Text
                 style={{
                     fontSize: 30,
@@ -48,10 +49,10 @@ export default function FriendProfile(props) {
                 }}
             >
                 <Avatar
-                    size={"large"}
+                    size={'large'}
                     rounded
                     source={{
-                        uri: picture
+                        uri: picture,
                     }}
                 />
 
@@ -61,14 +62,18 @@ export default function FriendProfile(props) {
                         marginTop: '10%',
                     }}
                 >
-                    { bio }
+                    {bio}
                 </Text>
-                {
-                    loading ? <View style={styles.container}><ActivityIndicator /></View> : <View></View>
-                }
+                {loading ? (
+                    <View style={styles.container}>
+                        <ActivityIndicator />
+                    </View>
+                ) : (
+                    <View></View>
+                )}
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -82,4 +87,3 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
 });
-

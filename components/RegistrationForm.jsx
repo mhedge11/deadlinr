@@ -93,9 +93,9 @@ const RegistrationForm = (props) => {
             type: 'SET_USER',
             user: {
                 ...data,
-                token: data.token
-            }
-        })
+                token: data.token,
+            },
+        });
     };
 
     if (loading) {
@@ -247,13 +247,10 @@ const RegistrationForm = (props) => {
                     style={styles.registerButton}
                     onPress={handleSubmission}
                 >
-                    <Text>
-                    Register
-                    </Text>
+                    <Text>Register</Text>
                 </TouchableOpacity>
             </ScrollView>
         </View>
-
     );
 };
 
@@ -295,8 +292,8 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(RegistrationForm);

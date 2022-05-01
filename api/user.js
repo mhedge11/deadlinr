@@ -12,7 +12,7 @@ export const getUser = async (token) => {
             },
         })
             .then(async (res) => {
-               // console.log(res.status);
+                // console.log(res.status);
                 if (!res.ok) {
                     return null;
                 }
@@ -352,10 +352,10 @@ export const editProfile = async ({
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
-                Authorization: "Bearer " + token
+                Authorization: 'Bearer ' + token,
             },
-          body: JSON.stringify({
-          firstName,
+            body: JSON.stringify({
+                firstName,
                 lastName,
                 username,
                 email,
@@ -378,9 +378,8 @@ export const editProfile = async ({
         return false;
     }
 };
-    
 
-export const updatePushToken = async ({ token, pushToken }) => { 
+export const updatePushToken = async ({ token, pushToken }) => {
     const route = API_URL + '/user/pushToken';
 
     try {
@@ -392,32 +391,31 @@ export const updatePushToken = async ({ token, pushToken }) => {
                 Authorization: 'Bearer ' + token,
             },
             body: JSON.stringify({
-                pushToken
+                pushToken,
             }),
         })
-            .then(async (res) => { 
-               // console.log(res.status);
-                if (res.ok) { 
-                    console.log('succesfully registered for push notif')
+            .then(async (res) => {
+                // console.log(res.status);
+                if (res.ok) {
+                    console.log('succesfully registered for push notif');
                 } else {
                     console.log('registered for push notif failed');
                 }
-            }) 
-            .catch(err => { 
+            })
+            .catch((err) => {
                 console.error(err);
                 console.log('registered for push notif failed');
-            })
-    } catch (err) { 
+            });
+    } catch (err) {
         console.error(err);
         console.log('registered for push notif failed');
     }
+};
 
-}
-
-export const uploadPicture = async ({ token, image }) => { 
+export const uploadPicture = async ({ token, image }) => {
     const route = API_URL + '/user/picture';
 
-    try { 
+    try {
         const result = await fetch(route, {
             method: 'POST',
             headers: {
@@ -426,7 +424,7 @@ export const uploadPicture = async ({ token, image }) => {
                 Authorization: 'Bearer ' + token,
             },
             body: JSON.stringify({
-                data: image
+                data: image,
             }),
         })
             .then(async (res) => {
@@ -447,10 +445,7 @@ export const uploadPicture = async ({ token, image }) => {
     }
 };
 
-export const checkContacts = async ({
-    token,
-    phoneNumbers
-}) => { 
+export const checkContacts = async ({ token, phoneNumbers }) => {
     const route = API_URL + '/user/contacts';
 
     try {
@@ -462,31 +457,31 @@ export const checkContacts = async ({
                 Authorization: 'Bearer ' + token,
             },
             body: JSON.stringify({
-                phoneNumbers
-            })
+                phoneNumbers,
+            }),
         })
-            .then(async (res) => { 
-               // console.log(res.status);
+            .then(async (res) => {
+                // console.log(res.status);
                 if (res.ok) {
                     const data = await res.json();
                     return data.items;
                 }
                 return [];
             })
-            .catch(err => { 
+            .catch((err) => {
                 console.error(err);
                 return [];
-            })
+            });
         return result;
     } catch (err) {
         console.error(err);
         return [];
     }
-}
+};
 
- export const getWeekDeadlines = async ({ token }) => { 
+export const getWeekDeadlines = async ({ token }) => {
     const route = API_URL + '/user/week';
-    try { 
+    try {
         let result = fetch(route, {
             method: 'GET',
             headers: {
@@ -494,7 +489,6 @@ export const checkContacts = async ({
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + token,
             },
-          
         })
             .then(async (res) => {
                 if (res.ok) {
@@ -513,44 +507,13 @@ export const checkContacts = async ({
         console.error(err);
         return [];
     }
- }
+};
 
-export const linkPhone = async ({ token, phoneNum }) => { 
+export const linkPhone = async ({ token, phoneNum }) => {
     const route = API_URL + '/user/link';
-    try { 
+    try {
         const result = await fetch(route, {
-            method: "POST",
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-            },
-            body: JSON.stringify({
-                phoneNumber: phoneNum
-            })
-        })
-            .then(async (res) => { 
-                if (res.ok) {
-                    return true;
-                }
-                return false;
-            })
-            .catch(err => { 
-                console.error(err);
-                return false;
-            })
-        return result;
-    } catch (err) { 
-        console.error(err);
-        return false;
-    }
-}   
-
-export const verifyPhone = async ({ token, phoneNum, otp }) => { 
-    const route = API_URL + '/user/verify';
-    try { 
-        const result = await fetch(route, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -558,22 +521,53 @@ export const verifyPhone = async ({ token, phoneNum, otp }) => {
             },
             body: JSON.stringify({
                 phoneNumber: phoneNum,
-                otp
-            })
+            }),
         })
-            .then(async (res) => { 
+            .then(async (res) => {
                 if (res.ok) {
                     return true;
                 }
                 return false;
             })
-            .catch(err => { 
+            .catch((err) => {
                 console.error(err);
                 return false;
-            })
+            });
         return result;
-    } catch (err) { 
+    } catch (err) {
         console.error(err);
         return false;
     }
-}   
+};
+
+export const verifyPhone = async ({ token, phoneNum, otp }) => {
+    const route = API_URL + '/user/verify';
+    try {
+        const result = await fetch(route, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+            },
+            body: JSON.stringify({
+                phoneNumber: phoneNum,
+                otp,
+            }),
+        })
+            .then(async (res) => {
+                if (res.ok) {
+                    return true;
+                }
+                return false;
+            })
+            .catch((err) => {
+                console.error(err);
+                return false;
+            });
+        return result;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+};

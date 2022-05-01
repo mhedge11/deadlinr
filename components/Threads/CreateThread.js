@@ -204,11 +204,11 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(CreateThread);

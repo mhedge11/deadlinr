@@ -4,7 +4,6 @@ import React from 'react';
 import Deadlinr from './Deadlinr';
 import { getUser } from './api/user';
 
-
 const initialState = {
     user: null,
     calendars: [],
@@ -35,5 +34,5 @@ export default function App() {
         <Provider store={store}>
             <Deadlinr />
         </Provider>
-      );
+    );
 }

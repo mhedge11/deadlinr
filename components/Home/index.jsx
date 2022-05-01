@@ -37,12 +37,11 @@ class Home extends Component {
         if (this.props.user.calendars) {
             this.props.user.calendars.forEach(async (c) => {
                 const data = await getCalendar({ cid: c });
-                if (data) { 
+                if (data) {
                     this.setState({
                         calendars: [...this.state.calendars, data],
                     });
                 }
-
             });
         }
         //console.log(this.state.calendars);
@@ -56,7 +55,6 @@ class Home extends Component {
     };
 
     componentDidMount = () => {
-
         this.getAllCalendars();
         getWeekDeadlines({ token: this.props.user.token }).then((res) => {
             this.setState({

@@ -10,7 +10,7 @@ import {
     ActivityIndicator,
     Modal,
     Pressable,
-    ScrollView
+    ScrollView,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -33,8 +33,7 @@ const CreateDeadline = (props) => {
     const [modalVisible, setModalVisible] = React.useState(false);
     const [similarDeadlines, setSimilarDeadlines] = React.useState([]);
 
-
-    const showSimilarDeadlines = async () => { 
+    const showSimilarDeadlines = async () => {
         setLoading(true);
         const res = await findSimilar({
             cid: props.route.params.calendarID,
@@ -44,22 +43,21 @@ const CreateDeadline = (props) => {
             },
             token: props.user['token'],
         });
-       setLoading(false);
-       setShownSimilar(true);
+        setLoading(false);
+        setShownSimilar(true);
         if (res.length > 0) {
             setModalVisible(true);
             setSimilarDeadlines(res);
             return true;
         }
         return false;
-
-    }
+    };
 
     const createDeadline = async () => {
         if (!props.user) return Alert.alert('An error occured');
         if (deadlineName.trim() === '') return;
         setDeadlineName(deadlineName.trim());
-        if (!shownSimilar) {    
+        if (!shownSimilar) {
             const hasSimilar = await showSimilarDeadlines();
             if (hasSimilar) return;
         }
@@ -213,54 +211,58 @@ const CreateDeadline = (props) => {
             {msg !== '' && (
                 <Text style={{ color: 'red', fontSize: 18 }}>{msg}</Text>
             )}
-         <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          // Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Looks like there are similar deadlines!</Text>
-                        
-                    <ScrollView>
-                            {
-                                similarDeadlines.map(d => { 
-                                    return (
-                                        <View
+            <Modal
+                animationType='slide'
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    // Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>
+                            Looks like there are similar deadlines!
+                        </Text>
+
+                        <ScrollView>
+                            {similarDeadlines.map((d) => {
+                                return (
+                                    <View
+                                        style={{
+                                            marginTop: '20%',
+                                        }}
+                                    >
+                                        <Text
                                             style={{
-                                                marginTop: '20%',
+                                                fontWeight: '600',
+                                                fontSize: 25,
                                             }}
                                         >
-                                            <Text
-                                                style={{
-                                                    fontWeight: '600',
-                                                    fontSize: 25
-                                                }}
-                                            >{d.title}</Text>
-                                            <Text
-                                                style={{
-                                                    fontWeight: '400',
-                                                    fontSize: 20
-                                                }}
-                                            >Due: {d.dueDate.slice(0, 10)}</Text>
-                                        </View>
-                                    )
-                                })
-                            }        
-                    </ScrollView>
-                <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-                >
-                <Text style={styles.textStyle}>Close</Text>
-                </Pressable>
-          </View>
-        </View>
-      </Modal>
+                                            {d.title}
+                                        </Text>
+                                        <Text
+                                            style={{
+                                                fontWeight: '400',
+                                                fontSize: 20,
+                                            }}
+                                        >
+                                            Due: {d.dueDate.slice(0, 10)}
+                                        </Text>
+                                    </View>
+                                );
+                            })}
+                        </ScrollView>
+                        <Pressable
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={() => setModalVisible(!modalVisible)}
+                        >
+                            <Text style={styles.textStyle}>Close</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
         </SafeAreaView>
     );
 };
@@ -281,54 +283,54 @@ const styles = StyleSheet.create({
     },
     centeredView: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22
-      },
-      modalView: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderRadius: 20,
         padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
+        alignItems: 'center',
+        shadowColor: '#000',
         shadowOffset: {
-          width: 0,
-          height: 2
+            width: 0,
+            height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5
-      },
-      button: {
+        elevation: 5,
+    },
+    button: {
         borderRadius: 20,
         padding: 10,
-        elevation: 2
-      },
-      buttonOpen: {
-        backgroundColor: "#F194FF",
-      },
-      buttonClose: {
-        backgroundColor: "#2196F3",
-      },
-      textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-      },
-      modalText: {
+        elevation: 2,
+    },
+    buttonOpen: {
+        backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
         // marginBottom: 15,
-          textAlign: "center",
-          fontSize: 28,
-          fontWeight: '200'
-      }
+        textAlign: 'center',
+        fontSize: 28,
+        fontWeight: '200',
+    },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(CreateDeadline);

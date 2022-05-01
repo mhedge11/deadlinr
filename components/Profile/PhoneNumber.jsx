@@ -11,10 +11,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
-import {
-    linkPhone,
-    verifyPhone as verifyPhoneAPI,
-} from '../../api/user';
+import { linkPhone, verifyPhone as verifyPhoneAPI } from '../../api/user';
 
 import {
     CodeField,
@@ -43,7 +40,10 @@ const PhoneNumber = (props) => {
     const requestCode = async () => {
         if (email.trim() === '') return;
         setLoading(true);
-        const res = await linkPhone({ token: props.user.token, phoneNum: email });
+        const res = await linkPhone({
+            token: props.user.token,
+            phoneNum: email,
+        });
 
         if (res) {
             setLoading(false);
@@ -58,7 +58,11 @@ const PhoneNumber = (props) => {
         // make API CALL
         if (value.length != 6) return;
         setLoading(true);
-        const validCode = await verifyPhoneAPI({ token: props.user.token, phoneNum: email, otp: value });
+        const validCode = await verifyPhoneAPI({
+            token: props.user.token,
+            phoneNum: email,
+            otp: value,
+        });
 
         if (validCode) {
             setLoading(false);
@@ -113,7 +117,8 @@ const PhoneNumber = (props) => {
                         fontSize: '18rem',
                     }}
                 >
-                    Enter your phone number and we will send a verification code.
+                    Enter your phone number and we will send a verification
+                    code.
                 </Text>
 
                 <TextInput
@@ -245,10 +250,10 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
-        user: state.user
-    }
+        user: state.user,
+    };
 }
 
 export default connect(mapStateToProps)(PhoneNumber);

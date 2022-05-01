@@ -21,7 +21,7 @@ import {
     editDeadline as editDeadlineAPI,
     toggleComplete,
     deleteDeadline as deleteDeadlineAPI,
-    voteDeadline as voteDeadlineAPI
+    voteDeadline as voteDeadlineAPI,
 } from '../../api/deadline';
 
 import { connect } from 'react-redux';
@@ -87,8 +87,6 @@ const ViewDeadline = (props) => {
             return Alert.alert('An error occured');
         }
     };
-
-
 
     const editDeadline = async () => {
         setLoading(true);
@@ -360,32 +358,33 @@ const ViewDeadline = (props) => {
                     })
                 )}
             </View>
-            {
-                !deadline.approved && !deadline.usersVoted.includes(props.user._id) &&
-                <View
-                    style={{
-                        padding: '5%',
-                        paddingRight: '15%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                    }}
-                >
+            {!deadline.approved &&
+                !deadline.usersVoted.includes(props.user._id) && (
+                    <View
+                        style={{
+                            padding: '5%',
+                            paddingRight: '15%',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                        }}
+                    >
                         <Text
                             style={{
                                 fontSize: 25,
                             }}
-                        >Is this a valid deadline ?</Text>
+                        >
+                            Is this a valid deadline ?
+                        </Text>
                         <Button
                             title='Vote deadline'
                             fontSize={20}
                             onPress={() => {
                                 voteDeadline();
                             }}
-                            
                         />
-                </View>
-            }
+                    </View>
+                )}
             <View
                 style={{
                     padding: '5%',
@@ -662,11 +661,11 @@ const ViewDeadline = (props) => {
     );
 };
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
     return {
         user: state.user,
-        dispatch: state.dispatch
-    }
+        dispatch: state.dispatch,
+    };
 }
 
 export default connect(mapStateToProps)(ViewDeadline);

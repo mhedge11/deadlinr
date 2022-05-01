@@ -215,7 +215,7 @@ export const deleteDeadline = async ({ did, token }) => {
     }
 };
 
-export const findSimilar = async ({ cid, deadlineData, token }) => { 
+export const findSimilar = async ({ cid, deadlineData, token }) => {
     const route = API_URL + '/deadline/similar';
     try {
         let result = await fetch(route, {
@@ -227,28 +227,28 @@ export const findSimilar = async ({ cid, deadlineData, token }) => {
             },
             body: JSON.stringify({
                 deadlineData,
-                cid
-            })
+                cid,
+            }),
         })
-            .then(async (res) => { 
-                if (res.ok) { 
+            .then(async (res) => {
+                if (res.ok) {
                     const data = await res.json();
                     return data.items;
                 }
                 return [];
             })
-            .catch((err) => { 
+            .catch((err) => {
                 return [];
-            })
+            });
         return result;
-    } catch (err) { 
+    } catch (err) {
         console.error(err);
         return [];
     }
-}
-export const voteDeadline = async ({ did, token }) => { 
+};
+export const voteDeadline = async ({ did, token }) => {
     const route = API_URL + '/deadline/' + did + '/vote';
-     try {
+    try {
         let result = await fetch(route, {
             method: 'POST',
             headers: {
@@ -273,4 +273,4 @@ export const voteDeadline = async ({ did, token }) => {
         console.error(err);
         return false;
     }
-}
+};
